@@ -9,7 +9,7 @@ const Login = () => {
         <form>
 
           <div className="mb-4 text-left">
-            <label htmlFor="username" className="block mb-2 text-sm text-gray-700">Username</label>
+            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Username</label>
             <input
               type="text"
               id="username"
@@ -20,7 +20,7 @@ const Login = () => {
           </div>
 
           <div className="mb-4 text-left">
-            <label htmlFor="password" className="block mb-2 text-sm text-gray-700">Password</label>
+            <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-700">Password</label>
             <input
               type="password"
               id="password"
@@ -37,7 +37,7 @@ const Login = () => {
           <button type="submit" className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">LOGIN</button>
         
         </form>
-        
+
       </div>
     </div>
   );

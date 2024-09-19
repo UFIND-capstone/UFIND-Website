@@ -12,7 +12,7 @@ const Dashboard = () => {
 
                 <div className="min-h-screen bg-gradient-to-br from-blue-500 to-cyan-400 p-10">
                     <div className="text-center mb-10">
-                        <h1 className="text-4xl font-bold text-white">Dashboard</h1>
+                        <h1 className="text-8xl font-bold text-white">DASHBOARD</h1>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
