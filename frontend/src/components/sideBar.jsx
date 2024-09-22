@@ -21,6 +21,9 @@ export default function Sidebar() {
             <a href="#">Match Items</a>
         </li>
         <li className="p-4 hover:bg-blue-700">
+            <a href="#">Unclaimed Ticket</a>
+        </li>
+        <li className="p-4 hover:bg-blue-700">
             <a href="#">My Account</a>
         </li>
         <li className="p-4 hover:bg-blue-700">
