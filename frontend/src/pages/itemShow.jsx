@@ -1,6 +1,7 @@
 import Sidebar from "../components/sidebar";
 import Topbar from "../components/topBar";
 import data from "../assets/data.json";
+
 export default function ItemShow() {
   return (
     <div className="flex">

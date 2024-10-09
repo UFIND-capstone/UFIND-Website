@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
 import { useAuth } from "../AuthContext"; // Import the custom hook
 import imagee from "../assets/imagee.jpg";
 
@@ -20,25 +20,25 @@ export default function Sidebar() {
       </div>
       <ul className="flex flex-col font-medium w-full">
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">Dashboard</a>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">Lost Items</a>
+          <Link to="/lost-items">Lost Items</Link>
         </li>
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">Found Items</a>
+          <Link to="/found-items">Found Items</Link>
         </li>
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">Match Items</a>
+          <Link to="/match-items">Match Items</Link> {/* Use Link for navigation */}
         </li>
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">Unclaimed Ticket</a>
+          <Link to="/unclaimed-tickets">Unclaimed Ticket</Link> {/* Use Link for navigation */}
         </li>
         <li className="p-4 hover:bg-blue-700">
-            <a href="#">My Account</a>
+          <Link to="/my-account">My Account</Link> {/* Use Link for navigation */}
         </li>
         <li className="p-4 hover:bg-blue-700 cursor-pointer" onClick={handleLogout}>
-            Logout
+          Logout
         </li>
       </ul>
     </div>
