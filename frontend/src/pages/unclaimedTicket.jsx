@@ -50,7 +50,7 @@ const unclaimedTickets = [
   // Add more unclaimed tickets as needed
 ];
 
-const UnclaimedTicket = () => {
+export const UnclaimedTicket = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -91,5 +91,3 @@ const UnclaimedTicket = () => {
     </div>
   );
 };
-
-export default UnclaimedTicket;

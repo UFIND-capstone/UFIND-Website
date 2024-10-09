@@ -53,7 +53,7 @@ const items = [
   }
 ];
 
-const ItemLost = () => {
+export const ItemLost = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -97,5 +97,3 @@ const ItemLost = () => {
     </div>
   );
 };
-
-export default ItemLost;

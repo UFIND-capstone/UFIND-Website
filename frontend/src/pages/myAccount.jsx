@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
 
-const MyAccount = () => {
+export const MyAccount = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -78,4 +78,3 @@ const MyAccount = () => {
   );
 };
 
-export default MyAccount;

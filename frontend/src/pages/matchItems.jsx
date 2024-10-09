@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
 
-const MatchItems = () => {
+export const MatchItems = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -66,4 +66,3 @@ const MatchItems = () => {
   );
 };
 
-export default MatchItems;
