@@ -1,6 +1,17 @@
+import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useAuth } from "../AuthContext"; // Import the custom hook
 import imagee from "../assets/imagee.jpg";
 
 export default function Sidebar() {
+  const navigate = useNavigate(); // Initialize useNavigate
+  const { logout } = useAuth(); // Get the logout function from context
+
+  const handleLogout = () => {
+    logout(); // Call logout function
+    navigate('/'); // Redirect to login page
+  };
+
   return (
     <div className="flex flex-col items-center bg-gradient-to-b from-blue-950 to-blue-500 text-white min-h-screen w-64">
       <div className="profile border-red-900 flex flex-col items-center p-4">
@@ -26,8 +37,8 @@ export default function Sidebar() {
         <li className="p-4 hover:bg-blue-700">
             <a href="#">My Account</a>
         </li>
-        <li className="p-4 hover:bg-blue-700">
-            <a href="#">Logout</a>
+        <li className="p-4 hover:bg-blue-700 cursor-pointer" onClick={handleLogout}>
+            Logout
         </li>
       </ul>
     </div>

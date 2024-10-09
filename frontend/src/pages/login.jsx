@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
+import { useAuth } from "../AuthContext"; // Import the custom hook
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
+  const { login, user } = useAuth(); // Get the login function and user state from context
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard'); // Redirect to dashboard if user is logged in
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,9 +26,8 @@ export const Login = () => {
       });
 
       console.log("User logged in successfully:", response.data);
-      
-      // Navigate to the dashboard after successful login
-      navigate('/dashboard'); // Change this to your actual dashboard route
+      login({ username }); // Call login function with user data
+      navigate('/dashboard'); 
     } catch (error) {
       setError("Invalid username or password");
       console.error("Error logging in:", error.message);

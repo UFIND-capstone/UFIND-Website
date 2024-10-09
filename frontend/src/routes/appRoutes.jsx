@@ -1,19 +1,29 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from '../AuthContext';
 import { Login } from "../pages/login";
 import Dashboard from "../pages/dashboard"; // Import your Dashboard component
+import ProtectedRoute from "../components/ProtectedRoute"; // Import the ProtectedRoute component
 
 export const AppRoutes = () => {
     const router = createBrowserRouter([
         {
             path: "/",
             element: <Login />,
-            errorElement: <Login />, // Handle errors by showing the Login component
+            errorElement: <Login />,
         },
         {
             path: "/dashboard",
-            element: <Dashboard />, // Define your dashboard route
+            element: (
+                <ProtectedRoute>
+                    <Dashboard />
+                </ProtectedRoute>
+            ), // Protect the dashboard route
         },
     ]);
 
-    return <RouterProvider router={router} />;
+    return (
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
+    );
 };
