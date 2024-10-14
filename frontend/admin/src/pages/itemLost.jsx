@@ -1,59 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
 
-const items = [
-  {
-    id: 1,
-    name: 'Wallet',
-    location: 'Library',
-    date: '2024-09-01',
-    time: '14:30',
-    image: 'https://via.placeholder.com/150' // Placeholder image
-  },
-  {
-    id: 2,
-    name: 'Backpack',
-    location: 'Cafeteria',
-    date: '2024-09-03',
-    time: '12:00',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 3,
-    name: 'Phone',
-    location: 'Gym',
-    date: '2024-09-02',
-    time: '10:15',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 4,
-    name: 'Watch',
-    location: 'Hallway',
-    date: '2024-09-05',
-    time: '08:45',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 5,
-    name: 'Glasses',
-    location: 'Library',
-    date: '2024-09-04',
-    time: '16:30',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 6,
-    name: 'Laptop',
-    location: 'Classroom 101',
-    date: '2024-09-06',
-    time: '09:00',
-    image: 'https://via.placeholder.com/150'
-  }
-];
-
 export const ItemLost = () => {
+  const [items, setItems] = useState([]);
+
+  // Fetch items from the backend
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/items'); // Adjust the URL as needed
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching items:", error.message);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -75,19 +41,22 @@ export const ItemLost = () => {
                 className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all"
               >
                 <img
-                  src={item.image}
+                  src={item.image || 'https://via.placeholder.com/150'} // Use placeholder if no image is provided
                   alt={item.name}
                   className="w-full h-48 object-cover rounded-md mb-4"
                 />
                 <h2 className="text-xl font-bold text-gray-800 mb-2">{item.name}</h2>
                 <p className="text-gray-600 mb-1">
-                  <strong>Last Seen:</strong> {item.location}
+                  <strong>Last Seen:</strong> {item.lastSeen}
                 </p>
                 <p className="text-gray-600 mb-1">
-                  <strong>Date:</strong> {item.date}
+                  <strong>Date:</strong> {item.dateAdded}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Time:</strong> {item.time}
+                  <strong>Time:</strong> {item.timeAdded}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Status:</strong> {item.status}
                 </p>
               </div>
             ))}

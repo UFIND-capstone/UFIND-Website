@@ -1,59 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
 
-const items = [
-  {
-    id: 1,
-    name: 'Umbrella',
-    location: 'Cafeteria',
-    date: '2024-09-07',
-    time: '11:00 AM',
-    image: 'https://via.placeholder.com/150' // Placeholder image
-  },
-  {
-    id: 2,
-    name: 'Headphones',
-    location: 'Library',
-    date: '2024-09-08',
-    time: '09:30 AM',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 3,
-    name: 'Notebook',
-    location: 'Classroom 203',
-    date: '2024-09-09',
-    time: '03:00 PM',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 4,
-    name: 'Water Bottle',
-    location: 'Gym',
-    date: '2024-09-10',
-    time: '07:45 AM',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 5,
-    name: 'Scarf',
-    location: 'Hallway',
-    date: '2024-09-11',
-    time: '01:15 PM',
-    image: 'https://via.placeholder.com/150'
-  },
-  {
-    id: 6,
-    name: 'Shoes',
-    location: 'Parking Lot',
-    date: '2024-09-12',
-    time: '10:20 AM',
-    image: 'https://via.placeholder.com/150'
-  }
-];
-
 export const ItemFound = () => {
+  const [items, setItems] = useState([]);
+
+  // Fetch items from the backend
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/items'); // Adjust the URL as needed
+        // Filter items to only include those with status "Found"
+        const foundItems = response.data.filter(item => item.status === 'Found');
+        setItems(foundItems);
+      } catch (error) {
+        console.error("Error fetching items:", error.message);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -75,7 +43,7 @@ export const ItemFound = () => {
                 className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all"
               >
                 <img
-                  src={item.image}
+                  src={item.image || 'https://via.placeholder.com/150'} // Use placeholder if no image is provided
                   alt={item.name}
                   className="w-full h-48 object-cover rounded-md mb-4"
                 />
@@ -84,10 +52,10 @@ export const ItemFound = () => {
                   <strong>Last Seen:</strong> {item.location}
                 </p>
                 <p className="text-gray-600 mb-1">
-                  <strong>Date:</strong> {item.date}
+                  <strong>Date:</strong> {item.dateAdded}
                 </p>
                 <p className="text-gray-600">
-                  <strong>Time:</strong> {item.time}
+                  <strong>Time:</strong> {item.timeAdded}
                 </p>
               </div>
             ))}
