@@ -17,7 +17,6 @@ const unclaimedTickets = [
     location: 'Cafeteria',
     features: 'Keychain of a yellow duck',
   },
-
   {
     id: 3,
     fullName: 'Ragheil Atacador',
@@ -25,7 +24,6 @@ const unclaimedTickets = [
     location: 'Cafeteria',
     features: 'Keychain of a yellow duck',
   },
-
   {
     id: 4,
     fullName: 'Josh Delos Cielos',
@@ -62,13 +60,16 @@ export const UnclaimedTicket = () => {
         <Topbar />
 
         <div className="min-h-screen bg-gradient-to-br from-blue-500 to-cyan-400 p-10">
-          <h1 className="text-6xl text-white font-bold text-center mb-10">UNCLAIMED TICKETS</h1>
+          <h1 className="text-5xl text-white font-bold text-center mb-12">Unclaimed Tickets</h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {unclaimedTickets.map(ticket => (
-              <div key={ticket.id} className="bg-white p-6 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">{ticket.fullName}</h2>
-
+              <div 
+                key={ticket.id} 
+                className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">{ticket.fullName}</h2>
+                
                 <p className="text-gray-600 mb-2">
                   <strong>Item Description:</strong> {ticket.itemDescription}
                 </p>
@@ -80,7 +81,7 @@ export const UnclaimedTicket = () => {
                 </p>
 
                 {/* Claim Ticket Button */}
-                <button className="w-full py-3 bg-green-500 text-white font-semibold rounded">
+                <button className="w-full py-3 bg-green-600 text-white font-semibold rounded hover:bg-green-500 transition duration-200">
                   Claim Ticket
                 </button>
               </div>
