@@ -6,6 +6,7 @@ import { ItemLost } from "../pages/itemLost";
 import { MatchItems } from "../pages/matchItems";
 import { ItemFound } from "../pages/itemFound";
 import { MyAccount } from "../pages/myAccount";
+import { AboutUs } from "../pages/aboutUs";
 import { UnclaimedTicket } from "../pages/unclaimedTicket";
 import ProtectedRoute from "../components/ProtectedRoute"; // Import the ProtectedRoute component
 
@@ -53,6 +54,14 @@ export const AppRoutes = () => {
       element: (
         <ProtectedRoute>
           <MyAccount />
+        </ProtectedRoute>
+      ), // Protect the dashboard route
+    },
+    {
+      path: "/about-us",
+      element: (
+        <ProtectedRoute>
+          <AboutUs />
         </ProtectedRoute>
       ), // Protect the dashboard route
     },
