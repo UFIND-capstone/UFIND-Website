@@ -1,26 +1,12 @@
 import React from 'react';
-import Sidebar from '../components/sidebar';
+import Sidebar from '../components/footer';
 import Topbar from '../components/topBar';
 
 const Dashboard = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             {/* Navbar */}
-            <header className="bg-white shadow">
-                <div className="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                        <img src="/src/assets/LOGO.png" alt="U-Find Logo" className="w-10 h-10" />
-                        <h1 className="text-3xl font-bold text-blue-500">U-FIND</h1>
-                    </div>
-                    <nav className="flex space-x-8">
-                        <a href="#home" className="text-gray-700 hover:text-blue-500">HOME</a>
-                        <a href="#about" className="text-gray-700 hover:text-blue-500">ABOUT US</a>
-                        <a href="#contact" className="text-gray-700 hover:text-blue-500">CONTACT US</a>
-                    </nav>
-                    <img src="/src/assets/PROFILE.png" alt="Profile Icon" className="w-10 h-10 rounded-full" />
-                </div>
-            </header>
-
+            
            {/* Main Content */}
                 <main className="max-w-7xl mx-auto px-4 py-10">
                     <section className="text-center mb-10">
@@ -212,14 +198,6 @@ const Dashboard = () => {
                 </div>
             </div>
         </section>
-
-        {/* Footer */}
-        <footer className="bg-gray-100 py-4 text-center">
-            <p className="text-sm text-gray-600">
-                © U-FIND PHILIPPINES 2024
-            </p>
-        </footer>
-
       
 
             </main>
