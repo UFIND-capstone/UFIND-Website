@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/footer';
 import Topbar from '../components/topBar';
 
-const AboutUs = () => {
+export const AboutUs = () => {
     return (
       <div className="font-sans">
         {/* Header Section */}
@@ -59,5 +59,3 @@ const AboutUs = () => {
       </div>
     );
   }
-  
-  export default AboutUs;
