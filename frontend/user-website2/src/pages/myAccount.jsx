@@ -1,12 +1,10 @@
 import React from 'react';
-import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
+import Footer from '../components/footer';
 
 export const MyAccount = () => {
   return (
     <div className="flex">
-      {/* Sidebar */}
-      <Sidebar />
 
       {/* Main Content */}
       <div className="w-full">
@@ -71,8 +69,13 @@ export const MyAccount = () => {
                 Edit Profile
               </button>
             </div>
+
           </div>
         </div>
+        <div className="w-full">
+        {/* footer */}
+        <Footer />
+    </div>
       </div>
     </div>
   );
