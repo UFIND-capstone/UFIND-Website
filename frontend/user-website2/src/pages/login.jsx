@@ -36,7 +36,7 @@ export const Login = () => {
   return (
     <div className="h-screen flex justify-center items-center bg-gradient-to-br from-blue-500 to-cyan-400">
       <div className="bg-white p-10 rounded-lg shadow-lg max-w-xs w-full text-center">
-        <h2 className="mb-6 text-2xl text-gray-800 font-semibold">ADMIN LOGIN</h2>
+        <h2 className="mb-6 text-2xl text-gray-800 font-semibold">USER LOGIN</h2>
 
         <form onSubmit={handleLogin}>
           {error && <p className="text-red-500">{error}</p>}
@@ -73,6 +73,14 @@ export const Login = () => {
           </div>
 
           <button type="submit" className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">LOGIN</button>
+
+          {/* Register link */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <a href="/register" className="text-blue-500 font-semibold hover:underline">Register Now</a>
+            </p>
+          </div>
         </form>
       </div>
     </div>

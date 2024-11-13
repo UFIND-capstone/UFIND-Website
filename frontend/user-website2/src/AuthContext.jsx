@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import axios from 'axios';
 
 // Create the AuthContext
 const AuthContext = createContext();
@@ -20,13 +21,24 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData));
     };
 
+    const register = async (userData) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/register`, userData);
+            login(response.data); // Log in the user immediately after registration
+            return response.data;
+        } catch (error) {
+            console.error("Error registering:", error.message);
+            throw error; // Rethrow error to handle it in the Register component
+        }
+    };
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem('user');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );
