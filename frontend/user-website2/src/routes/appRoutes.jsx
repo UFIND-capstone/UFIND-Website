@@ -10,7 +10,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 export const AppRoutes = () => {
   const router = createBrowserRouter([
     {
-      path: "/login",
+      path: "/",
       element: <Login />,
       errorElement: <Login />,
     },
