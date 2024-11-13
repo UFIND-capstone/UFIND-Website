@@ -7,6 +7,15 @@ const ContactUs = () => {
     <div className="font-sans min-h-screen flex flex-col">
       <Topbar />
 
+      {/* Full-width image below the top bar */}
+      <div className="w-full">
+        <img 
+          src="/src/assets/U-FIND (3).png" 
+          alt="About Us Banner" 
+          className="w-full h-64 object-cover"
+        />
+      </div>
+
       {/* Main Content */}
       <div className="flex-grow py-12 px-6 bg-gray-50">
         <div className="container mx-auto md:flex md:space-x-10 md:justify-center">

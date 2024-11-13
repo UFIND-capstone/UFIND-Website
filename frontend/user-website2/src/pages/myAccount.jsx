@@ -19,7 +19,7 @@ export const MyAccount = () => {
             {/* Profile Image */}
             <div className="flex justify-center mb-6">
               <img
-                src="https://via.placeholder.com/150" // Replace with actual profile image
+                src="/src/assets/PROFILE.png" // Replace with actual profile image
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-md"
               />
