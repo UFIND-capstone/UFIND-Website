@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
-import { useAuth } from "../AuthContext"; // Import the custom hook
+import { useAuth } from "../AuthContext"; 
 
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
-  const { login, user } = useAuth(); // Get the login function and user state from context
+  const { login, user } = useAuth();
 
-  // Check if user is already logged in
   useEffect(() => {
     if (user) {
-      navigate('/dashboard'); // Redirect to dashboard if user is logged in
+      navigate('/dashboard'); 
     }
   }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/admin', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin`, {
         username,
         password,
       });
 
       console.log("User logged in successfully:", response.data);
-      login({ username }); // Call login function with user data
+      login({ username });
       navigate('/dashboard'); 
     } catch (error) {
       setError("Invalid username or password");
@@ -45,6 +44,8 @@ export const Login = () => {
             <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Username</label>
             <input
               type="text"
+              id="username"
+              name="username"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               placeholder="Enter your username"
@@ -57,6 +58,8 @@ export const Login = () => {
             <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-700">Password</label>
             <input
               type="password"
+              id="password"
+              name="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Enter your password"
@@ -66,7 +69,7 @@ export const Login = () => {
           </div>
 
           <div className="mb-4 text-right">
-            <a href="#" className="text-sm text-blue-500 hover:underline">Forgot Password?</a>
+            <a href="/forgot-password" className="text-sm text-blue-500 hover:underline">Forgot Password?</a>
           </div>
 
           <button type="submit" className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">LOGIN</button>
