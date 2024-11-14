@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext"; 
 
 export const Login = () => {
-  const [username, setUsername] = useState('');
+  const [contactNumber, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
@@ -19,13 +19,13 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin`, {
-        username,
+      const response = await axios.post('http://localhost:3000/api/user', {
+        contactNumber,
         password,
       });
 
       console.log("User logged in successfully:", response.data);
-      login({ username });
+      login({ contactNumber });
       navigate('/dashboard'); 
     } catch (error) {
       setError("Invalid username or password");
@@ -41,13 +41,13 @@ export const Login = () => {
         <form onSubmit={handleLogin}>
           {error && <p className="text-red-500">{error}</p>}
           <div className="mb-4 text-left">
-            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Username</label>
+            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Contact Number</label>
             <input
               type="text"
               id="username"
               name="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              value={contactNumber}
+              onChange={(event) => setContact(event.target.value)}
               placeholder="Enter your username"
               required
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
