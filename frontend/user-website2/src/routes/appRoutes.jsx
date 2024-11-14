@@ -5,8 +5,13 @@ import { Login } from "../pages/login";
 import Dashboard from "../pages/dashboard";
 import { MyAccount } from "../pages/myAccount";
 import ContactUs from "../pages/contactUs";
-import AboutUs from "../pages/aboutUs"; // Adjust this import as needed
+import AboutUs from "../pages/aboutUs"; 
 import { Register } from "../pages/register";
+import ListLost from "../pages/listLost";
+import ListFound from "../pages/listFound";
+import BrowseitemsLost from "../pages/browseItemsLost";
+import BrowseitemsFound from "../pages/browseItemsFound";
+import ImageDesc from "../pages/imageDesc";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 export const AppRoutes = () => {
@@ -14,7 +19,7 @@ export const AppRoutes = () => {
     {
       path: "/",
       element: <Login />,
-      errorElement: <Login />,
+      errorElement: <Login />, // You could replace this with a 404 error page component if desired
     },
     {
       path: "/dashboard",
@@ -47,6 +52,26 @@ export const AppRoutes = () => {
     {
       path: "/register",
       element: <Register />, 
+    },  
+    {
+      path: "/listLost",
+      element: <ListLost />, 
+    },
+    {
+      path: "/listFound",
+      element: <ListFound />, 
+    },
+    {
+      path: "/browseItemsLost",
+      element: <BrowseitemsLost />, 
+    },
+    {
+      path: "/browseItemsFound",
+      element: <BrowseitemsFound />, 
+    },
+    {
+      path: "/imageDesc",
+      element: <ImageDesc />, 
     },
   ]);
 

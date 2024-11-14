@@ -27,19 +27,19 @@ export const MyAccount = () => {
 
             {/* User Information */}
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Jared Animal</h2>
-              <p className="text-gray-600 mb-2">raraanimal@gmail.com</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Jared Salvan</h2>
+              <p className="text-gray-600 mb-2">jaredsalvan123@gmail.com</p>
             </div>
 
             <div className="space-y-4">
               {/* Username */}
               <div className="flex justify-between text-gray-600">
-                <strong>Username:</strong> JaredAnimal101
+                <strong>Username:</strong> JaredSalvan101
               </div>
 
               {/* Email */}
               <div className="flex justify-between text-gray-600">
-                <strong>Email Address:</strong> raraanimal@gmail.com
+                <strong>Email Address:</strong> jaredsalvan123@gmail.com
               </div>
 
               {/* Contact Number */}

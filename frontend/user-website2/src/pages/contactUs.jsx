@@ -10,9 +10,9 @@ const ContactUs = () => {
       {/* Full-width image below the top bar */}
       <div className="w-full">
         <img 
-          src="/src/assets/U-FIND (3).png" 
+          src="/src/assets/CONTACT IMAGE.png" 
           alt="About Us Banner" 
-          className="w-full h-64 object-cover"
+          className="w-full h-65 object-cover"
         />
       </div>
 

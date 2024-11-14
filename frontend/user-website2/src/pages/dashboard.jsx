@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 
@@ -16,7 +17,7 @@ const Dashboard = () => {
         <div className="min-h-screen bg-gray-100">
             <Topbar />
 
-            <main className="max-w-7xl mx-auto px-4 py-10">
+            <main className="max-w-8xl mx-auto px-10 py-10">
                 {/* Hero Section */}
                 <section className="text-center mb-10">
                     <div className="flex justify-center items-center space-x-10">
@@ -25,10 +26,12 @@ const Dashboard = () => {
                             <h2 className="text-5xl font-bold text-gray-900 mb-4">U-FIND</h2>
                             <p className="text-gray-800 mb-12">
                                 U-find is a platform for reporting, tracking, and retrieving lost and found items on campus. Secure authentication and real-time notifications help quickly reunite lost items with their owners, while admins efficiently manage reports.
-                            </p>
-                            <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                            </p>    
+                            <Link to="/listLost" className="mt-6">
+                                <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                                 REPORT NOW!
-                            </button>
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </section>
@@ -45,9 +48,12 @@ const Dashboard = () => {
                             </div>
                         ))}
                     </div>
-                    <button className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
-                        VIEW MORE
-                    </button>
+                    <Link to="/browseitemsLost" className="mt-6">
+                        <button className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                            VIEW MORE
+                        </button>
+                    </Link>
+
                 </section>
 
                {/* Features Section */}
@@ -79,8 +85,6 @@ const Dashboard = () => {
                     ))}
                 </section>
 
-
-
                 {/* About Section */}
                 <section className="flex flex-col md:flex-row justify-between items-center bg-white p-6 md:p-10 mx-4 md:mx-12 mb-8 rounded-lg shadow-lg">
                     <div className="flex-shrink-0 mb-4 md:mb-0">
@@ -91,12 +95,15 @@ const Dashboard = () => {
                             ABOUT US
                         </button>
                         <h2 className="text-2xl font-bold text-gray-800">U-FIND</h2>
-                        <p className="text-gray-600 mt-2">
+                        <p className="text-gray-600 mt-5">
                             U-find is a platform for reporting, tracking, and retrieving lost and found items on campus. Secure authentication and real-time notifications help quickly reunite lost items with their owners, while admins manage reports efficiently.
                         </p>
-                        <button className="mt-4 bg-blue-500 text-white font-bold px-4 py-2 rounded">
-                            READ MORE
-                        </button>
+                        <a href="/aboutUs" className="mt-6">
+                            <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded">
+                                READ MORE
+                            </button>
+                        </a>
+
                     </div>
                 </section>
 
