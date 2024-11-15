@@ -5,17 +5,8 @@ const db = getFirestore(firebaseApp);
 
 export const addItem = async (itemData) => {
     try {
-        const timestamp = new Date();
-        
-        // Adjust for Philippine Standard Time (UTC+8)
-        const utcOffset = 8 * 60; // UTC+8 in minutes
-        const localDate = new Date(timestamp.getTime() + (utcOffset * 60 * 1000));
-        
         const newItem = {
             ...itemData,
-            dateAdded: localDate.toISOString().split('T')[0], // YYYY-MM-DD format
-            timeAdded: localDate.toISOString().split('T')[1].split('.')[0], // HH:MM:SS format
-            category: 'Ticketing',
         };
 
         const docRef = await addDoc(collection(db, 'items'), newItem);
@@ -24,6 +15,7 @@ export const addItem = async (itemData) => {
         throw new Error('Error adding item: ' + error.message);
     }
 };
+
 
 export const getItems = async () => {
     try {
