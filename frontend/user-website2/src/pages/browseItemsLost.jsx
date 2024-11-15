@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
+import axios from 'axios';
 
-const items = [
-    { id: 1, name: 'BOBO SI RARA', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 2, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 3, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 4, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 5, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 6, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 7, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 8, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 9, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-    { id: 10, name: 'AQUAFLASK', date: 'October 5, 2024 at 10:43 PM', location: 'Lost in Cafeteria', image: '/src/assets/aquaflask.png' },
-];
+const BrowseItemsLost = () => {
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-const BrowseItems = () => {
+    // Fetch lost items from the backend
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/items');
+                const lostItems = response.data.filter(item => item.status === 'lost');
+                setItems(lostItems);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message || 'Failed to fetch items');
+                setLoading(false);
+            }
+        };
+
+        fetchItems();
+    }, []);
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Topbar />
@@ -49,18 +58,31 @@ const BrowseItems = () => {
                 </div>
 
                 {/* Items Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    {items.map(item => (
-                        <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-                            <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
-                            <div className="p-4 text-center">
-                                <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>
-                                <p className="text-sm text-gray-600">{item.date}</p>
-                                <p className="text-sm text-gray-600">{item.location}</p>
+                {loading ? (
+                    <p className="text-center text-gray-500">Loading items...</p>
+                ) : error ? (
+                    <p className="text-center text-red-500">{error}</p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        {items.map((item) => (
+                            <div
+                                key={item.id}
+                                className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+                            >
+                                <img
+                                    src={item.image || '/placeholder-image.png'} // Fallback image if no URL
+                                    alt={item.name}
+                                    className="w-full h-48 object-cover"
+                                />
+                                <div className="p-4 text-center">
+                                    <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>
+                                    <p className="text-sm text-gray-600">{item.dateTime}</p>
+                                    <p className="text-sm text-gray-600">{item.lastSeen}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <Footer />
@@ -68,4 +90,4 @@ const BrowseItems = () => {
     );
 };
 
-export default BrowseItems;
+export default BrowseItemsLost;
