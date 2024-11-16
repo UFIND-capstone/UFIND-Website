@@ -12,6 +12,8 @@ import ListFound from "../pages/listFound";
 import BrowseitemsLost from "../pages/browseItemsLost";
 import BrowseitemsFound from "../pages/browseItemsFound";
 import ImageDesc from "../pages/imageDesc";
+import HowtoProtectYourBelongings from "../pages/howtoprotectyourbelongings";
+import HowtoReportaLostorFoundItem from "../pages/howtoreportalostorfounditem";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 export const AppRoutes = () => {
@@ -72,6 +74,14 @@ export const AppRoutes = () => {
     {
       path: "/imageDesc",
       element: <ImageDesc />, 
+    },
+    {
+      path: "/howtoProtectYourBelongings",
+      element: <HowtoProtectYourBelongings />, 
+    },
+    {
+      path: "/howtoreportalostorfounditem",
+      element: <HowtoReportaLostorFoundItem />, 
     },
   ]);
 

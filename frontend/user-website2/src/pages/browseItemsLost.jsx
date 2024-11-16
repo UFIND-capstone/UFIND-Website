@@ -52,7 +52,7 @@ const BrowseItemsLost = () => {
                     <Link to="/browseItemsLost" className="px-6 py-3 font-semibold bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                         Lost Items
                     </Link>
-                    <Link to="/browseItemsFound" className="px-6 py-3 font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    <Link to="/browseItemsFound" className="px-6 py-3 font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-blue-300">
                         Found Items
                     </Link>
                 </div>

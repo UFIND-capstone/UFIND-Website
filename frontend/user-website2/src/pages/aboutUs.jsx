@@ -2,7 +2,7 @@ import React from 'react';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 
-const aboutUs = () => {
+const AboutUs = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Topbar />
@@ -26,9 +26,81 @@ const aboutUs = () => {
         </p>
       </section>
 
+      {/* Meet the Team Section */}
+      <section className="py-12 px-6 bg-white">
+        <h2 className="text-5xl font-semibold text-center mb-8">Meet the Team</h2>
+
+        <p className="max-w-6xl mx-auto text-gray-700 leading-relaxed text-center">
+        Meet the team's dedication, skills, and the collaborative spirit that drives U-Find's success, while also positioning the team as approachable, skilled, and passionate about their mission.
+        </p>
+
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-9">
+          {/* Card 1 */}
+          <div className="bg-white shadow-lg rounded-lg p-2 text-center">
+            <img 
+              src="/src/assets/PROFILE.png" 
+              alt="Team Member" 
+              className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+            />
+            <h3 className="font-bold text-lg text-gray-800 mb-2">April Maxine M. Baculio</h3>
+            <p className="text-gray-600 mb-2">System Analyst</p>
+            <a href="mailto:johndoe@gmail.com" className="text-blue-500 hover:underline"> EMAIL NINYO! 😡</a>
+          </div>
+
+          {/* Card 2 */}
+          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img 
+              src="/src/assets/Jepoy.jpg" 
+              alt="Team Member" 
+              className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+            />
+            <h3 className="font-bold text-lg text-gray-800 mb-2">Jefferson C. Sabejon</h3>
+            <p className="text-gray-600 mb-2">Front-End Developer</p>
+            <a href="mailto:jepoysabejon24@gmail.com" className="text-blue-500 hover:underline"> jepoysabejon24@gmail.com </a>
+          </div>
+
+          {/* Card 3 */}
+          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img 
+              src="/src/assets/PROFILE.png" 
+              alt="Team Member" 
+              className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+            />
+            <h3 className="font-bold text-lg text-gray-800 mb-2">Mel Alejandrino</h3>
+            <p className="text-gray-600 mb-2">Back-End Developer</p>
+            <a href="mailto:alejandrino.mel002@gmail.com" className="text-blue-500 hover:underline"> alejandrino.mel002@gmail.com </a>
+          </div>
+
+          {/* Card 4 */}
+          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img 
+              src="/src/assets/PROFILE.png" 
+              alt="Team Member" 
+              className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+            />
+            <h3 className="font-bold text-lg text-gray-800 mb-2">Angelo Alfeche</h3>
+            <p className="text-gray-600 mb-2">Writer</p>
+            <a href="mailto:sarahlee@gmail.com" className="text-blue-500 hover:underline"> EMAIL NINYO! 😡</a>
+          </div>
+
+          {/* Card 5 */}
+          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img 
+              src="/src/assets/Rara.png" 
+              alt="Team Member" 
+              className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+            />
+            <h3 className="font-bold text-lg text-gray-800 mb-2">Jared Simon T. Rara</h3>
+            <p className="text-gray-600 mb-2">Researcher</p>
+            <a href="mailto:jaredrara11@gmail.com" className="text-blue-500 hover:underline"> jaredrara11@gmail.com </a>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
 };
 
-export default aboutUs;
+export default AboutUs;
