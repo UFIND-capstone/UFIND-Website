@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 import axios from 'axios';
@@ -65,8 +65,9 @@ const BrowseItemsLost = () => {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         {items.map((item) => (
-                            <div
+                            <Link
                                 key={item.id}
+                                to={`/browseItemsLost/${item.id}`} // Dynamic link for each item's ID
                                 className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
                             >
                                 <img
@@ -79,7 +80,7 @@ const BrowseItemsLost = () => {
                                     <p className="text-sm text-gray-600">{item.dateTime}</p>
                                     <p className="text-sm text-gray-600">{item.lastSeen}</p>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 )}
