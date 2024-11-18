@@ -15,6 +15,7 @@ import ImageDesc from "../pages/imageDesc";
 import HowtoProtectYourBelongings from "../pages/howtoprotectyourbelongings";
 import HowtoReportaLostorFoundItem from "../pages/howtoreportalostorfounditem";
 import ProtectedRoute from "../components/ProtectedRoute";
+import ItemDescription from "../pages/imageDesc";
 
 export const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -66,6 +67,14 @@ export const AppRoutes = () => {
     {
       path: "/browseItemsLost",
       element: <BrowseitemsLost />, 
+    },
+    {
+      path: "/browseItemsLost/:itemID",
+      element: <ItemDescription />, 
+    },
+    {
+      path: "/browseItemsFound/:itemID",
+      element: <ItemDescription />, 
     },
     {
       path: "/browseItemsFound",
