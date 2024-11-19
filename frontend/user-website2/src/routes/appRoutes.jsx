@@ -16,6 +16,7 @@ import HowtoProtectYourBelongings from "../pages/howtoprotectyourbelongings";
 import HowtoReportaLostorFoundItem from "../pages/howtoreportalostorfounditem";
 import ProtectedRoute from "../components/ProtectedRoute";
 import ItemDescription from "../pages/imageDesc";
+import ReportPage from "../pages/reportPage";
 
 export const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -92,6 +93,10 @@ export const AppRoutes = () => {
       path: "/howtoreportalostorfounditem",
       element: <HowtoReportaLostorFoundItem />, 
     },
+    {
+      path: "/reportPage",
+      element: <ReportPage />
+    }
   ]);
 
   return (
