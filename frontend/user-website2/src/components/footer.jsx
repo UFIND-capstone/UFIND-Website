@@ -1,103 +1,73 @@
 import React from 'react';
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-8 font-sans">
-      {/* Footer Content */}
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-9 px-1">
-        {/* Column 1: Logo and Social Links */}
-        <div className="flex flex-col items-center md:items-start">
-          {/* Logo */}
+    <footer className="bg-gray-800 text-white py-6">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Logo Section */}
+        <div className="flex justify-center md:justify-start items-center">
           <img
-            src="/src/assets/logo.png" // Replace with your actual logo source
-            alt="System Logo"
-            className="w-40 h-40 mb-4"
+            src="/src/assets/logo2.png" // Replace with your logo path
+            alt="U-Find Logo"
+            className="object-scale-down h-32 w-auto"
           />
         </div>
 
-        {/* Column 2: Quick Links */}
-        <div className="text-center md:text-left">
-          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-xl font-semibold mb-3">QUICK LINKS</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {/* First Column */}
+            <ul className="space-y-2">
+              <li><a href="/dashboard" className="text-sm hover:underline">Dashboard</a></li>
+              <li><a href="/report-item" className="text-sm hover:underline">Report Item</a></li>
+              <li><a href="/browse-items" className="text-sm hover:underline">Browse Items</a></li>
+            </ul>
+
+            {/* Second Column */}
+            <ul className="space-y-2">
+              <li><a href="/about-us" className="text-sm hover:underline">About Us</a></li>
+              <li><a href="/contact-us" className="text-sm hover:underline">Contact Us</a></li>
+              <li><a href="/my-account" className="text-sm hover:underline">My Account</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Resources */}
+        <div>
+          <h3 className="text-xl font-semibold mb-3">RESOURCES</h3>
           <ul className="space-y-2">
-            <li>
-              <a
-                href="/dashboard"
-                className="hover:underline text-sm transition duration-300"
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="/aboutUs"
-                className="hover:underline text-sm transition duration-300"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="/contactUs"
-                className="hover:underline text-sm transition duration-300"
-              >
-                Contact Info
-              </a>
-            </li>
-            <li>
-              <a
-                href="/listLost"
-                className="hover:underline text-sm transition duration-300"
-              >
-                Browse Items (Lost)
-              </a>
-            </li>
-            <li>
-              <a
-                href="/listFound"
-                className="hover:underline text-sm transition duration-300"
-              >
-                Report Items (Found)
-              </a>
-            </li>
-            <li>
-              <a
-                href="/myAccount"
-                className="hover:underline text-sm transition duration-300"
-              >
-                My Account
-              </a>
-            </li>
+            <li><a href="/howtoreportalostorfounditem" className="text-xs hover:underline">How to report a lost or found item?</a></li>
+            <li><a href="/howtoprotectyourbelongings" className="text-xs hover:underline">How to Protect Your Belongings?</a></li>
+            <li><a href="/none" className="text-xs hover:underline">Why is it important to secure your belongings?</a></li>
           </ul>
         </div>
 
-        {/* Column 3: Resources */}
+        {/* Social Links */}
         <div className="text-center md:text-left">
-          <h3 className="text-lg font-semibold mb-4">Resources</h3>
-          <ul className="space-y-2">
-            <li>
-              <a
-                href="#"
-                className="hover:underline text-sm transition duration-300"
-              >
-                How to report a lost or found item
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="hover:underline text-sm transition duration-300"
-              >
-                How to Protect Your Belongings
-              </a>
-            </li>
-          </ul>
+          <h3 className="text-xl font-semibold mb-3">SOCIAL LINKS</h3>
+          <div className="flex justify-center md:justify-start space-x-4">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <img src="/src/assets/fb.png" alt="Facebook" className="h-6" />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <img src="/src/assets/ig.png" alt="Instagram" className="h-6" />
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+              <img src="/src/assets/twitter.png" alt="X" className="h-6" />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
+              <img src="/src/assets/tiktok.png" alt="TikTok" className="h-6" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Copyright Section */}
-      <div className="mt-3 border-t border-white pt-4 text-center">
-        <p className="text-xs">© U-FIND PHILIPPINES 2024</p>
+      <div className="border-t border-gray-700 py-2 text-center">
+        <p className="text-sm">&copy; U-FIND PHILIPPINES 2024</p>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

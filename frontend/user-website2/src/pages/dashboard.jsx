@@ -5,14 +5,7 @@ import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 
 const Dashboard = () => {
-    const items = [
-        { name: 'NECKLACE', location: 'Lost in Cafeteria', imgSrc: '/src/assets/necklace.png' },
-        { name: 'SCHOOL ID', location: 'Lost in Library', imgSrc: '/src/assets/schoolid.png' },
-        { name: 'TUMBLER', location: 'Lost in Gym', imgSrc: '/src/assets/aquaflask.png' },
-        { name: 'CALCULATOR', location: 'Lost in Lab', imgSrc: '/src/assets/calculator.png' },
-        { name: 'WALLET', location: 'Lost in Parking Lot', imgSrc: '/src/assets/wallet.png' }
-    ];
-
+    
     return (
         <div className="min-h-screen bg-gray-100">
             <Topbar />
@@ -39,22 +32,85 @@ const Dashboard = () => {
                 {/* Browse Items Section */}
                 <section className="text-center mb-10">
                     <h2 className="text-3xl font-bold text-gray-900 mb-10">BROWSE ITEMS</h2>
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                        {items.map((item, index) => (
-                            <div key={index} className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                                <img src={item.imgSrc} alt={`${item.name} image`} className="w-full h-32 object-cover mb-4 rounded-md" />
-                                <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                                <p className="text-gray-600">{item.location}</p>
-                            </div>
-                        ))}
+                        {/* Item 1 */}
+                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
+                        <Link to="/imageDesc">
+                            <img
+                            src="/src/assets/necklace.png"
+                            alt="Item 1"
+                            className="w-full h-50 object-cover mb-4 rounded-md"
+                            />
+                            <h3 className="font-semibold text-gray-800">Unisilver Necklace</h3>
+                            <p className="text-gray-600">Lost in Cafeteria</p>
+                        </Link>
+                        </div>
+
+                        {/* Item 2 */}
+                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
+                        <Link to="/imageDesc">
+                            <img
+                            src="/src/assets/calculator.png"
+                            alt="Item 2"
+                            className="w-full h-50 object-cover mb-4 rounded-md"
+                            />
+                            <h3 className="font-semibold text-gray-800">Calculator</h3>
+                            <p className="text-gray-600">Lost in CSM BLDG</p>
+                        </Link>
+                        </div>
+
+                        {/* Item 3 */}
+                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
+                        <Link to="/imageDesc">
+                            <img
+                            src="/src/assets/aquaflask.png"
+                            alt="Item 3"
+                            className="w-full h-50 object-cover mb-4 rounded-md"
+                            />
+                            <h3 className="font-semibold text-gray-800">Pink Aquaflask</h3>
+                            <p className="text-gray-600">Lost in CEA BLDG</p>
+                        </Link>
+                        </div>
+
+                        {/* Item 4 */}
+                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
+                        <Link to="/imageDesc">
+                            <img
+                            src="/src/assets/schoolid.png"
+                            alt="Item 4"
+                            className="w-full h-50 object-cover mb-4 rounded-md"
+                            />
+                            <h3 className="font-semibold text-gray-800">Student ID</h3>
+                            <p className="text-gray-600">Lost in CITC BLDG</p>
+                        </Link>
+                        </div>
+
+                        {/* Item 5 */}
+                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
+                        <Link to="/imageDesc">
+                            <img
+                            src="/src/assets/wallet.png"
+                            alt="Item 5"
+                            className="w-full h-50 object-cover mb-4 rounded-md"
+                            />
+                            <h3 className="font-semibold text-gray-800">Red Wallet</h3>
+                            <p className="text-gray-600">Lost in SHS BLDG</p>
+                        </Link>
+                        </div>
                     </div>
-                    <Link to="/browseItemsLost" className="mt-6">
-                        <button className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+
+                    {/* View More Button */}
+                    <div className="mt-6">
+                        <Link to="/browseItemsLost">
+                        <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                             VIEW MORE
                         </button>
-                    </Link>
-
+                        </Link>
+                    </div>
                 </section>
+
+
 
                {/* Features Section */}
                 <section className="flex flex-wrap justify-center gap-20 p-10">
