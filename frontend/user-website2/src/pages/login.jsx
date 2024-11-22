@@ -23,15 +23,29 @@ export const Login = () => {
         contactNumber,
         password,
       });
-
+  
       console.log("User logged in successfully:", response.data);
-      login({ contactNumber });
+  
+      // Extract the user object from response.data.user
+      const userData = response.data.user;
+  
+      // Pass the full user data to the login function
+      login({
+        contactNumber: userData.contactNumber,
+        emailAddress: userData.emailAddress,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        id: userData.id,
+      });
+  
       navigate('/dashboard'); 
     } catch (error) {
       setError("Invalid username or password");
       console.error("Error logging in:", error.message);
     }
   };
+  
+  
 
   return (
     <div className="h-screen flex justify-center items-center bg-gradient-to-br from-blue-500 to-cyan-400">

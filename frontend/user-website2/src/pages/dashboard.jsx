@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 
 const Dashboard = () => {
+
+    const [items, setItems] = useState([]);
+
+    // Fetch data on component mount
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/items?limit=5'); // Adjust endpoint as necessary
+                setItems(response.data);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        };
+
+        fetchItems();
+    }, []);
     
     return (
         <div className="min-h-screen bg-gray-100">
@@ -29,75 +45,34 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                {/* Browse Items Section */}
-                <section className="text-center mb-10">
+                 {/* Browse Items Section */}
+                 <section className="text-center mb-10">
                     <h2 className="text-3xl font-bold text-gray-900 mb-10">BROWSE ITEMS</h2>
-                    
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                        {/* Item 1 */}
-                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                        <Link to="/imageDesc">
-                            <img
-                            src="/src/assets/necklace.png"
-                            alt="Item 1"
-                            className="w-full h-50 object-cover mb-4 rounded-md"
-                            />
-                            <h3 className="font-semibold text-gray-800">Unisilver Necklace</h3>
-                            <p className="text-gray-600">Lost in Cafeteria</p>
-                        </Link>
-                        </div>
-
-                        {/* Item 2 */}
-                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                        <Link to="/imageDesc">
-                            <img
-                            src="/src/assets/calculator.png"
-                            alt="Item 2"
-                            className="w-full h-50 object-cover mb-4 rounded-md"
-                            />
-                            <h3 className="font-semibold text-gray-800">Calculator</h3>
-                            <p className="text-gray-600">Lost in CSM BLDG</p>
-                        </Link>
-                        </div>
-
-                        {/* Item 3 */}
-                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                        <Link to="/imageDesc">
-                            <img
-                            src="/src/assets/aquaflask.png"
-                            alt="Item 3"
-                            className="w-full h-50 object-cover mb-4 rounded-md"
-                            />
-                            <h3 className="font-semibold text-gray-800">Pink Aquaflask</h3>
-                            <p className="text-gray-600">Lost in CEA BLDG</p>
-                        </Link>
-                        </div>
-
-                        {/* Item 4 */}
-                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                        <Link to="/imageDesc">
-                            <img
-                            src="/src/assets/schoolid.png"
-                            alt="Item 4"
-                            className="w-full h-50 object-cover mb-4 rounded-md"
-                            />
-                            <h3 className="font-semibold text-gray-800">Student ID</h3>
-                            <p className="text-gray-600">Lost in CITC BLDG</p>
-                        </Link>
-                        </div>
-
-                        {/* Item 5 */}
-                        <div className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition">
-                        <Link to="/imageDesc">
-                            <img
-                            src="/src/assets/wallet.png"
-                            alt="Item 5"
-                            className="w-full h-50 object-cover mb-4 rounded-md"
-                            />
-                            <h3 className="font-semibold text-gray-800">Red Wallet</h3>
-                            <p className="text-gray-600">Lost in SHS BLDG</p>
-                        </Link>
-                        </div>
+                        {items.length > 0 ? (
+                            items.slice(0, 5).map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition"
+                                >
+                                    <Link to={`/item/${item.id}`}>
+                                        <img
+                                            src={item.imageUrl || '/src/assets/default.png'} // Fallback for missing images
+                                            alt={item.name}
+                                            className="w-full h-50 object-cover mb-4 rounded-md"
+                                        />
+                                        <h3 className="font-semibold text-gray-800">{item.name}</h3>
+                                        <p className="text-gray-600">Last Seen: {item.lastSeen}</p>
+                                        <p className={`text-${item.status === 'lost' ? 'red' : 'green'}-500 font-semibold capitalize`}>
+                                            {item.status}
+                                        </p>
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500">No items found.</p>
+                        )}
                     </div>
 
                     {/* View More Button */}
