@@ -17,9 +17,10 @@ export const AuthProvider = ({ children }) => {
     });
 
     const login = (userData) => {
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-    };
+        setUser(userData); // Store all user data
+        localStorage.setItem("user", JSON.stringify(userData));
+      };
+      
 
     const register = async (userData) => {
         try {

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Footer from '../components/footer';
 import Topbar from '../components/topBar';
 import axios from 'axios';
 
 const BrowseItemsLost = () => {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([]); // All items from the API
+    const [filteredItems, setFilteredItems] = useState([]); // Items filtered by search
+    const [searchQuery, setSearchQuery] = useState(''); // User's search input
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -16,6 +18,7 @@ const BrowseItemsLost = () => {
                 const response = await axios.get('http://localhost:3000/api/items');
                 const lostItems = response.data.filter(item => item.status === 'lost');
                 setItems(lostItems);
+                setFilteredItems(lostItems); // Initially display all items
                 setLoading(false);
             } catch (err) {
                 setError(err.message || 'Failed to fetch items');
@@ -25,6 +28,24 @@ const BrowseItemsLost = () => {
 
         fetchItems();
     }, []);
+
+    // Handle search input changes
+    const handleSearch = (event) => {
+        const query = event.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        // Filter items based on description, detailedDescription, or name
+        const filtered = items.filter(item => {
+            const { description = '', detailedDescription = '', name = '' } = item;
+            return (
+                description.toLowerCase().includes(query) ||
+                detailedDescription.toLowerCase().includes(query) ||
+                name.toLowerCase().includes(query)
+            );
+        });
+
+        setFilteredItems(filtered);
+    };
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
@@ -41,6 +62,8 @@ const BrowseItemsLost = () => {
                         type="text"
                         className="w-full p-4 border border-gray-300 rounded-l-lg focus:outline-none"
                         placeholder="Search items..."
+                        value={searchQuery} // Controlled input
+                        onChange={handleSearch} // Update search query on input change
                     />
                     <button className="px-6 py-4 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600">
                         🔍
@@ -62,9 +85,11 @@ const BrowseItemsLost = () => {
                     <p className="text-center text-gray-500">Loading items...</p>
                 ) : error ? (
                     <p className="text-center text-red-500">{error}</p>
+                ) : filteredItems.length === 0 ? (
+                    <p className="text-center text-gray-500">No items found.</p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        {items.map((item) => (
+                        {filteredItems.map((item) => (
                             <Link
                                 key={item.id}
                                 to={`/browseItemsLost/${item.id}`} // Dynamic link for each item's ID
