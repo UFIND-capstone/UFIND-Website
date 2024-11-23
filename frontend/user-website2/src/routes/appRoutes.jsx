@@ -17,6 +17,7 @@ import HowtoReportaLostorFoundItem from "../pages/howtoreportalostorfounditem";
 import ProtectedRoute from "../components/ProtectedRoute";
 import ItemDescription from "../pages/imageDesc";
 import ReportPage from "../pages/reportPage";
+import WhyIsItImportantToSecureYourBelongings from "../pages/whyisitimportanttosecureyourBelongings";
 
 export const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -96,6 +97,10 @@ export const AppRoutes = () => {
     {
       path: "/reportPage",
       element: <ReportPage />
+    },
+    {
+      path: "/whyisitimportanttosecureyourBelongings",
+      element: <WhyIsItImportantToSecureYourBelongings />,
     }
   ]);
 

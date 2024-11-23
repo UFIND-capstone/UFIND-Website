@@ -33,7 +33,7 @@ const Dashboard = () => {
                         <img src="/src/assets/U-FIND (3).png" alt="U-FIND Logo" className="w-90 h-80 object-cover" />
                         <div className="text-left max-w-md">
                             <h2 className="text-5xl font-bold text-gray-900 mb-4">U-FIND</h2>
-                            <p className="text-gray-800 mb-12">
+                            <p className="text-justify text-gray-800 mb-12">
                                 U-find is a platform for reporting, tracking, and retrieving lost and found items on campus. Secure authentication and real-time notifications help quickly reunite lost items with their owners, while admins efficiently manage reports.
                             </p>    
                             <Link to="/listLost" className="mt-6">
@@ -71,7 +71,7 @@ const Dashboard = () => {
                                 </div>
                             ))
                         ) : (
-                            <p className="text-gray-500">No items found.</p>
+                            <p className="text-gray-500">   No items found.</p>
                         )}
                     </div>
 
@@ -126,7 +126,7 @@ const Dashboard = () => {
                             ABOUT US
                         </button>
                         <h2 className="text-2xl font-bold text-gray-800">U-FIND</h2>
-                        <p className="text-gray-600 mt-5">
+                        <p className="text-justify text-gray-600 mt-5">
                             U-find is a platform for reporting, tracking, and retrieving lost and found items on campus. Secure authentication and real-time notifications help quickly reunite lost items with their owners, while admins manage reports efficiently.
                         </p>
                         <a href="/aboutUs" className="mt-6">
@@ -145,22 +145,22 @@ const Dashboard = () => {
 
                 {/* Features Content */}
                 <div className="text-left my-10 px-4">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">CHECK OUT THE UNIQUE FEATURES OF U-FIND PLATFORM</h2>
-                    <p className="text-gray-700 mb-10">
-                        The Lost and Found App makes your life easier; significantly decreasing workload while increasing service capabilities and customer success rates.
+                    <h2 className="text-center text-3xl font-bold text-gray-900 mb-4">CHECK OUT THE UNIQUE FEATURES OF U-FIND PLATFORM</h2>
+                    <p className="text-justify text-gray-700 mb-10">
+                    The Lost and Found App simplifies your workflow by significantly reducing the time and effort required to manage lost items, while also boosting service efficiency and improving customer satisfaction.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-white shadow-md p-6 rounded-lg">
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">WORKS ON ANY DEVICE</h3>
-                            <p className="text-gray-600">Connect with any device: tablets, smartphones, desktops, and more.</p>
+                            <p className="text-justify text-gray-600">Easily connect and access our service from any device, including tablets, smartphones, desktops, and more, for a seamless experience wherever you are.</p>
                         </div>
                         <div className="bg-white shadow-md p-6 rounded-lg">
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">SMART MATCHING</h3>
-                            <p className="text-gray-600">Automated smart matching makes manual searching obsolete.</p>
+                            <p className="text-justify text-gray-600">Our automated smart matching system eliminates the need for manual searching by quickly and accurately finding what you're looking for.</p>
                         </div>
                         <div className="bg-white shadow-md p-6 rounded-lg">
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">CUSTOMER SUPPORT</h3>
-                            <p className="text-gray-600">24/7 support to assist users with lost and found items.</p>
+                            <p className="text-justify text-gray-600">Our support team is available from 8:00 AM to 5:00 PM, Monday to Friday, to assist with lost and found items, and any inquiries outside these hours will be addressed on the next business day.</p>
                         </div>
                     </div>
                 </div>
