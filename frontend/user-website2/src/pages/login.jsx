@@ -53,7 +53,7 @@ export const Login = () => {
         <form onSubmit={handleLogin}>
           {error && <p className="text-red-500">{error}</p>}
           <div className="mb-4 text-left">
-            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Contact Number</label>
+            <label htmlFor="username" className="block mb-2 text-sm font-bold text-gray-700">Username</label>
             <input
               type="text"
               id="username"
