@@ -21,7 +21,7 @@ export const MyAccount = () => {
             {/* Profile Image */}
             <div className="flex justify-center mb-6">
               <img
-                src="https://via.placeholder.com/150" // Replace with actual profile image
+                src="/src/assets/PROFILE.png" // Replace with actual profile image
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-md"
               />
@@ -29,19 +29,19 @@ export const MyAccount = () => {
 
             {/* User Information */}
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Jared Animal</h2>
-              <p className="text-gray-600 mb-2">raraanimal@gmail.com</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Jared Salvan</h2>
+              <p className="text-gray-600 mb-2">rarasalvan@gmail.com</p>
             </div>
 
             <div className="space-y-4">
               {/* Username */}
               <div className="flex justify-between text-gray-600">
-                <strong>Username:</strong> JaredAnimal101
+                <strong>Username:</strong> JaredSalvan101
               </div>
 
               {/* Email */}
               <div className="flex justify-between text-gray-600">
-                <strong>Email Address:</strong> raraanimal@gmail.com
+                <strong>Email Address:</strong> rarasalvan@gmail.com
               </div>
 
               {/* Contact Number */}

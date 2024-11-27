@@ -35,7 +35,7 @@ const AboutUs = () => {
         </p>
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-9">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           
           {/* Card 1 */}
           <div className="bg-white shadow-lg rounded-lg p-6 text-center">
@@ -59,7 +59,7 @@ const AboutUs = () => {
             />
             <h3 className="font-bold text-lg text-gray-800 mb-2">Jefferson C. Sabejon</h3>
             <p className="text-gray-600 mb-2">Front-End Developer</p>
-            <a href="mailto:jepoysabejon24@gmail.com" className="text-sm text-blue-500 hover:underline"> jepoysabejon24@gmail.com </a>
+            <a href="mailto:jepoysabejon24@gmail.com" className="text-xs text-blue-500 hover:underline"> jepoysabejon24@gmail.com </a>
           </div>
 
           {/* Card 3 */}
@@ -71,7 +71,7 @@ const AboutUs = () => {
             />
             <h3 className="font-bold text-lg text-gray-800 mb-2">Mel Alejandrino</h3>
             <p className="text-gray-600 mb-2">Back-End Developer</p>
-            <a href="mailto:alejandrino.mel002@gmail.com" className="text-sm text-blue-500 hover:underline"> alejandrino.mel002@gmail.com </a>
+            <a href="mailto:alejandrino.mel002@gmail.com" className="text-xs text-blue-500 hover:underline"> alejandrino.mel002@gmail.com </a>
           </div>
 
           {/* Card 4 */}
@@ -83,7 +83,7 @@ const AboutUs = () => {
             />
             <h3 className="font-bold text-lg text-gray-800 mb-2">Angelo J. Alfeche</h3>
             <p className="text-gray-600 mb-2">Writer</p>
-            <a href="mailto:sarahlee@gmail.com" className="text-sm text-blue-500 hover:underline">alfecheangelo77@gmail.com </a>
+            <a href="mailto:sarahlee@gmail.com" className="text-xs text-blue-500 hover:underline">alfecheangelo77@gmail.com </a>
           </div>
 
           {/* Card 5 */}
@@ -95,7 +95,7 @@ const AboutUs = () => {
             />
             <h3 className="font-bold text-lg text-gray-800 mb-2">Jared Simon T. Rara</h3>
             <p className="text-gray-600 mb-2">Researcher</p>
-            <a href="mailto:jaredrara11@gmail.com" className="text-sm text-blue-500 hover:underline"> jaredrara11@gmail.com </a>
+            <a href="mailto:jaredrara11@gmail.com" className="text-xs text-blue-500 hover:underline"> jaredrara11@gmail.com </a>
           </div>
         </div>
       </section>
