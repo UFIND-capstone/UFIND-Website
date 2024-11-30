@@ -24,20 +24,19 @@ export const addItemHandler = async (req, res) => {
     const {
         name,
         description,
-        lastSeen,
         dateTime,
-        category,
         fullName,
         contactNumber,
         email,
         detailedDescription,
         status,
+        imageUrl,
     } = req.body;
 
     // Validate required fields
-    if (!name || !description || !lastSeen || !dateTime || !category || !fullName || !contactNumber || !email || !detailedDescription || !status) {
+    if (!name || !description || !dateTime || !fullName || !contactNumber || !email || !detailedDescription || !status || !imageUrl) {
         return res.status(400).json({
-            message: 'All fields are required: name, description, last seen, dateTime, category, fullName, contactNumber, email, detailedDescription, and status.',
+            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, detailedDescription, status, and imageURL.',
         });
     }
 
@@ -45,17 +44,17 @@ export const addItemHandler = async (req, res) => {
         const itemId = await addItem({
             name,
             description,
-            lastSeen,
             dateTime,
-            category,
             fullName,
             contactNumber,
             email,
             detailedDescription,
             status,
+            imageUrl, // Pass imageURL to the model
         });
         res.status(201).json({ message: 'Item added successfully', itemId });
     } catch (error) {
         res.status(500).json({ message: `Error adding item: ${error.message}` });
     }
 };
+

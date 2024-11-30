@@ -50,7 +50,7 @@ const ItemDescription = () => {
               </button>
               <div className="w-full h-80 bg-gray-200 flex items-center justify-center overflow-hidden rounded-lg">
                 <img
-                  src={item.image || "/placeholder-image.png"} // Fallback image if no URL
+                  src={item.imageUrl || "/placeholder-image.png"} // Fallback image if no URL
                   alt={item.name}
                   className="w-full h-full object-cover"
                 />
