@@ -6,7 +6,7 @@ const db = getFirestore(firebaseApp);
 export const addItem = async (itemData) => {
     try {
         const newItem = {
-            ...itemData,
+            ...itemData, // Include all fields, including imageURL
         };
 
         const docRef = await addDoc(collection(db, 'items'), newItem);
@@ -21,7 +21,7 @@ export const getItems = async () => {
     try {
         const itemsCollection = collection(db, 'items');
         const snapshot = await getDocs(itemsCollection);
-        const itemsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const itemsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         return itemsList; // Return the list of items
     } catch (error) {
         throw new Error('Error retrieving items: ' + error.message);

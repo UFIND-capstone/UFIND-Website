@@ -71,7 +71,7 @@ const BrowseItemsFound = () => {
                             className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
                         >
                             <img
-                                src={item.image || '/placeholder-image.png'} // Fallback image if no URL
+                                src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
                                 alt={item.name}
                                 className="w-full h-48 object-cover"
                             />
