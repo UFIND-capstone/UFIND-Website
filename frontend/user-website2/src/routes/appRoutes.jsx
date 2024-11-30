@@ -17,6 +17,8 @@ import HowtoReportaLostorFoundItem from "../pages/howtoreportalostorfounditem";
 import ProtectedRoute from "../components/ProtectedRoute";
 import ItemDescription from "../pages/imageDesc";
 import ReportPage from "../pages/reportPage";
+import ViewMyTickets from "../pages/viewmyTickets";
+import UnclaimedTickets from "../pages/unclaimedTickets";
 import WhyIsItImportantToSecureYourBelongings from "../pages/whyisitimportanttosecureyourBelongings";
 
 export const AppRoutes = () => {
@@ -101,7 +103,16 @@ export const AppRoutes = () => {
     {
       path: "/whyisitimportanttosecureyourBelongings",
       element: <WhyIsItImportantToSecureYourBelongings />,
+    },
+    {
+      path: "/viewmyTickets",
+      element: <ViewMyTickets />
+    },
+    {
+      path: "/unclaimedTickets",
+      element: <UnclaimedTickets />
     }
+
   ]);
 
   return (

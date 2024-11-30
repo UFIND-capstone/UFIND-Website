@@ -37,12 +37,25 @@ const ReportPage = () => {
           </div>
 
           {/* Success Message */}
-          <h1 className="text-2xl font-bold mb-4">
-            The item was added successfully.
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Your listing has been successfully added to the system. You can now manage it from your dashboard.
-          </p>
+          <div className="border-green-400 text-green-800 rounded-lg p-6 text-center">
+            <h1 className="text-2xl font-bold mb-4">
+              🎉 Item Reported Successfully!
+            </h1>
+            <p className="text-gray-700 mb-4">
+              Thank you for reporting the item! Your listing has been successfully added to the system.
+            </p>
+            <p className="text-gray-700">
+              You can now manage it or track its status in your{" "}
+              <button
+                onClick={() => navigate("/viewmyTickets")}
+                className="font-semibold text-green-700 underline hover:text-green-900 focus:outline-none"
+              >
+                View My Tickets
+              </button>.
+            </p>
+          </div>
+
+
 
           {/* Redirect Button */}
           <button
