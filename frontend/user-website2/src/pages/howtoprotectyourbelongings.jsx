@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from '../components/footer';
-import Topbar from '../components/topBar';
+import Footer from '../components/Footer';
+import Topbar from '../components/Topbar';
 
 const ProtectYourBelongings = () => {
   return (
@@ -9,7 +9,7 @@ const ProtectYourBelongings = () => {
       <Topbar />
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md px-6 py-12 mt-12 mb-12">
         {/* Title */}
         <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">
           How to Protect Your Belongings
@@ -18,14 +18,14 @@ const ProtectYourBelongings = () => {
         {/* Centered Image */}
         <div className="flex justify-center mb-10">
           <img
-            src="https://via.placeholder.com/600x400"
+            src="src/assets/Protect Your Belongings.png"
             alt="Protect Belongings"
             className="rounded-lg shadow-lg max-w-full"
           />
         </div>
 
         {/* Introduction */}
-        <p className="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto mb-12">
+        <p className="text-lg text-gray-700 leading-relaxed text-center max-w-6xl mx-auto mb-12">
           In today’s fast-paced environment, it’s crucial to take proactive measures to protect your belongings, especially in crowded areas like campuses. U-FIND is here to support you, but prevention is always better than recovery. Below are practical steps you can take to safeguard your personal items and reduce the risk of losing them.
         </p>
 
@@ -36,13 +36,12 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               1. Label Your Belongings
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Use a permanent marker, label, or tag to personalize your items.
-              Include your name and contact details discreetly. For tech gadgets,
-              consider engraving your name. For items like notebooks, water bottles,
-              and bags, personalized labels make it easier for others to identify and
-              return them to you.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Use a permanent marker, label, or tag to personalize your items.</li>
+              <li>Include your name and contact details discreetly.</li>
+              <li>Engrave your name on tech gadgets if possible.</li>
+              <li>Personalized labels make it easier for others to return lost items.</li>
+            </ul>
           </div>
 
           {/* Tip 2 */}
@@ -50,12 +49,11 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               2. Be Organized
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Develop a habit of keeping your essentials in the same spot every time,
-              such as a specific pocket in your bag or locker. This helps you notice
-              immediately if something is missing. Check your surroundings before
-              leaving classrooms, libraries, or common areas.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Keep your essentials in the same spot every time.</li>
+              <li>Use a specific pocket in your bag or locker for important items.</li>
+              <li>Check your surroundings before leaving common areas.</li>
+            </ul>
           </div>
 
           {/* Tip 3 */}
@@ -63,11 +61,11 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               3. Invest in Secure Accessories
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Use backpacks or bags with hidden zippers, anti-theft locks, or
-              RFID-blocking features to prevent theft. For bicycles or scooters,
-              always lock them with high-quality locks in designated areas.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Use backpacks or bags with hidden zippers and anti-theft locks.</li>
+              <li>Invest in RFID-blocking wallets to protect sensitive information.</li>
+              <li>Lock bicycles or scooters in designated areas with high-quality locks.</li>
+            </ul>
           </div>
 
           {/* Tip 4 */}
@@ -75,11 +73,10 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               4. Avoid Leaving Belongings Unattended
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Leaving items in public or semi-public areas, even for a few minutes,
-              increases the risk of theft or loss. Always ask a trusted person to
-              keep an eye on your things if you need to step away.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Leaving items unattended increases the risk of theft or loss.</li>
+              <li>Ask a trusted person to watch your belongings if you need to step away.</li>
+            </ul>
           </div>
 
           {/* Tip 5 */}
@@ -87,12 +84,10 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               5. Secure Digital Devices
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Set a password or biometric lock on laptops, smartphones, and tablets.
-              If these items are misplaced, the data inside them remains protected.
-              Enable tracking apps like "Find My Device" to locate lost gadgets
-              quickly.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Set a password or biometric lock on laptops, smartphones, and tablets.</li>
+              <li>Enable tracking apps like "Find My Device" to locate lost gadgets quickly.</li>
+            </ul>
           </div>
 
           {/* Tip 6 */}
@@ -100,11 +95,10 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               6. Be Aware of High-Risk Areas
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Crowded areas such as cafeterias, sports facilities, or event venues
-              are common places where items go missing. Stay alert and keep your
-              belongings close in such locations.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Stay alert in crowded areas like cafeterias or sports facilities.</li>
+              <li>Keep your belongings close in such high-risk locations.</li>
+            </ul>
           </div>
 
           {/* Tip 7 */}
@@ -112,12 +106,10 @@ const ProtectYourBelongings = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               7. Report Suspicious Activities
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              If you notice someone tampering with unattended belongings, inform the
-              authorities or campus security immediately. At U-FIND, we aim to make
-              your experience stress-free, but taking these precautionary steps is
-              vital to avoid the inconvenience of losing valuable items.
-            </p>
+            <ul className="list-disc pl-6 text-gray-700 leading-relaxed">
+              <li>Inform authorities or campus security if you notice suspicious behavior.</li>
+              <li>Taking precautionary steps helps reduce the inconvenience of losing items.</li>
+            </ul>
           </div>
         </div>
       </div>

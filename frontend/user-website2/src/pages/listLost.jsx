@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "../components/footer";
-import Topbar from "../components/topBar";
+import Footer from "../components/Footer";
+import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
@@ -324,7 +324,7 @@ const ListingLost = () => {
                 }`}
                 disabled={isLoading}
               >
-                {isLoading ? "Submitting..." : "Submit Listing"}
+                {isLoading ? "Submitting..." : "SUBMIT"}
               </button>
             </div>
           </form>
