@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Footer from '../components/footer';
-import Topbar from '../components/topBar';
-import axios from 'axios';
-import supabase from '../config/supabaseClient'; // Import Supabase client
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Footer from "../components/footer";
+import Topbar from "../components/topBar";
+import axios from "axios";
+import supabase from "../config/supabaseClient"; // Import Supabase client
+import MapWithRestrictedArea from "./MapWithRestrictedArea";
 
 const ListingLost = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    lastSeen: '',
-    dateTime: '',
-    description: '',
-    fullName: '',
-    contactNumber: '',
-    email: '',
-    detailedDescription: '',
-    imageUrl: '', // Store the image URL here
+    name: "",
+    lastSeen: "",
+    dateTime: "",
+    description: "",
+    location: "",
+    fullName: "",
+    contactNumber: "",
+    email: "",
+    detailedDescription: "",
+    imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState("");
   const [imageFile, setImageFile] = useState(null); // State for the image file
   const [uploading, setUploading] = useState(false); // State for upload status
+  const [coordinates, setCoordinates] = useState(null);
+  const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
+
+  const handleCoordinates = (coords) => {
+    setCoordinates(coords);
+    setFormData({
+      ...formData,
+      location: coords.join(", "), // Update the location field in formData
+    });
+    setIsMapVisible(false); // Hide the map after confirmation
+  };
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -40,23 +53,25 @@ const ListingLost = () => {
   // Upload image to Supabase
   const uploadImage = async () => {
     if (!imageFile) {
-      alert('Please select an image!');
+      alert("Please select an image!");
       return null; // Return null if no image is selected
     }
 
     setUploading(true);
     const fileName = `${Date.now()}_${imageFile.name}`;
     try {
-      const { error } = await supabase.storage.from('images').upload(fileName, imageFile);
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(fileName, imageFile);
 
       if (error) {
         throw error;
       }
 
       const imageUrl = `https://tqvgagdffmjtxswldtgm.supabase.co/storage/v1/object/public/images/${fileName}`; // Get the URL of the uploaded image
-      return imageUrl; // Return the image URL for form submission  
+      return imageUrl; // Return the image URL for form submission
     } catch (error) {
-      console.error('Error uploading image:', error.message);
+      console.error("Error uploading image:", error.message);
       setUploading(false);
       return null; // Return null if there's an error
     }
@@ -65,21 +80,21 @@ const ListingLost = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
+    setFormError("");
 
     // Validate required fields
     const requiredFields = [
-      'name',
-      'dateTime',
-      'description',
-      'fullName',
-      'contactNumber',
-      'email',
-      'detailedDescription',
+      "name",
+      "dateTime",
+      "description",
+      "fullName",
+      "contactNumber",
+      "email",
+      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
-        setFormError('Please fill in all required fields.');
+        setFormError("Please fill in all required fields.");
         return;
       }
     }
@@ -89,7 +104,7 @@ const ListingLost = () => {
     const imageUrl = await uploadImage();
 
     if (!imageUrl) {
-      setFormError('Failed to upload the image. Please try again.');
+      setFormError("Failed to upload the image. Please try again.");
       setIsLoading(false);
       return;
     }
@@ -98,19 +113,23 @@ const ListingLost = () => {
     const data = {
       ...formData,
       imageUrl,
-      status: 'lost',
+      status: "lost",
+      coordinates, // Add coordinates to the data
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/items', data);
-      console.log('Item added successfully:', response.data);
+      const response = await axios.post(
+        "http://localhost:3000/api/items",
+        data
+      );
+      console.log("Item added successfully:", response.data);
 
       // Navigate to the report page after a short delay
       setTimeout(() => {
-        navigate('/reportPage');
+        navigate("/reportPage");
       }, 2000);
     } catch (error) {
-      console.error('Error adding item:', error.message);
+      console.error("Error adding item:", error.message);
       setIsLoading(false);
     }
   };
@@ -123,14 +142,22 @@ const ListingLost = () => {
       {/* Main Content */}
       <main className="flex-grow flex justify-center items-center p-6">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">CREATE NEW LISTING</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            CREATE NEW LISTING
+          </h1>
 
           {/* Lost and Found Item Buttons */}
           <div className="flex justify-center mb-6">
-            <Link to="/listLost" className="px-4 py-2 font-semibold bg-blue-500 text-black rounded-l-lg focus:outline-none">
+            <Link
+              to="/listLost"
+              className="px-4 py-2 font-semibold bg-blue-500 text-black rounded-l-lg focus:outline-none"
+            >
               LOST ITEM
             </Link>
-            <Link to="/listFound" className="px-4 py-2 font-semibold bg-gray-200 text-white-500 rounded-r-lg focus:outline-none">
+            <Link
+              to="/listFound"
+              className="px-4 py-2 font-semibold bg-gray-200 text-white-500 rounded-r-lg focus:outline-none"
+            >
               FOUND ITEM
             </Link>
           </div>
@@ -201,8 +228,34 @@ const ListingLost = () => {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                LOCATION <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location} // Use formData.location instead of coordinates directly
+                readOnly
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {/* Show Map Button */}
+              <button
+                type="button"
+                onClick={() => setIsMapVisible(true)}
+                className="mt-2 text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Show Map
+              </button>
+              {isMapVisible && (
+                <MapWithRestrictedArea onConfirm={handleCoordinates} />
+              )}
+            </div>
+
             {/* Contact Details */}
-            <h2 className="text-xl font-bold text-gray-900 mt-6">CONTACT DETAILS</h2>
+            <h2 className="text-xl font-bold text-gray-900 mt-6">
+              CONTACT DETAILS
+            </h2>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -224,7 +277,7 @@ const ListingLost = () => {
                 CONTACT NUMBER <span className="text-red-500">*</span>
               </label>
               <input
-                type="tel"
+                type="text"
                 name="contactNumber"
                 value={formData.contactNumber}
                 onChange={handleChange}
@@ -236,7 +289,7 @@ const ListingLost = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
-                E-MAIL ADDRESS <span className="text-red-500">*</span>
+                EMAIL <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -244,7 +297,7 @@ const ListingLost = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email address"
+                placeholder="Enter your email"
                 required
               />
             </div>
@@ -259,19 +312,19 @@ const ListingLost = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter detailed description"
-                rows="4"
                 required
-              ></textarea>
+              />
             </div>
 
-            {/* Submit Button */}
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 bg-green-500 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                disabled={isLoading || uploading}
+                className={`bg-blue-500 text-white font-bold py-2 px-6 rounded ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
               >
-                {isLoading || uploading ? 'Submitting...' : 'Submit'}
+                {isLoading ? "Submitting..." : "Submit Listing"}
               </button>
             </div>
           </form>
