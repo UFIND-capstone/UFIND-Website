@@ -39,7 +39,7 @@ const Footer = () => {
           <ul className="space-y-2">
             <li><a href="/howtoreportalostorfounditem" className="text-xs hover:underline">How to report a lost or found item?</a></li>
             <li><a href="/howtoprotectyourbelongings" className="text-xs hover:underline">How to Protect Your Belongings?</a></li>
-            <li><a href="/none" className="text-xs hover:underline">Why is it important to secure your belongings?</a></li>
+            <li><a href="/whyisitimportanttosecureyourBelongings" className="text-xs hover:underline">Why is it important to secure your belongings?</a></li>
           </ul>
         </div>
 

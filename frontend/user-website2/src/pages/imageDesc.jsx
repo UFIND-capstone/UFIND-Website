@@ -11,8 +11,8 @@ import { Feature } from "ol";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { Style, Icon } from "ol/style";
-import Footer from "../components/footer";
-import Topbar from "../components/topBar";
+import Footer from "../components/Footer";
+import Topbar from "../components/Topbar";
 
 const ItemDescription = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const ItemDescription = () => {
         setItem(response.data);
         setLoading(false);
       } catch (err) {
-        setError(err.message || "Failed to fetch item details");
+        setError(err.message || "Failed to fetch item details.");
         setLoading(false);
       }
     };
@@ -43,22 +43,11 @@ const ItemDescription = () => {
   useEffect(() => {
     if (!item || !item.location) return;
 
-    // Parse location string to [longitude, latitude]
     const locationParts = item.location.split(",").map(Number);
     const [longitude, latitude] = locationParts;
+
+    // Set up OpenLayers map
     const coordinates = fromLonLat([longitude, latitude]);
-
-    // Define restricted area
-    const bottomLeft = fromLonLat([124.65448369078607, 8.484757587809328]);
-    const topRight = fromLonLat([124.6587442680971, 8.487072471046389]);
-    const boundingExtent = [bottomLeft[0], bottomLeft[1], topRight[0], topRight[1]];
-    const center = [
-      (bottomLeft[0] + topRight[0]) / 2,
-      (bottomLeft[1] + topRight[1]) / 2,
-    ];
-
-    // Set up map
-    const vectorSource = new VectorSource();
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -66,82 +55,97 @@ const ItemDescription = () => {
           source: new OSM(),
         }),
         new VectorLayer({
-          source: vectorSource,
+          source: new VectorSource({
+            features: [
+              new Feature({
+                geometry: new Point(coordinates),
+              }),
+            ],
+          }),
+          style: new Style({
+            image: new Icon({
+              src: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+              scale: 0.07,
+            }),
+          }),
         }),
       ],
       view: new View({
-        center,
+        center: coordinates,
         zoom: 17,
-        maxZoom: 19,
-        extent: boundingExtent,
       }),
     });
-
-    // Add marker
-    const markerFeature = new Feature(new Point(coordinates));
-    markerFeature.setStyle(
-      new Style({
-        image: new Icon({
-          anchor: [0.5, 1],
-          src: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-          scale: 0.07,
-        }),
-      })
-    );
-    vectorSource.addFeature(markerFeature);
 
     return () => map.setTarget(null);
   }, [item]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Topbar */}
       <Topbar />
 
-      <div className="flex-grow flex justify-center items-center p-6">
+      {/* Main Content */}
+      <div className="flex-grow p-6">
         {loading ? (
           <p className="text-center text-gray-500">Loading item details...</p>
         ) : error ? (
           <p className="text-center text-red-500">{error}</p>
         ) : (
-          <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2">
+          <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
             {/* Left Container */}
-            <div className="flex flex-col items-center justify-center p-6 border-b md:border-b-0 md:border-r bg-gray-50">
+            <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
               <button
                 onClick={() => navigate(-1)}
-                className="self-start text-gray-600 hover:text-gray-900 mb-4 focus:outline-none"
+                className="self-start text-gray-600 hover:text-gray-900 mb-4"
               >
                 ← Back
               </button>
-              <div className="w-full h-80 bg-gray-200 flex items-center justify-center overflow-hidden rounded-lg">
+              <div className="w-full h-80 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
                 <img
                   src={item.imageUrl || "/placeholder-image.png"}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
+                  alt={item.name || "Lost Item"}
+                  className="object-cover w-full h-full"
                 />
               </div>
             </div>
 
             {/* Right Container */}
-            <div className="p-6 flex flex-col space-y-6">
-              <h2 className="text-2xl font-bold text-gray-800">{item.name}</h2>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Last Seen Location
-                </label>
-                <div className="w-full h-80">
-                  {/* Embedded OpenLayers Map */}
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                {item.name || "Unnamed Item"}
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <p className="font-medium text-gray-700">Full Name:</p>
+                  <p className="text-gray-600">{item.owner || "Unknown"}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-700">Description:</p>
+                  <p className="text-gray-600">{item.description || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-700">Date:</p>
+                  <p className="text-gray-600">{item.date || "Not specified"}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-700">Last Seen Location:</p>
                   {item.location ? (
-                    <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+                    <div
+                      ref={mapRef}
+                      className="w-full h-64 rounded-lg border border-gray-300"
+                    />
                   ) : (
-                    <p>No location available</p>
+                    <p className="text-gray-600">No location available</p>
                   )}
                 </div>
+                <div>
+                  <p className="text-gray-700">
+                    Posted by:{" "}
+                    <span className="font-medium">{item.postedBy || "N/A"}</span>
+                  </p>
+                </div>
               </div>
-              <p className="text-gray-600">
-                Posted by{" "}
-                <span className="font-semibold">{item.postedBy || "N/A"}</span>
-              </p>
-              <button className="w-full py-3 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+              <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
                 Send Message
               </button>
             </div>
@@ -149,6 +153,7 @@ const ItemDescription = () => {
         )}
       </div>
 
+      {/* Footer */}
       <Footer />
     </div>
   );
