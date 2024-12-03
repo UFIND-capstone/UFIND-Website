@@ -19,6 +19,7 @@ import ItemDescription from "../pages/imageDesc";
 import ReportPage from "../pages/reportPage";
 import ViewMyTickets from "../pages/viewmyTickets";
 import UnclaimedTickets from "../pages/unclaimedTickets";
+import ContactForm from "../pages/contactForm";
 import WhyIsItImportantToSecureYourBelongings from "../pages/whyisitimportanttosecureyourBelongings";
 
 export const AppRoutes = () => {
@@ -111,7 +112,12 @@ export const AppRoutes = () => {
     {
       path: "/unclaimedTickets",
       element: <UnclaimedTickets />
-    }
+    },
+
+    {
+      path: "/contactForm",
+      element: <ContactForm />
+    },
 
   ]);
 

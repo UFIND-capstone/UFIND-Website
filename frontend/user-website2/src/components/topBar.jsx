@@ -17,6 +17,8 @@ export default function Topbar() {
         <Link to="/dashboard" className="hover:text-blue-600" aria-label="Home">HOME</Link>
         <Link to="/aboutUs" className="hover:text-blue-600" aria-label="About Us">ABOUT US</Link>
         <Link to="/contactUs" className="hover:text-blue-600" aria-label="Contact Us">CONTACT US</Link>
+        <Link to="/viewmyTickets" className="hover:text-blue-600" aria-label="View My Ticket">VIEW MY TICKET</Link>
+        <Link to="/unclaimedTickets" className="hover:text-blue-600" aria-label="Unclaimed Tickets">UNCLAIMED TICKETS</Link>
       </div>
 
       {/* Profile Icon with Link to My Account */}

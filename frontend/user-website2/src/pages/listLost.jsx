@@ -316,6 +316,8 @@ const ListingLost = () => {
               />
             </div>
 
+            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Ticket will expire within 30 days if not found. </p>
+
             <div className="flex justify-center mt-6">
               <button
                 type="submit"

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext"; // Import AuthContext hook
-import Topbar from "../components/topBar";
-import Footer from "../components/footer";
+import Topbar from "../components/Topbar";
+import Footer from "../components/Footer";
 
 export const MyAccount = () => {
   const navigate = useNavigate();
@@ -15,9 +15,18 @@ export const MyAccount = () => {
     username: "",
   });
 
+  const [isEditing, setIsEditing] = useState(false); // Track editing state
+  const [editedProfile, setEditedProfile] = useState(profile); // Editable profile data
+
   useEffect(() => {
     if (user) {
       setProfile({
+        firstName: user.firstName || "",
+        emailAddress: user.emailAddress || "",
+        contactNumber: user.contactNumber || "",
+        username: user.username || "",
+      });
+      setEditedProfile({
         firstName: user.firstName || "",
         emailAddress: user.emailAddress || "",
         contactNumber: user.contactNumber || "",
@@ -28,7 +37,23 @@ export const MyAccount = () => {
     }
   }, [user, navigate]);
 
-  // Function to handle logout
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    setProfile(editedProfile); // Update profile with new data
+    setIsEditing(false);
+    alert("Profile updated successfully!");
+    // Optionally, send updated profile data to the server here
+  };
+
+  const handleCancel = () => {
+    setEditedProfile(profile); // Revert to original profile
+    setIsEditing(false);
+  };
+
   const handleLogout = () => {
     logout(); // Perform logout from AuthContext
     navigate("/login"); // Navigate to the login page
@@ -43,7 +68,6 @@ export const MyAccount = () => {
             MY ACCOUNT
           </h1>
           <div className="max-w-lg mx-auto bg-white p-10 rounded-lg shadow-lg">
-            {/* Profile Image */}
             <div className="flex justify-center mb-6">
               <img
                 src="/src/assets/PROFILE.png" // Update path if needed
@@ -52,63 +76,97 @@ export const MyAccount = () => {
               />
             </div>
 
-            {/* Name and Email */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-1">
-                {profile.firstName}
-              </h2>
-              <p className="text-gray-600">{profile.emailAddress}</p>
-            </div>
-
-            {/* Account Details */}
             <div className="space-y-4">
               <div className="flex justify-between text-gray-800">
-                <strong>Username:</strong>
-                <span>{profile.username || "N/A"}</span>
+                <strong>Name:</strong>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={editedProfile.firstName}
+                    onChange={handleInputChange}
+                    className="border rounded-md p-1 text-sm w-1/2"
+                  />
+                ) : (
+                  <span>{profile.firstName || "N/A"}</span>
+                )}
               </div>
               <div className="flex justify-between text-gray-800">
                 <strong>Email Address:</strong>
-                <span>{profile.emailAddress || "N/A"}</span>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    name="emailAddress"
+                    value={editedProfile.emailAddress}
+                    onChange={handleInputChange}
+                    className="border rounded-md p-1 text-sm w-1/2"
+                  />
+                ) : (
+                  <span>{profile.emailAddress || "N/A"}</span>
+                )}
               </div>
               <div className="flex justify-between text-gray-800">
                 <strong>Contact Number:</strong>
-                <span>{profile.contactNumber || "N/A"}</span>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="contactNumber"
+                    value={editedProfile.contactNumber}
+                    onChange={handleInputChange}
+                    className="border rounded-md p-1 text-sm w-1/2"
+                  />
+                ) : (
+                  <span>{profile.contactNumber || "N/A"}</span>
+                )}
+              </div>
+              <div className="flex justify-between text-gray-800">
+                <strong>Username:</strong>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="username"
+                    value={editedProfile.username}
+                    onChange={handleInputChange}
+                    className="border rounded-md p-1 text-sm w-1/2"
+                  />
+                ) : (
+                  <span>{profile.username || "N/A"}</span>
+                )}
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="grid grid-cols-2 gap-4 mt-8">
-              {/* View My Tickets */}
-              <button
-                onClick={() => navigate("/viewmytickets")}
-                className="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                View My Tickets
-              </button>
-
-              {/* Unclaimed Tickets */}
-              <button
-                onClick={() => navigate("/unclaimedtickets")}
-                className="py-2 px-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                Unclaimed Tickets
-              </button>
-
-              {/* Edit Profile */}
-              <button
-                onClick={() => navigate("/editprofile")}
-                className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Edit Profile
-              </button>
-
-              {/* Logout */}
-              <button
-                onClick={handleLogout}
-                className="py-2 px-4 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                Logout
-              </button>
+              {isEditing ? (
+                <>
+                  <button
+                    onClick={handleSave}
+                    className="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Edit Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="py-3 px-5 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
