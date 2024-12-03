@@ -30,7 +30,7 @@ const Dashboard = () => {
                 {/* Hero Section */}
                 <section className="text-center mb-10">
                     <div className="flex justify-center items-center space-x-10">
-                        <img src="/src/assets/U-FIND (3).png" alt="U-FIND Logo" className="w-90 h-80 object-cover" />
+                        <img src="/src/assets/dbheading.jpg" alt="U-FIND Logo" className="w-90 h-80 object-cover" />
                         <div className="text-left max-w-md">
                             <h2 className="text-5xl font-bold text-gray-900 mb-4">U-FIND</h2>
                             <p className="text-justify text-gray-800 mb-12">
@@ -92,17 +92,17 @@ const Dashboard = () => {
                     {[
                         {
                             title: "Easy to Use",
-                            description: "Refers to a system or tool designed for intuitive and straightforward operation, requiring minimal effort or training for users.",
+                            description: "The system is simple and easy to understand, so you don’t need much training to use it.",
                             imgSrc: "/src/assets/easytouse.png"
                         },
                         {
                             title: "Reliable",
-                            description: "Indicates a product or service that consistently performs well without failure, ensuring dependability and trustworthiness.",
+                            description: "The system works well every time, so you can trust it to do its job without problems.",
                             imgSrc: "/src/assets/easytouse.png"
                         },
                         {
                             title: "Efficient",
-                            description: "Describes a process or tool that maximizes productivity with minimal waste of time or resources, achieving desired outcomes effectively.",
+                            description: "The system helps you get things done quickly and with little wasted time or effort.",
                             imgSrc: "/src/assets/easytouse.png"
                         }
                     ].map((feature, index) => (

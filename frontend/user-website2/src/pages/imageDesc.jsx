@@ -11,8 +11,8 @@ import { Feature } from "ol";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { Style, Icon } from "ol/style";
-import Footer from "../components/Footer";
-import Topbar from "../components/Topbar";
+import Footer from "../components/footer";
+import Topbar from "../components/topBar";
 
 const ItemDescription = () => {
   const navigate = useNavigate();
@@ -170,9 +170,10 @@ const ItemDescription = () => {
                     </span>
                   </p>
                 </div>
+          
               </div>
               <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
-                Send Message
+                Contact Me
               </button>
             </div>
           </div>

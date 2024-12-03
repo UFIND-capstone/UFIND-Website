@@ -31,7 +31,7 @@ const AboutUs = () => {
         <h2 className="text-5xl font-semibold text-center mb-8">Meet the Team</h2>
 
         <p className="max-w-6xl mx-auto text-gray-700 leading-relaxed text-center">
-        Meet the team's dedication, skills, and the collaborative spirit that drives U-Find's success, while also positioning the team as approachable, skilled, and passionate about their mission.
+        Get to know the team behind U-Find a group of dedicated, skilled people who work well together. They are friendly, experts in what they do, and truly passionate about their mission to make U-Find successful.
         </p>
 
 
