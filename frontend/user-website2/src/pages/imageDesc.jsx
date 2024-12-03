@@ -162,7 +162,6 @@ const ItemDescription = () => {
                     <p className="text-gray-600">No location available</p>
                   )}
                 </div>
-<<<<<<< Updated upstream
                 <div>
                   <p className="text-gray-700">
                     Posted by:{" "}
@@ -171,9 +170,7 @@ const ItemDescription = () => {
                     </span>
                   </p>
                 </div>
-=======
           
->>>>>>> Stashed changes
               </div>
               <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
                 Contact Me
