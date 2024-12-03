@@ -73,7 +73,7 @@ export const AppRoutes = () => {
       element: <BrowseitemsLost />, 
     },
     {
-      path: "/browseItemsLost/:itemID",
+      path: "/items/:itemID",
       element: <ItemDescription />, 
     },
     {
