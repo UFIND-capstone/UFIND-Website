@@ -42,12 +42,20 @@ const ItemDescription = () => {
 
   useEffect(() => {
     if (!item || !item.location) return;
-
+    // Parse location string to [longitude, latitude]
     const locationParts = item.location.split(",").map(Number);
     const [longitude, latitude] = locationParts;
-
-    // Set up OpenLayers map
     const coordinates = fromLonLat([longitude, latitude]);
+    // Define restricted area
+    const bottomLeft = fromLonLat([124.65448369078607, 8.484757587809328]);
+    const topRight = fromLonLat([124.6587442680971, 8.487072471046389]);
+    const boundingExtent = [bottomLeft[0], bottomLeft[1], topRight[0], topRight[1]];
+    const center = [
+      (bottomLeft[0] + topRight[0]) / 2,
+      (bottomLeft[1] + topRight[1]) / 2,
+    ];
+    // Set up map
+    const vectorSource = new VectorSource();
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -55,27 +63,28 @@ const ItemDescription = () => {
           source: new OSM(),
         }),
         new VectorLayer({
-          source: new VectorSource({
-            features: [
-              new Feature({
-                geometry: new Point(coordinates),
-              }),
-            ],
-          }),
-          style: new Style({
-            image: new Icon({
-              src: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-              scale: 0.07,
-            }),
-          }),
+          source: vectorSource,
         }),
       ],
       view: new View({
-        center: coordinates,
+        center,
         zoom: 17,
+        maxZoom: 19,
+        extent: boundingExtent,
       }),
     });
-
+    // Add marker
+    const markerFeature = new Feature(new Point(coordinates));
+    markerFeature.setStyle(
+      new Style({
+        image: new Icon({
+          anchor: [0.5, 1],
+          src: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+          scale: 0.07,
+        }),
+      })
+    );
+    vectorSource.addFeature(markerFeature);
     return () => map.setTarget(null);
   }, [item]);
 
@@ -117,7 +126,7 @@ const ItemDescription = () => {
               <div className="space-y-4">
                 <div>
                   <p className="font-medium text-gray-700">Full Name:</p>
-                  <p className="text-gray-600">{item.owner || "Unknown"}</p>
+                  <p className="text-gray-600">{item.fullName || "Unknown"}</p>
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Description:</p>
@@ -125,10 +134,25 @@ const ItemDescription = () => {
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Date:</p>
-                  <p className="text-gray-600">{item.date || "Not specified"}</p>
+                  <p className="text-gray-600">
+                    {item.dateTime
+                      ? new Date(item.dateTime).toLocaleString("en-US", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })
+                      : "Not specified"}
+                  </p>
                 </div>
+
                 <div>
-                  <p className="font-medium text-gray-700">Last Seen Location:</p>
+                  <p className="font-medium text-gray-700">
+                    Last Seen Location:
+                  </p>
                   {item.location ? (
                     <div
                       ref={mapRef}
@@ -141,7 +165,9 @@ const ItemDescription = () => {
                 <div>
                   <p className="text-gray-700">
                     Posted by:{" "}
-                    <span className="font-medium">{item.postedBy || "N/A"}</span>
+                    <span className="font-medium">
+                      {item.fullName || "N/A"}
+                    </span>
                   </p>
                 </div>
               </div>
