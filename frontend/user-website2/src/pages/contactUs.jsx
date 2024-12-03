@@ -39,6 +39,7 @@ const ContactUs = () => {
             <div>
               <p className="text-lg font-semibold">OFFICE HOURS:</p>
               <p className="text-gray-700">Monday – Friday | 9:00 AM – 5:00 PM</p>
+              <p className="text-gray-700">We are located in OSA Bldg</p>
               <p className="text-sm text-gray-500">Our team is available to help you during these hours.</p>
             </div>
           </div>

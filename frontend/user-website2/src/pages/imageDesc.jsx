@@ -42,11 +42,11 @@ const ItemDescription = () => {
 
   useEffect(() => {
     if (!item || !item.location) return;
-    // Parse location string to [longitude, latitude]
+
     const locationParts = item.location.split(",").map(Number);
     const [longitude, latitude] = locationParts;
     const coordinates = fromLonLat([longitude, latitude]);
-    // Define restricted area
+
     const bottomLeft = fromLonLat([124.65448369078607, 8.484757587809328]);
     const topRight = fromLonLat([124.6587442680971, 8.487072471046389]);
     const boundingExtent = [
@@ -59,7 +59,7 @@ const ItemDescription = () => {
       (bottomLeft[0] + topRight[0]) / 2,
       (bottomLeft[1] + topRight[1]) / 2,
     ];
-    // Set up map
+
     const vectorSource = new VectorSource();
     const map = new Map({
       target: mapRef.current,
@@ -78,7 +78,7 @@ const ItemDescription = () => {
         extent: boundingExtent,
       }),
     });
-    // Add marker
+
     const markerFeature = new Feature(new Point(coordinates));
     markerFeature.setStyle(
       new Style({
@@ -95,10 +95,7 @@ const ItemDescription = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* Topbar */}
       <Topbar />
-
-      {/* Main Content */}
       <div className="flex-grow p-6">
         {loading ? (
           <p className="text-center text-gray-500">Loading item details...</p>
@@ -106,7 +103,6 @@ const ItemDescription = () => {
           <p className="text-center text-red-500">{error}</p>
         ) : (
           <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
-            {/* Left Container */}
             <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
               <button
                 onClick={() => navigate(-1)}
@@ -114,27 +110,26 @@ const ItemDescription = () => {
               >
                 ← Back
               </button>
-              <div className="w-full flex flex-col items-center justify-center rounded-lg overflow-hidden bg-gray-200">
-                <img
-                  src={item.imageUrl || "/placeholder-image.png"}
-                  alt={item.name || "Lost Item"}
-                  className="object-cover w-full h-80"
-                />
-                <p
-                  className={`mt-2 font-medium text-lg ${
-                    item.status === "lost" ? "text-red-500" : "text-green-500"
-                  }`}
-                >
-                  {item.status === "lost" ? "Lost" : "Found"}
-                </p>
-              </div>
+              <img
+                src={item.imageUrl || "/placeholder-image.png"}
+                alt={item.name || "Lost Item"}
+                className={`object-cover w-full h-80 rounded-md ${
+                  item.status === "found" ? "blur-sm" : ""
+                }`}
+              />
             </div>
 
-            {/* Right Container */}
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              <h2 className="text-2xl font-bold text-gray-800 mb-1">
                 {item.name || "Unnamed Item"}
               </h2>
+              <p
+                className={`text-lg font-medium mb-4 ${
+                  item.status === "lost" ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {item.status === "lost" ? "Lost" : "Found"}
+              </p>
               <div className="space-y-4">
                 <div>
                   <p className="font-medium text-gray-700">Full Name:</p>
@@ -142,7 +137,13 @@ const ItemDescription = () => {
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Description:</p>
-                  <p className="text-gray-600">{item.description || "N/A"}</p>
+                  <p
+                    className={`text-gray-600 ${
+                      item.status === "found" ? "blur-sm" : ""
+                    }`}
+                  >
+                    {item.description || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Date:</p>
@@ -160,7 +161,6 @@ const ItemDescription = () => {
                       : "Not specified"}
                   </p>
                 </div>
-
                 <div>
                   <p className="font-medium text-gray-700">
                     Last Seen Location:
@@ -183,15 +183,19 @@ const ItemDescription = () => {
                   </p>
                 </div>
               </div>
-              <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
-                Contact Me
-              </button>
+              {item.status === "found" ? (
+                <button className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
+                  Claim This Item
+                </button>
+              ) : (
+                <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
+                  Contact Me
+                </button>
+              )}
             </div>
           </div>
         )}
       </div>
-
-      {/* Footer */}
       <Footer />
     </div>
   );

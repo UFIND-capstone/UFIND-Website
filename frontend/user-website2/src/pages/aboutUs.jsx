@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from '../components/footer';
-import Topbar from '../components/topBar';
+import Footer from '../components/Footer';
+import Topbar from '../components/Topbar';
 
 const AboutUs = () => {
   return (
