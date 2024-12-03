@@ -1,6 +1,6 @@
 import React from "react";
-import Topbar from "../components/topBar";
-import Footer from "../components/footer";
+import Topbar from "../components/Topbar";
+import Footer from "../components/Footer";
 
 const ViewMyTickets = () => {
   // Array of ticket data for multiple items

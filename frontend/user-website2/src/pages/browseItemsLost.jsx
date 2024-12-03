@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Footer from '../components/footer';
-import Topbar from '../components/topBar';
+import Footer from '../components/Footer';
+import Topbar from '../components/Topbar';
 import axios from 'axios';
 
 const BrowseItemsLost = () => {
@@ -92,7 +92,7 @@ const BrowseItemsLost = () => {
                         {filteredItems.map((item) => (
                             <Link
                                 key={item.id}
-                                to={`/browseItemsLost/${item.id}`} // Dynamic link for each item's ID
+                                to={`/items/${item.id}`} // Dynamic link for each item's ID
                                 className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
                             >
                                 <img

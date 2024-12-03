@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Footer from '../components/footer';
-import Topbar from '../components/topBar';
+import Footer from '../components/Footer';
+import Topbar from '../components/Topbar';
 
 const Dashboard = () => {
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
                                     key={item.id}
                                     className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition"
                                 >
-                                    <Link to={`/item/${item.id}`}>
+                                    <Link to={`/items/${item.id}`}>
                                         <img
                                             src={item.imageUrl || '/src/assets/default.png'} // Fallback for missing images
                                             alt={item.name}
