@@ -49,7 +49,12 @@ const ItemDescription = () => {
     // Define restricted area
     const bottomLeft = fromLonLat([124.65448369078607, 8.484757587809328]);
     const topRight = fromLonLat([124.6587442680971, 8.487072471046389]);
-    const boundingExtent = [bottomLeft[0], bottomLeft[1], topRight[0], topRight[1]];
+    const boundingExtent = [
+      bottomLeft[0],
+      bottomLeft[1],
+      topRight[0],
+      topRight[1],
+    ];
     const center = [
       (bottomLeft[0] + topRight[0]) / 2,
       (bottomLeft[1] + topRight[1]) / 2,
@@ -109,12 +114,19 @@ const ItemDescription = () => {
               >
                 ← Back
               </button>
-              <div className="w-full h-80 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
+              <div className="w-full flex flex-col items-center justify-center rounded-lg overflow-hidden bg-gray-200">
                 <img
                   src={item.imageUrl || "/placeholder-image.png"}
                   alt={item.name || "Lost Item"}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-80"
                 />
+                <p
+                  className={`mt-2 font-medium text-lg ${
+                    item.status === "lost" ? "text-red-500" : "text-green-500"
+                  }`}
+                >
+                  {item.status === "lost" ? "Lost" : "Found"}
+                </p>
               </div>
             </div>
 
@@ -170,7 +182,6 @@ const ItemDescription = () => {
                     </span>
                   </p>
                 </div>
-          
               </div>
               <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
                 Contact Me
