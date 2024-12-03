@@ -11,8 +11,8 @@ import { Feature } from "ol";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { Style, Icon } from "ol/style";
-import Footer from "../components/footer";
-import Topbar from "../components/topBar";
+import Footer from "../components/Footer";
+import Topbar from "../components/Topbar";
 
 const ItemDescription = () => {
   const navigate = useNavigate();
