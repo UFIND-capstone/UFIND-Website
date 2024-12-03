@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from '../components/Footer';
-import Topbar from '../components/Topbar';
+import Footer from '../components/footer';
+import Topbar from '../components/topBar';
 
 const SecureBelongings = () => {
   return (
