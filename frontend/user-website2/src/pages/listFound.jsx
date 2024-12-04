@@ -17,7 +17,6 @@ const ListingFound = () => {
     fullName: "",
     contactNumber: "",
     email: "",
-    detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +89,6 @@ const ListingFound = () => {
       "fullName",
       "contactNumber",
       "email",
-      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -219,7 +217,7 @@ const ListingFound = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
-                UPLOAD AN IMAGE <span className="text-red-500">*</span>
+                UPLOAD AN IMAGE
               </label>
               <input
                 type="file"
@@ -229,6 +227,8 @@ const ListingFound = () => {
                 required
               />
             </div>
+
+            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Attach an image if available  </p>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -300,20 +300,6 @@ const ListingFound = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                DETAILED DESCRIPTION <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                name="detailedDescription"
-                value={formData.detailedDescription}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter detailed description"
                 required
               />
             </div>
