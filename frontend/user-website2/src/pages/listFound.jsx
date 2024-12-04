@@ -221,7 +221,7 @@ const ListingFound = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
-                UPLOAD AN IMAGE
+                UPLOAD AN IMAGE <span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
@@ -231,8 +231,6 @@ const ListingFound = () => {
                 required
               />
             </div>
-
-            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Attach an image if available  </p>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -319,7 +317,7 @@ const ListingFound = () => {
                 }`}
                 disabled={isLoading}
               >
-                {isLoading ? "Submitting..." : "Submit Listing"}
+                {isLoading ? "Submitting..." : "SUBMIT"}
               </button>
             </div>
           </form>
