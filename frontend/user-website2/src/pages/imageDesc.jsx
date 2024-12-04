@@ -20,6 +20,14 @@ const ItemDescription = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showClaimForm, setShowClaimForm] = useState(false);
+  const [claimData, setClaimData] = useState({
+    name: "",
+    yearSection: "",
+    description: "",
+    timeLost: "",
+    locationLost: "",
+  });
 
   const mapRef = useRef(null);
 
@@ -92,6 +100,21 @@ const ItemDescription = () => {
     vectorSource.addFeature(markerFeature);
     return () => map.setTarget(null);
   }, [item]);
+
+  const handleClaimToggle = () => setShowClaimForm(!showClaimForm);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setClaimData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleClaimSubmit = (e) => {
+    e.preventDefault();
+    // Handle submission logic
+    console.log("Claim Submitted:", claimData);
+    alert("Claim submitted successfully!");
+    setShowClaimForm(false);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -176,9 +199,90 @@ const ItemDescription = () => {
                 </div>
               </div>
               {item.status === "found" ? (
-                <button className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
-                  Claim This Item
-                </button>
+                <div className="mt-6">
+                  <button
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+                    onClick={handleClaimToggle}
+                  >
+                    Claim This Item
+                  </button>
+                  {showClaimForm && (
+                    <form className="mt-4 space-y-4" onSubmit={handleClaimSubmit}>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={claimData.name}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Year and Section
+                        </label>
+                        <input
+                          type="text"
+                          name="yearSection"
+                          value={claimData.yearSection}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Description
+                        </label>
+                        <textarea
+                          name="description"
+                          value={claimData.description}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          placeholder="If you believe this is yours, provide specific details (e.g., contents, brand, markings) when submitting your claim."
+                          rows="3"
+                          required
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Time Lost
+                        </label>
+                        <input
+                          type="text"
+                          name="timeLost"
+                          value={claimData.timeLost}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Location Lost
+                        </label>
+                        <input
+                          type="text"
+                          name="locationLost"
+                          value={claimData.locationLost}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600"
+                      >
+                        Submit Claim
+                      </button>
+                    </form>
+                  )}
+                </div>
               ) : (
                 <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
                   Contact Me

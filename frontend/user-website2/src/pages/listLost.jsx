@@ -5,7 +5,6 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
-import { useAuth } from "../AuthContext"; // Import AuthContext hook
 
 const ListingLost = () => {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const ListingLost = () => {
     fullName: "",
     contactNumber: "",
     email: "",
+    detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,6 @@ const ListingLost = () => {
   const [uploading, setUploading] = useState(false); // State for upload status
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
-  const { user } = useAuth();
 
   const handleCoordinates = (coords) => {
     setCoordinates(coords);
@@ -91,6 +90,7 @@ const ListingLost = () => {
       "fullName",
       "contactNumber",
       "email",
+      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -113,9 +113,7 @@ const ListingLost = () => {
     const data = {
       ...formData,
       imageUrl,
-      userId: user.id,
       status: "lost",
-      ticket: "pending",
       coordinates, // Add coordinates to the data
     };
 
@@ -219,7 +217,7 @@ const ListingLost = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
-                UPLOAD AN IMAGE
+                UPLOAD AN IMAGE 
               </label>
               <input
                 type="file"
@@ -230,7 +228,7 @@ const ListingLost = () => {
               />
             </div>
 
-            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Attach an image if available  </p>
+            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Attach an image if available. </p>
 
 
             <div>
@@ -302,7 +300,21 @@ const ListingLost = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email"
+                placeholder="Enter your e-mail address"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                DETAILED DESCRIPTION <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                name="detailedDescription"
+                value={formData.detailedDescription}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter detailed description"
                 required
               />
             </div>

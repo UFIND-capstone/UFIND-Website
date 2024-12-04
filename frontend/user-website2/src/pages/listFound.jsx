@@ -5,7 +5,6 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
-import { useAuth } from "../AuthContext"; // Import AuthContext hook
 
 const ListingFound = () => {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const ListingFound = () => {
     fullName: "",
     contactNumber: "",
     email: "",
+    detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,6 @@ const ListingFound = () => {
   const [uploading, setUploading] = useState(false); // State for upload status
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
-  const { user } = useAuth(); // Get the authenticated user
 
   const handleCoordinates = (coords) => {
     setCoordinates(coords);
@@ -91,6 +90,7 @@ const ListingFound = () => {
       "fullName",
       "contactNumber",
       "email",
+      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -113,9 +113,7 @@ const ListingFound = () => {
     const data = {
       ...formData,
       imageUrl,
-      userId: user.id,
       status: "found",
-      ticket: "pending",
       coordinates, // Add coordinates to the data
     };
 
@@ -214,23 +212,12 @@ const ListingFound = () => {
                 value={formData.description}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter brief description"
+                placeholder="Enter general description"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                UPLOAD AN IMAGE <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="file"
-                name="image"
-                onChange={handleImageChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+            <p className="text-xs text-gray-600 text-justify"> <b> Note: </b> "Please use a general description of the item to help with later verification (e.g. item type & near location).</p>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -301,7 +288,21 @@ const ListingFound = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email"
+                placeholder="Enter your e-mail address"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                DETAILED DESCRIPTION <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                name="detailedDescription"
+                value={formData.detailedDescription}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter detailed description"
                 required
               />
             </div>
