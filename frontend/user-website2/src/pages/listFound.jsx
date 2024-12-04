@@ -5,19 +5,18 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
+import { useAuth } from "../AuthContext";
 
 const ListingFound = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
-    lastSeen: "",
     dateTime: "",
     description: "",
     location: "",
     fullName: "",
     contactNumber: "",
     email: "",
-    detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
   const [alertMessage, setAlertMessage] = useState(null); // State for alert message
@@ -27,6 +26,7 @@ const ListingFound = () => {
   const [uploading, setUploading] = useState(false); // State for upload status
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
+  const { user } = useAuth();
 
   const handleCoordinates = (coords) => {
     setCoordinates(coords);
@@ -41,18 +41,6 @@ const ListingFound = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleButtonClick = (type) => {
-    if (type === "keep") {
-      setAlertMessage(
-        "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
-      );
-    } else if (type === "turnover") {
-      setAlertMessage(
-        "You’ve handed over the verification to the OSA. Future claims will be managed by them."
-      );
-    }
   };
 
   const closeAlert = () => {
@@ -107,7 +95,6 @@ const ListingFound = () => {
       "fullName",
       "contactNumber",
       "email",
-      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -129,10 +116,12 @@ const ListingFound = () => {
     // Add the uploaded image URL to the form data
     const data = {
       ...formData,
+      userId: user.id,
       imageUrl,
       status: "found",
-      coordinates, // Add coordinates to the data
+      ticket: "pending",
     };
+    console.log(data);
 
     try {
       const response = await axios.post(
@@ -165,20 +154,20 @@ const ListingFound = () => {
 
           {/* Lost and Found Item Buttons */}
           <div className="flex justify-center mb-6">
-          <Link
+            <Link
               to="/listLost"
               className="px-4 py-2 font-semibold bg-gray-200 text-black rounded-l-lg focus:outline-none"
-          >
+            >
               LOST ITEM
-          </Link>
+            </Link>
 
-          {/* Link to Found Item page */}
-          <Link
+            {/* Link to Found Item page */}
+            <Link
               to="/listFound"
               className="px-4 py-2 font-semibold bg-blue-500 text-white-500 rounded-r-lg focus:outline-none"
-          >
+            >
               FOUND ITEM
-          </Link>
+            </Link>
           </div>
 
           {/* Error Message */}
@@ -234,7 +223,29 @@ const ListingFound = () => {
               />
             </div>
 
-            <p className="text-xs text-gray-600 text-justify"> <b> Note: </b> "Please use a general description of the item to help with later verification (e.g. item type & near location).</p>
+            <p className="text-xs text-gray-600 text-justify">
+              {" "}
+              <b> Note: </b> "Please use a general description of the item to
+              help with later verification (e.g. item type & near location).
+            </p>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                UPLOAD AN IMAGE
+              </label>
+              <input
+                type="file"
+                name="image"
+                onChange={handleImageChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <p className="text-sm text-gray-600 text-justify">
+              {" "}
+              <b> Note: </b> Attach an image if available.{" "}
+            </p>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -272,7 +283,7 @@ const ListingFound = () => {
               <input
                 type="text"
                 name="fullName"
-                value={formData.fullName}
+                value={formData.firstName}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your full name"
@@ -310,38 +321,53 @@ const ListingFound = () => {
               />
             </div>
 
+            <p className="text-sm text-gray-600 text-justify">
+              {" "}
+              <b> Note: </b> Ticket will expire within 30 days if not retrieve.{" "}
+            </p>
+
             <div>
               <label className="block text-sm font-semibold text-gray-700">
-                DETAILED DESCRIPTION <span className="text-red-500">*</span>
+                Claim Status <span className="text-red-500">*</span>
               </label>
-              <textarea
-                name="detailedDescription"
-                value={formData.detailedDescription}
-                onChange={handleChange}
+              <select
+                name="claimStatus"
+                value={formData.claimStatus || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFormData({ ...formData, claimStatus: value });
+                  if (value === "keep") {
+                    setAlertMessage(
+                      "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
+                    );
+                  } else if (value === "turnover") {
+                    setAlertMessage(
+                      "You’ve handed over the verification to the OSA. Future claims will be managed by them."
+                    );
+                  }
+                }}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter detailed description"
                 required
-              />
+              >
+                <option value="" disabled>
+                  Select claim status
+                </option>
+                <option value="keep">Keep</option>
+                <option value="turnover">Turnover</option>
+              </select>
             </div>
 
-            <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Ticket will expire within 30 days if not retrieve.  </p>
-
-          {/* Keep and Turnover Buttons */}
-          <div className="mt-6 flex justify-between">
-            <button
-              onClick={() => handleButtonClick("/viewmyTickets")}
-              className="bg-green-500 text-white px-20 py-2 rounded hover:bg-green-600"
-            >
-              Keep
-            </button>
-            <button
-              onClick={() => handleButtonClick("viewmyTickets")}
-              className="bg-yellow-500 text-white px-20 py-2 rounded hover:bg-yellow-600"
-            >
-              Turnover
-            </button>
-          </div>
-          
+            <div className="flex justify-center mt-6">
+              <button
+                type="submit"
+                className={`bg-blue-500 text-white font-bold py-2 px-20 rounded ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Submitting..." : "SUBMIT"}
+              </button>
+            </div>
           </form>
         </div>
       </main>

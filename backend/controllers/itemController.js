@@ -1,4 +1,39 @@
-import { addItem, getItems, getItemById, getItemsByUserId, getPendingItem } from '../models/itemModel.js';
+import { addItem, getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
+
+export const claimItemHandler = async (req, res) => {
+    const {
+        userId,
+        name,
+        description,
+        yearSection,
+        timeLost,
+        locationLost,
+        itemId,
+    } = req.body;
+
+    // Validate required fields
+    if (!userId || !name || !description || !yearSection || !timeLost || !locationLost || !itemId) {
+        return res.status(400).json({
+            message: 'All fields are required',
+        });
+    }
+
+    try {
+        const addedItemId = await addClaimItem({
+            userId,
+            name,
+            description,
+            yearSection,
+            timeLost,
+            locationLost,
+            itemId, // Pass the itemId from the request
+        });
+        res.status(201).json({ message: 'Item added successfully', addedItemId });
+    } catch (error) {
+        res.status(500).json({ message: `Error adding item: ${error.message}` });
+    }
+    
+};
 
 export const getItemsHandler = async (req, res) => {
     try {
@@ -53,33 +88,34 @@ export const addItemHandler = async (req, res) => {
         fullName,
         contactNumber,
         email,
-        detailedDescription,
         status,
         ticket,
         location,
         imageUrl,
+        claimStatus,
     } = req.body;
 
     // Validate required fields
-    if (!userId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !detailedDescription || !status || !ticket || !location || !imageUrl) {
+    if (!userId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !imageUrl) {
         return res.status(400).json({
-            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, detailedDescription, status, location, and imageURL.',
+            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, location, and imageURL.',
         });
     }
 
     try {
         const itemId = await addItem({
+            userId,
             name,
             description,
             dateTime,
             fullName,
             contactNumber,
             email,
-            detailedDescription,
             status,
             ticket,
             location,
             imageUrl, // Pass imageURL to the model
+            claimStatus,
         });
         res.status(201).json({ message: 'Item added successfully', itemId });
     } catch (error) {
