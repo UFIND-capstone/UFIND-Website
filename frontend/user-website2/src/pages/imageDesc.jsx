@@ -13,8 +13,10 @@ import { Vector as VectorSource } from "ol/source";
 import { Style, Icon } from "ol/style";
 import Footer from "../components/Footer";
 import Topbar from "../components/Topbar";
+import { useAuth } from "../AuthContext";
 
 const ItemDescription = () => {
+  const { user } = useAuth(); // Get user from AuthContext  
   const navigate = useNavigate();
   const { itemID } = useParams();
   const [item, setItem] = useState(null);
@@ -22,6 +24,8 @@ const ItemDescription = () => {
   const [error, setError] = useState(null);
   const [showClaimForm, setShowClaimForm] = useState(false);
   const [claimData, setClaimData] = useState({
+    itemId: "",
+    userId:"",
     name: "",
     yearSection: "",
     description: "",
@@ -108,13 +112,37 @@ const ItemDescription = () => {
     setClaimData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClaimSubmit = (e) => {
+  const handleClaimSubmit = async (e) => {
     e.preventDefault();
-    // Handle submission logic
-    console.log("Claim Submitted:", claimData);
-    alert("Claim submitted successfully!");
-    setShowClaimForm(false);
+    try {
+      const data = {
+        ...claimData,
+        itemId: itemID,
+        userId: user.id
+      };
+      console.log("Submitting claim with data:", data);
+      const response = await axios.post(
+        "http://localhost:3000/api/items/claim",
+        data
+      );
+      
+
+      console.log("Claim Submitted:", response.data);
+      alert("Claim submitted successfully!");
+      setShowClaimForm(false);
+      setClaimData({
+        name: "",
+        yearSection: "",
+        description: "",
+        timeLost: "",
+        locationLost: "",
+      });
+    } catch (err) {
+      console.error("Error submitting claim:", err);
+      alert("Failed to submit claim. Please try again.");
+    }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">

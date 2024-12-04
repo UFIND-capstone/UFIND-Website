@@ -5,10 +5,13 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
+import { useAuth } from "../AuthContext";
 
 const ListingLost = () => {
   const navigate = useNavigate();
+  const { user } = useAuth(); // Get user from AuthContext
   const [formData, setFormData] = useState({
+    userId: "",
     name: "",
     lastSeen: "",
     dateTime: "",
@@ -17,7 +20,6 @@ const ListingLost = () => {
     fullName: "",
     contactNumber: "",
     email: "",
-    detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +92,6 @@ const ListingLost = () => {
       "fullName",
       "contactNumber",
       "email",
-      "detailedDescription",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -112,9 +113,10 @@ const ListingLost = () => {
     // Add the uploaded image URL to the form data
     const data = {
       ...formData,
+      userId: user.id,
       imageUrl,
       status: "lost",
-      coordinates, // Add coordinates to the data
+      ticket: "pending",
     };
 
     try {
@@ -129,7 +131,8 @@ const ListingLost = () => {
         navigate("/reportPage");
       }, 2000);
     } catch (error) {
-      console.error("Error adding item:", error.message);
+      console.error("Error adding item:", error.response?.data || error.message);
+      setFormError(error.response?.data?.message || "An error occurred");
       setIsLoading(false);
     }
   };
@@ -301,20 +304,6 @@ const ListingLost = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your e-mail address"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                DETAILED DESCRIPTION <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                name="detailedDescription"
-                value={formData.detailedDescription}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter detailed description"
                 required
               />
             </div>
