@@ -5,6 +5,7 @@ import Topbar from "../components/Topbar";
 import axios from "axios";
 import supabase from "../config/supabaseClient"; // Import Supabase client
 import MapWithRestrictedArea from "./MapWithRestrictedArea";
+import { useAuth } from "../AuthContext"; // Import AuthContext hook
 
 const ListingLost = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const ListingLost = () => {
   const [uploading, setUploading] = useState(false); // State for upload status
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
+  const { user } = useAuth();
 
   const handleCoordinates = (coords) => {
     setCoordinates(coords);
@@ -113,7 +115,9 @@ const ListingLost = () => {
     const data = {
       ...formData,
       imageUrl,
+      userId: user.id,
       status: "lost",
+      ticket: "pending",
       coordinates, // Add coordinates to the data
     };
 

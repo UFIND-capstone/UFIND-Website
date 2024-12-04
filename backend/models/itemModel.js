@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from 'firebase/firestore';
 import firebaseApp from '../firebase.js';
 
 const db = getFirestore(firebaseApp);
@@ -28,6 +28,46 @@ export const getItems = async () => {
     }
 };
 
+export const getItemsByUserId = async (userId) => {
+    try {
+      const itemsCollection = collection(db, "items");
+      const q = query(itemsCollection, where("userId", "==", userId));
+      const snapshot = await getDocs(q);
+  
+      if (snapshot.empty) {
+        return []; // Return empty array if no items are found
+      }
+  
+      const itemsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return itemsList;
+    } catch (error) {
+      throw new Error("Error retrieving items: " + error.message);
+    }
+  };
+
+  export const getPendingItem = async (status) => {
+    try {
+      const itemsCollection = collection(db, "items");
+      const q = query(itemsCollection, where("ticket", "==", status));
+      const snapshot = await getDocs(q);
+  
+      if (snapshot.empty) {
+        return []; // Return empty array if no items are found
+      }
+  
+      const itemsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return itemsList;
+    } catch (error) {
+      throw new Error("Error retrieving tickets: " + error.message);
+    }
+  };
+  
 export const getItemById = async (itemID) => {
     try {
         const docRef = doc(db, 'items', itemID); // Reference to the specific item
