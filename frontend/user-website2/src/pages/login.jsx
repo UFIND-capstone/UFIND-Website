@@ -34,6 +34,7 @@ export const Login = () => {
         studentId: userData.studentId,
         emailAddress: userData.emailAddress,
         firstName: userData.firstName,
+        contactNumber: userData.contactNumber,
         lastName: userData.lastName,
         id: userData.id,
       });

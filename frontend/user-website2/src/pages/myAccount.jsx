@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext"; // Import AuthContext hook
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 export const MyAccount = () => {
   const navigate = useNavigate();
@@ -18,20 +19,20 @@ export const MyAccount = () => {
   const [isEditing, setIsEditing] = useState(false); // Track editing state
   const [editedProfile, setEditedProfile] = useState(profile); // Editable profile data
 
+  // Fetch the latest user profile from the server
+  const fetchUserProfile = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/user/${user.studentId}`);
+      setProfile(response.data); // Update profile with fresh data
+      setEditedProfile(response.data); // Sync editable data
+    } catch (error) {
+      console.error("Error fetching user profile:", error.message);
+    }
+  };
+
   useEffect(() => {
     if (user) {
-      setProfile({
-        firstName: user.firstName || "",
-        emailAddress: user.emailAddress || "",
-        contactNumber: user.contactNumber || "",
-        username: user.username || "",
-      });
-      setEditedProfile({
-        firstName: user.firstName || "",
-        emailAddress: user.emailAddress || "",
-        contactNumber: user.contactNumber || "",
-        username: user.username || "",
-      });
+      fetchUserProfile(); // Fetch profile on component mount
     } else {
       navigate("/login"); // Redirect to login if not authenticated
     }
@@ -42,11 +43,19 @@ export const MyAccount = () => {
     setEditedProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    setProfile(editedProfile); // Update profile with new data
-    setIsEditing(false);
-    alert("Profile updated successfully!");
-    // Optionally, send updated profile data to the server here
+  const handleSave = async () => {
+    try {
+      await axios.put("http://localhost:3000/api/user/edit", {
+        studentId: user.studentId,
+        ...editedProfile, // Pass all edited fields
+      });
+      await fetchUserProfile(); // Re-fetch updated profile
+      setIsEditing(false);
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error.message);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   const handleCancel = () => {
@@ -121,17 +130,7 @@ export const MyAccount = () => {
               </div>
               <div className="flex justify-between text-gray-800">
                 <strong>Username:</strong>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="username"
-                    value={editedProfile.username}
-                    onChange={handleInputChange}
-                    className="border rounded-md p-1 text-sm w-1/2"
-                  />
-                ) : (
-                  <span>{profile.username || "N/A"}</span>
-                )}
+                <span>{profile.username || "N/A"}</span>
               </div>
             </div>
 
