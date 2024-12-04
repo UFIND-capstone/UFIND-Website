@@ -63,7 +63,22 @@ const Dashboard = () => {
                                             className="w-full h-50 object-cover mb-4 rounded-md"
                                         />
                                         <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                                        <p className="text-gray-600">Last Seen: {item.lastSeen}</p>
+                                        <div>
+                                            <p className="font-medium text-gray-700">Date & Time:</p>
+                                            <p className="text-gray-600">
+                                                {item.dateTime
+                                                ? new Date(item.dateTime).toLocaleString("en-US", {
+                                                    weekday: "long",
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "numeric",
+                                                    hour12: true,
+                                                    })
+                                                : "Not specified"}
+                                            </p>
+                                            </div>
                                         <p className={`text-${item.status === 'lost' ? 'red' : 'green'}-500 font-semibold capitalize`}>
                                             {item.status}
                                         </p>
