@@ -174,14 +174,6 @@ const ItemDescription = () => {
                     <p className="text-gray-600">No location available</p>
                   )}
                 </div>
-                <div>
-                  <p className="text-gray-700">
-                    Posted by:{" "}
-                    <span className="font-medium">
-                      {item.fullName || "N/A"}
-                    </span>
-                  </p>
-                </div>
               </div>
               {item.status === "found" ? (
                 <button className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
