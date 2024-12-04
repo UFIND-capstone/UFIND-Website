@@ -1,44 +1,71 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
+import { useAuth } from "../AuthContext"; // Import AuthContext to get user ID
 
 const ViewMyTickets = () => {
-  // Array of ticket data for multiple items
-  const tickets = [
-    {
-      id: 1,
-      name: "Aquaflask",
-      category: "Lost", // New field for category
-      lastSeenLocation: "Inside Cafeteria Table",
-      description: "Color Purple and 40oz",
-      dateTime: "November 25, 2024 - 12:50 PM",
-      status: "Pending",
-      image: "src/assets/aquaflask.png", // Replace with actual image paths
-    },
-    {
-      id: 2,
-      name: "Umbrella",
-      category: "Found", // New field for category
-      lastSeenLocation: "Library",
-      description: "Black with white handle",
-      dateTime: "November 24, 2024 - 10:30 AM",
-      status: "Matched",
-      image: "src/assets/aquaflask.png",
-    },
-  ];
+  const { user } = useAuth(); // Authenticated user's context
+  const [items, setItems] = useState([]); // State to store fetched items
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  // Dynamic Styling for Status and Category
-  const statusColors = {
-    Lost: "bg-gray-900 text-white",
-    Found: "bg-gray-900 text-white",
-    Pending: "bg-yellow-500 text-white",
-    Matched: "bg-blue-500 text-white",
-    Resolved: "bg-green-500 text-white",
-    Rejected: "bg-red-500 text-white",
+  useEffect(() => {
+    if (!user || !user.id) {
+      setError("User ID is not available.");
+      return;  // Exit early if user.id is not available
+    }
+  
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/items/user/${user.id}`
+        );
+        if (response.status === 200) {
+          setItems(response.data);
+        } else {
+          setError("Unexpected server response");
+        }
+      } catch (err) {
+        setError("Failed to fetch items");
+        console.error("Error:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchItems();
+  }, [user]);  // Ensure user is ready before making the request
+  
+  
+  
+
+  // Dynamic Styling for Ticket Status
+  const ticketColors = {
+    pending: "bg-yellow-500 text-white",
+    matched: "bg-blue-500 text-white",
+    resolved: "bg-green-500 text-white",
+    rejected: "bg-red-500 text-white",
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100" >
+    <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Topbar */}
       <Topbar />
 
@@ -48,106 +75,62 @@ const ViewMyTickets = () => {
           View My Tickets
         </h2>
 
-        {/* Ticket List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {tickets.map((ticket) => (
-            <div
-              key={ticket.id}
-              className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden border-solid border-2 border-red-600"
-            >
-              {/* Image Section */}
-              <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
-                <img
-                  src={ticket.image}
-                  alt={`Image of ${ticket.name}`}
-                  className="max-h-80 object-contain rounded"
-                />
-              </div>
+        {items.length > 0 ? (
+  items.map((item) => (
+    <div
+      key={item.id}
+      className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden border border-gray-300"
+    >
+      {/* Image Section */}
+      <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
+        <img
+          src={item.imageUrl}
+          alt={`Image of ${item.name}`}
+          className="max-h-80 object-contain rounded"
+        />
+      </div>
 
-              {/* Details Section */}
-              <div className="p-6 md:w-1/2">
-                <div className="flex flex-col space-y-4">
-                  {/* Item Name and Category */}
-                  <div>
-                    <h3 className="font-bold text-lg">{ticket.name.toUpperCase()}</h3>
-                    <span
-                      className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
-                        statusColors[ticket.category] || "bg-gray-400 text-white"
-                      }`}
-                    >
-                      {ticket.category}
-                    </span>
-                  </div>
-
-                  {/* Other Details */}
-                  <div>
-                    <label className="block text-sm font-semibold">Item Name</label>
-                    <input
-                      type="text"
-                      value={ticket.name}
-                      readOnly
-                      className="w-full p-2 border rounded-md bg-gray-50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">
-                      Last Seen Location
-                    </label>
-                    <input
-                      type="text"
-                      value={ticket.lastSeenLocation}
-                      readOnly
-                      className="w-full p-2 border rounded-md bg-gray-50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Description</label>
-                    <input
-                      type="text"
-                      value={ticket.description}
-                      readOnly
-                      className="w-full p-2 border rounded-md bg-gray-50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Date & Time</label>
-                    <input
-                      type="text"
-                      value={ticket.dateTime}
-                      readOnly
-                      className="w-full p-2 border rounded-md bg-gray-50"
-                    />
-                  </div>
-                </div>
-
-                {/* Buttons Section */}
-                <div className="flex flex-col space-y-4 mt-6">
-                  {/* Edit and Delete Buttons */}
-                  <div className="flex space-x-4">
-                    <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
-                      Edit
-                    </button>
-                    <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow">
-                      Delete
-                    </button>
-                  </div>
-
-                  {/* Status Button */}
-                  <button
-                    className={`w-full py-2 rounded-full font-semibold ${
-                      statusColors[ticket.status] || "bg-gray-400 text-white"
-                    }`}
-                  >
-                    {ticket.status}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* Details Section */}
+      <div className="p-6 md:w-1/2">
+        <div className="flex flex-col space-y-4">
+          <h3 className="font-bold text-lg">{item.name.toUpperCase()}</h3>
+          <p className="text-sm text-gray-600">{item.description}</p>
+          <div>
+            <label className="block text-sm font-semibold">Location</label>
+            <p className="text-gray-800">{item.location}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold">Date & Time</label>
+            <p className="text-gray-800">{item.dateTime}</p>
+          </div>
+          <div
+            className={`py-2 px-4 rounded-full font-semibold ${
+              ticketColors[item.ticket.toLowerCase()] || "bg-gray-400 text-white"
+            }`}
+          >
+            {item.ticket.toUpperCase()}
+          </div>
         </div>
+        <div className="mt-6">
+          {item.ticket.toLowerCase() === "pending" ? (
+            <div className="bg-yellow-100 text-yellow-800 p-4 rounded-md">
+              <p>This ticket is still pending.</p>
+            </div>
+          ) : item.ticket.toLowerCase() === "matched" ? (
+            <div className="bg-blue-100 text-blue-800 p-4 rounded-md">
+              <p>This ticket has been matched!</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  ))
+) : (
+  <p className="text-center text-gray-600">
+    No tickets found. Create your first ticket to get started!
+  </p>
+)}
+
       </main>
 
       {/* Footer */}
