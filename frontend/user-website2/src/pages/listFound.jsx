@@ -20,6 +20,7 @@ const ListingFound = () => {
     detailedDescription: "",
     imageUrl: "", // Store the image URL here
   });
+  const [alertMessage, setAlertMessage] = useState(null); // State for alert message
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [imageFile, setImageFile] = useState(null); // State for the image file
@@ -40,6 +41,22 @@ const ListingFound = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleButtonClick = (type) => {
+    if (type === "keep") {
+      setAlertMessage(
+        "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
+      );
+    } else if (type === "turnover") {
+      setAlertMessage(
+        "You’ve handed over the verification to the OSA. Future claims will be managed by them."
+      );
+    }
+  };
+
+  const closeAlert = () => {
+    setAlertMessage(null);
   };
 
   // Handle image file selection
@@ -309,18 +326,22 @@ const ListingFound = () => {
 
             <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Ticket will expire within 30 days if not retrieve.  </p>
 
-
-            <div className="flex justify-center mt-6">
-              <button
-                type="submit"
-                className={`bg-blue-500 text-white font-bold py-2 px-6 rounded ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={isLoading}
-              >
-                {isLoading ? "Submitting..." : "SUBMIT"}
-              </button>
-            </div>
+          {/* Keep and Turnover Buttons */}
+          <div className="mt-6 flex justify-between">
+            <button
+              onClick={() => handleButtonClick("/viewmyTickets")}
+              className="bg-green-500 text-white px-20 py-2 rounded hover:bg-green-600"
+            >
+              Keep
+            </button>
+            <button
+              onClick={() => handleButtonClick("viewmyTickets")}
+              className="bg-yellow-500 text-white px-20 py-2 rounded hover:bg-yellow-600"
+            >
+              Turnover
+            </button>
+          </div>
+          
           </form>
         </div>
       </main>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/footer";
-import Topbar from "../components/topBar";
+import Footer from "../components/Footer";
+import Topbar from "../components/Topbar";
 
 const ReportPage = () => {
   const navigate = useNavigate();

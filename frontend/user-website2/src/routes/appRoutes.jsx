@@ -20,6 +20,9 @@ import ReportPage from "../pages/reportPage";
 import ViewMyTickets from "../pages/viewmyTickets";
 import UnclaimedTickets from "../pages/unclaimedTickets";
 import ContactForm from "../pages/contactForm";
+import ActiveTickets from "../pages/activeTickets"
+import Turnover from "../pages/turnover"
+import Notification from "../pages/notification"
 import WhyIsItImportantToSecureYourBelongings from "../pages/whyisitimportanttosecureyourBelongings";
 
 export const AppRoutes = () => {
@@ -113,10 +116,21 @@ export const AppRoutes = () => {
       path: "/unclaimedTickets",
       element: <UnclaimedTickets />
     },
-
     {
       path: "/contactForm",
       element: <ContactForm />
+    },
+    {
+      path: "/activeTickets",
+      element: <ActiveTickets />
+    },
+    {
+      path: "/turnover",
+      element: <Turnover />
+    },
+    {
+      path: "/notification",
+      element: <Notification />
     },
 
   ]);

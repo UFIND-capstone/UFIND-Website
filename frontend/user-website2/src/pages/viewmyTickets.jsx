@@ -37,8 +37,23 @@ const ViewMyTickets = () => {
     fetchItems();
   }, [user]);  // Ensure user is ready before making the request
   
-  
-  
+      // Handle search input changes
+      const handleSearch = (event) => {
+        const query = event.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        // Filter items based on description, detailedDescription, or name
+        const filtered = items.filter(item => {
+            const { description = '', detailedDescription = '', name = '' } = item;
+            return (
+                description.toLowerCase().includes(query) ||
+                detailedDescription.toLowerCase().includes(query) ||
+                name.toLowerCase().includes(query)
+            );
+        });
+
+        setFilteredItems(filtered);
+    };
 
   // Dynamic Styling for Ticket Status
   const ticketColors = {
