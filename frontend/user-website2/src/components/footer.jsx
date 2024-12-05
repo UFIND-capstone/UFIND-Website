@@ -7,7 +7,7 @@ const Footer = () => {
         {/* Logo Section */}
         <div className="flex justify-center md:justify-start items-center">
           <img
-            src="/src/assets/logo2.png" // Replace with your logo path
+            src="/src/assets/LOGO.png" // Replace with your logo path
             alt="U-Find Logo"
             className="object-scale-down h-32 w-auto"
           />

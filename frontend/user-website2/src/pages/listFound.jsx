@@ -262,7 +262,7 @@ const ListingFound = () => {
               <button
                 type="button"
                 onClick={() => setIsMapVisible(true)}
-                className="mt-2 text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 text-white bg-blue-500 hover:bg-blue-700 px-20 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Show Map
               </button>
@@ -321,11 +321,6 @@ const ListingFound = () => {
               />
             </div>
 
-            <p className="text-sm text-gray-600 text-justify">
-              {" "}
-              <b> Note: </b> Ticket will expire within 30 days if not retrieve.{" "}
-            </p>
-
             <div>
               <label className="block text-sm font-semibold text-gray-700">
                 Claim Status <span className="text-red-500">*</span>
@@ -356,6 +351,11 @@ const ListingFound = () => {
                 <option value="turnover">Turnover</option>
               </select>
             </div>
+
+            <p className="text-sm text-gray-600 text-justify">
+              {" "}
+              <b> Note: </b> Ticket will expire within 30 days if not retrieve.{" "}
+            </p>
 
             <div className="flex justify-center mt-6">
               <button

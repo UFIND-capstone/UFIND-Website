@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
 
@@ -8,24 +8,42 @@ const ActiveTicket = () => {
     {
       id: 1,
       name: "Aquaflask",
-      category: "Lost", // New field for category
+      category: "Lost",
       lastSeenLocation: "Inside Cafeteria Table",
       description: "Color Purple and 40oz",
       dateTime: "November 25, 2024 - 12:50 PM",
       status: "Pending",
-      image: "src/assets/aquaflask.png", // Correct path for static assets
+      image: "src/assets/aquaflask.png",
     },
     {
       id: 2,
       name: "Umbrella",
-      category: "Found", // New field for category
+      category: "Found",
       lastSeenLocation: "Library",
       description: "Black with white handle",
       dateTime: "November 24, 2024 - 10:30 AM",
       status: "Matched",
-      image: "src/assets/aquaflask.png", // Correct path for static assets
+      image: "src/assets/aquaflask.png",
     },
   ];
+
+  // State for managing search query and filtered tickets
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredTickets, setFilteredTickets] = useState(tickets);
+
+  // Handle search input changes
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filtered = tickets.filter((ticket) =>
+      ticket.name.toLowerCase().includes(query) ||
+      ticket.description.toLowerCase().includes(query) ||
+      ticket.category.toLowerCase().includes(query)
+    );
+
+    setFilteredTickets(filtered);
+  };
 
   // Dynamic Styling for Status and Category
   const statusColors = {
@@ -48,93 +66,119 @@ const ActiveTicket = () => {
           ACTIVE TICKETS
         </h2>
 
+        {/* Search Bar */}
+        <div className="flex items-center justify-center w-full max-w-2xl mx-auto mb-8">
+          <input
+            type="text"
+            className="w-full p-4 border border-gray-300 rounded-l-lg focus:outline-none"
+            placeholder="Search tickets..."
+            value={searchQuery} // Controlled input
+            onChange={handleSearch} // Update search query on input change
+          />
+          <button className="px-6 py-4 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600">
+            🔍
+          </button>
+        </div>
+
         {/* Ticket List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {tickets.map((ticket) => (
-            <div
-              key={ticket.id}
-              className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
-            >
-              {/* Image Section */}
-              <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
-                <img
-                  src={ticket.image}
-                  alt={`Image of ${ticket.name}`}
-                  className="max-h-80 object-contain rounded"
-                />
-              </div>
+          {filteredTickets.length > 0 ? (
+            filteredTickets.map((ticket) => (
+              <div
+                key={ticket.id}
+                className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
+              >
+                {/* Image Section */}
+                <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
+                  <img
+                    src={ticket.image}
+                    alt={`Image of ${ticket.name}`}
+                    className="max-h-80 object-contain rounded"
+                  />
+                </div>
 
-              {/* Details Section */}
-              <div className="p-6 md:w-1/2">
-                <div className="flex flex-col space-y-4">
-                  {/* Item Name and Category */}
-                  <div>
-                    <h3 className="font-bold text-lg">{ticket.name.toUpperCase()}</h3>
-                    <span
-                      className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
-                        statusColors[ticket.category] || "bg-gray-400 text-white"
+                {/* Details Section */}
+                <div className="p-6 md:w-1/2">
+                  <div className="flex flex-col space-y-4">
+                    {/* Item Name and Category */}
+                    <div>
+                      <h3 className="font-bold text-lg">
+                        {ticket.name.toUpperCase()}
+                      </h3>
+                      <span
+                        className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
+                          statusColors[ticket.category] || "bg-gray-400 text-white"
+                        }`}
+                      >
+                        {ticket.category}
+                      </span>
+                    </div>
+
+                    {/* Other Details */}
+                    <div>
+                      <label className="block text-sm font-semibold">
+                        Item Name
+                      </label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.name}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold">
+                        Last Seen Location
+                      </label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.lastSeenLocation}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold">
+                        Description
+                      </label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.description}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold">
+                        Date & Time
+                      </label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.dateTime}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Buttons Section */}
+                  <div className="flex flex-col space-y-4 mt-6">
+                    {/* Edit and Delete Buttons */}
+                    <div className="flex space-x-4">
+                      <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
+                        Edit
+                      </button>
+                      <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow">
+                        Delete
+                      </button>
+                    </div>
+
+                    {/* Status Button */}
+                    <button
+                      className={`w-full py-2 rounded-full font-semibold ${
+                        statusColors[ticket.status] || "bg-gray-400 text-white"
                       }`}
                     >
-                      {ticket.category}
-                    </span>
-                  </div>
-
-                  {/* Other Details */}
-                  <div>
-                    <label className="block text-sm font-semibold">Item Name</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.name}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">
-                      Last Seen Location
-                    </label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.lastSeenLocation}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Description</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.description}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Date & Time</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.dateTime}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Buttons Section */}
-                <div className="flex flex-col space-y-4 mt-6">
-                  {/* Edit and Delete Buttons */}
-                  <div className="flex space-x-4">
-                    <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
-                      Edit
-                    </button>
-                    <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow">
-                      Delete
+                      {ticket.status}
                     </button>
                   </div>
-
-                  {/* Status Button */}
-                  <button
-                    className={`w-full py-2 rounded-full font-semibold ${
-                      statusColors[ticket.status] || "bg-gray-400 text-white"
-                    }`}
-                  >
-                    {ticket.status}
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-600">No tickets found.</p>
+          )}
         </div>
       </main>
 

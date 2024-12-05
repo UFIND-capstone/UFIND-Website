@@ -1,26 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
 
-    // Handle search input changes
-    const handleSearch = (event) => {
-        const query = event.target.value.toLowerCase();
-        setSearchQuery(query);
-
-        // Filter items based on description, detailedDescription, or name
-        const filtered = items.filter(item => {
-            const { description = '', detailedDescription = '', name = '' } = item;
-            return (
-                description.toLowerCase().includes(query) ||
-                detailedDescription.toLowerCase().includes(query) ||
-                name.toLowerCase().includes(query)
-            );
-        });
-
-        setFilteredItems(filtered);
-    };
-
-const turnover = () => {
+const Turnover = () => {
   // Array of ticket data for multiple items
   const tickets = [
     {
@@ -41,9 +23,27 @@ const turnover = () => {
       description: "Black with white handle",
       dateTime: "November 24, 2024 - 10:30 AM",
       status: "Matched",
-      image: "src/assets/aquaflask.png", // Correct path for static assets
+      image: "src/assets/umbrella.png", // Correct path for static assets
     },
   ];
+
+  // State for managing search query and filtered tickets
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredTickets, setFilteredTickets] = useState(tickets);
+
+  // Handle search input changes
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filtered = tickets.filter((ticket) =>
+      ticket.name.toLowerCase().includes(query) ||
+      ticket.description.toLowerCase().includes(query) ||
+      ticket.category.toLowerCase().includes(query)
+    );
+
+    setFilteredTickets(filtered);
+  };
 
   // Dynamic Styling for Status and Category
   const statusColors = {
@@ -56,7 +56,7 @@ const turnover = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
       {/* Topbar */}
       <Topbar />
 
@@ -66,9 +66,26 @@ const turnover = () => {
           TURNOVER
         </h2>
 
+        {/* Search Bar */}
+        <div className="flex items-center justify-center w-full max-w-2xl mx-auto mb-8">
+          <input
+            type="text"
+            className="w-full p-4 border border-gray-300 rounded-l-lg focus:outline-none"
+            placeholder="Search tickets..."
+            value={searchQuery} // Controlled input
+            onChange={handleSearch} // Update search query on input change
+          />
+          <button
+            className="px-6 py-4 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600"
+            onClick={() => console.log("Search triggered")}
+          >
+            🔍
+          </button>
+        </div>
+
         {/* Ticket List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {tickets.map((ticket) => (
+          {filteredTickets.map((ticket) => (
             <div
               key={ticket.id}
               className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
@@ -99,16 +116,7 @@ const turnover = () => {
 
                   {/* Other Details */}
                   <div>
-                    <label className="block text-sm font-semibold">Item Name</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.name}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">
-                      Last Seen Location
-                    </label>
+                    <label className="block text-sm font-semibold">Last Seen Location</label>
                     <span className="w-full p-2 border rounded-md bg-gray-50">
                       {ticket.lastSeenLocation}
                     </span>
@@ -131,7 +139,6 @@ const turnover = () => {
 
                 {/* Buttons Section */}
                 <div className="flex flex-col space-y-4 mt-6">
-                  {/* Edit and Delete Buttons */}
                   <div className="flex space-x-4">
                     <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
                       Edit
@@ -141,7 +148,7 @@ const turnover = () => {
                     </button>
                   </div>
 
-                  {/* Status Button */}
+                  {/* Status */}
                   <button
                     className={`w-full py-2 rounded-full font-semibold ${
                       statusColors[ticket.status] || "bg-gray-400 text-white"
@@ -162,4 +169,4 @@ const turnover = () => {
   );
 };
 
-export default turnover;
+export default Turnover;
