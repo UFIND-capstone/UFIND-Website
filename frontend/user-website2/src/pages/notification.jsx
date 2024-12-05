@@ -31,7 +31,7 @@ function NotificationUI() {
     <div className="min-h-screen flex flex-col bg-gray-100">
       <Topbar />
       <p className="text-gray-600 text-5xl px-30 py-10 font-bold text-center">NOTIFICATIONS</p>
-      <div className="flex flex-wrap space-x-4 p-6">
+      <div className="flex flex-wrap space-x-4 p-6 justify-between">
         {notifications.length > 0 ? (
           notifications.map((notification) => (
             <div key={notification.id} className="w-full sm:w-1/3 p-6 border border-gray-300 rounded-lg bg-white shadow-md my-4">

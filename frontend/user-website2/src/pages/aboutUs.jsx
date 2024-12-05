@@ -4,41 +4,75 @@ import Topbar from '../components/Topbar';
 
 const AboutUs = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen flex flex-col">
       <Topbar />
 
-      {/* Full-width image below the top bar */}
+      {/* Banner Image */}
       <div className="w-full">
-        <img 
-          src="/src/assets/ABOUT IMAGE.png" 
-          alt="About Us Banner" 
+        <img
+          src="/src/assets/ABOUT IMAGE.png"
+          alt="About Us Banner"
           className="w-full h-65 object-cover"
         />
       </div>
 
-      <section className="text-center py-12 px-6">
-        <h2 className="text-3xl font-semibold mb-4">ABOUT US</h2>
-        <p className="max-w-7xl mx-auto text-gray-700 text-justify leading-relaxed mb-6">
+      {/* About Us Section */}
+      <section className="py-12 px-6 bg-white text-gray-700">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-6">
+            ABOUT US
+          </h2>
+
+          <p className="max-w-6xl mx-auto text-gray-700 text-justify leading-relaxed mb-6">
           U-Find is a user-friendly web and mobile platform designed to help students and staff report, track, and retrieve lost and found items on campus. Our system allows users to securely log in and report any lost or found items, making it easier for the rightful owners to be reunited with their belongings. With real-time notifications, users are quickly alerted whenever a match for their lost or found item is made.
         </p>
-        <p className="max-w-7xl mx-auto text-gray-700 text-justify leading-relaxed">
+
+        <p className="max-w-6xl mx-auto text-gray-700 text-justify leading-relaxed">
           Administrators can efficiently manage reports, ensuring that all cases are handled smoothly. Our goal is to create a seamless and convenient experience for the campus community, helping lost items find their way back to their owners in a secure and timely manner.
         </p>
+
+        </div>
+      </section>
+
+      {/* Our Mission Section */}
+      <section className="py-7 px-7 bg-gray-100">
+        <div className="max-w-6xl mx-auto text-center">
+          <h3 className="text-4xl font-bold text-gray-900 mb-4">Our Mission</h3>
+          <p className="text-center max-w-6xl mx-auto text-gray-700 leading-relaxed mb-10">
+            At U-Find, we are committed to creating a trusted and efficient solution that ensures lost belongings are quickly reunited with their owners. We strive to build a community of collaboration and care while simplifying the lost-and-found process for everyone.
+          </p>
+        </div>
+      </section>
+
+      {/* Key Features Section */}
+      <section className="py-12 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h3 className="text-4xl font-bold text-center text-gray-900 mb-6">
+            Key Features
+          </h3>
+          <ul className="text-base pl-8 list-disc text-gray-700 leading-relaxed space-y-3">
+            <li>Real-Time Notifications: Be the first to know when a match is made for your reported item.</li>
+            <li>User-Friendly Dashboard: Navigate with ease to manage your lost and found reports.</li>
+            <li>Smart Search and Filters: Find items faster with advanced search capabilities and category filters.</li>
+            <li>Dedicated Admin Tools: Campus administrators can efficiently oversee and manage all reports to ensure smooth operations.</li>
+            <li>Secure Access: Protect user data and item information with robust security protocols.</li>
+          </ul>
+        </div>
       </section>
 
       {/* Meet the Team Section */}
       <section className="py-12 px-6 bg-white">
-        <h2 className="text-5xl font-semibold text-center mb-8">Meet the Team</h2>
-
-        <p className="max-w-6xl mx-auto text-gray-700 leading-relaxed text-center">
-        Get to know the team behind U-Find a group of dedicated, skilled people who work well together. They are friendly, experts in what they do, and truly passionate about their mission to make U-Find successful.
+        <h2 className="text-4xl font-bold text-center text-gray-900 mb-6">
+          Meet the Team
+        </h2>
+        <p className="text-center max-w-6xl mx-auto text-gray-700 leading-relaxed mb-10">
+          Our team is dedicated to making U-Find the most reliable lost-and-found platform. From developers to researchers, each member contributes their expertise and passion to ensure our platform serves the campus community effectively.
         </p>
 
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           
           {/* Card 1 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
               src="/src/assets/MAXINE.png" 
               alt="Team Member" 
@@ -51,7 +85,7 @@ const AboutUs = () => {
           
 
           {/* Card 2 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
               src="/src/assets/JEPOY.png" 
               alt="Team Member" 
@@ -63,7 +97,7 @@ const AboutUs = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
               src="/src/assets/MEL.png" 
               alt="Team Member" 
@@ -75,7 +109,7 @@ const AboutUs = () => {
           </div>
 
           {/* Card 4 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
               src="/src/assets/ANGELO.png" 
               alt="Team Member" 
@@ -87,7 +121,7 @@ const AboutUs = () => {
           </div>
 
           {/* Card 5 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
               src="/src/assets/JARED.png" 
               alt="Team Member" 
@@ -100,6 +134,7 @@ const AboutUs = () => {
         </div>
       </section>
 
+      {/* Footer */}
       <Footer />
     </div>
   );

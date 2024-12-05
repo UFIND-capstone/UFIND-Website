@@ -128,7 +128,7 @@ const ItemDescription = () => {
       
 
       console.log("Claim Submitted:", response.data);
-      alert("Claim submitted successfully!");
+      alert("Your details are pending admin approval. You will be notified once the approval is processed.");
       setShowClaimForm(false);
       setClaimData({
         name: "",
@@ -243,6 +243,7 @@ const ItemDescription = () => {
                         <input
                           type="text"
                           name="name"
+                          placeholder="Enter your full name"
                           value={claimData.name}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
@@ -256,6 +257,7 @@ const ItemDescription = () => {
                         <input
                           type="text"
                           name="yearSection"
+                          placeholder="Enter you year and section"
                           value={claimData.yearSection}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
@@ -283,6 +285,7 @@ const ItemDescription = () => {
                         <input
                           type="text"
                           name="timeLost"
+                          placeholder="Enter a time lost"
                           value={claimData.timeLost}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
@@ -296,6 +299,7 @@ const ItemDescription = () => {
                         <input
                           type="text"
                           name="locationLost"
+                          placeholder="Enter a location lost"
                           value={claimData.locationLost}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
