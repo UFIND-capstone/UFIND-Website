@@ -164,9 +164,6 @@ const ItemDescription = () => {
               <img
                 src={item.imageUrl || "/placeholder-image.png"}
                 alt={item.name || "Lost Item"}
-                className={`object-cover w-full h-80 rounded-md ${
-                  item.status === "found" ? "blur-sm" : ""
-                }`}
               />
             </div>
 
@@ -188,11 +185,7 @@ const ItemDescription = () => {
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Description:</p>
-                  <p
-                    className={`text-gray-600 ${
-                      item.status === "found" ? "blur-sm" : ""
-                    }`}
-                  >
+                  <p>
                     {item.description || "N/A"}
                   </p>
                 </div>
@@ -212,7 +205,7 @@ const ItemDescription = () => {
                       : "Not specified"}
                   </p>
                 </div>
-                <div>
+                {/* <div>
                   <p className="font-medium text-gray-700">
                     Last Seen Location:
                   </p>
@@ -224,7 +217,7 @@ const ItemDescription = () => {
                   ) : (
                     <p className="text-gray-600">No location available</p>
                   )}
-                </div>
+                </div> */}
               </div>
               {item.status === "found" ? (
                 <div className="mt-6">
