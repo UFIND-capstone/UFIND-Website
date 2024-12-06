@@ -23,7 +23,7 @@ const Turnover = () => {
       description: "Black with white handle",
       dateTime: "November 24, 2024 - 10:30 AM",
       status: "Matched",
-      image: "src/assets/umbrella.png", // Correct path for static assets
+      image: "src/assets/aquaflask.png", // Correct path for static assets
     },
   ];
 
@@ -63,7 +63,7 @@ const Turnover = () => {
       {/* Main Content */}
       <main className="flex-grow py-10 px-6">
         <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-          TURNOVER
+          TURNOVER TICKETS
         </h2>
 
         {/* Search Bar */}
@@ -139,14 +139,6 @@ const Turnover = () => {
 
                 {/* Buttons Section */}
                 <div className="flex flex-col space-y-4 mt-6">
-                  <div className="flex space-x-4">
-                    <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
-                      Edit
-                    </button>
-                    <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow">
-                      Delete
-                    </button>
-                  </div>
 
                   {/* Status */}
                   <button
