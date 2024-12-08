@@ -22,7 +22,8 @@ import UnclaimedTickets from "../pages/unclaimedTickets";
 import ContactForm from "../pages/contactForm";
 import ActiveTickets from "../pages/activeTickets"
 import Turnover from "../pages/turnover"
-import Notification from "../pages/notification"
+import Notification from "../pages/notification";
+import ChatApp from "../pages/chatApp";
 import WhyIsItImportantToSecureYourBelongings from "../pages/whyisitimportanttosecureyourBelongings";
 
 export const AppRoutes = () => {
@@ -132,6 +133,11 @@ export const AppRoutes = () => {
       path: "/notification",
       element: <Notification />
     },
+    {
+      path: "/chatApp",
+      element: <ChatApp />
+    },
+  
 
   ]);
 

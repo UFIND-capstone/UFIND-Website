@@ -250,7 +250,7 @@ const ItemDescription = () => {
                         <input
                           type="text"
                           name="yearSection"
-                          placeholder="Enter you year and section"
+                          placeholder="Enter your year and section"
                           value={claimData.yearSection}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
@@ -309,9 +309,11 @@ const ItemDescription = () => {
                   )}
                 </div>
               ) : (
-                <button className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600">
-                  Contact Me
-                </button>
+                <button
+                    className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
+                    onClick={() => navigate("/chatApp")}>
+                    Contact Me
+              </button>
               )}
             </div>
           </div>
