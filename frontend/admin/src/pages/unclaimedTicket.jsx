@@ -1,6 +1,7 @@
 import React from 'react';
-import Sidebar from '../components/sidebar';
 import Topbar from '../components/topBar';
+import Sidebar from '../components/sideBar';
+
 
 const unclaimedTickets = [
   {
