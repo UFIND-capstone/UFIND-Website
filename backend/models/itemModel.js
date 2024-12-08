@@ -52,10 +52,10 @@ export const addClaimItem = async (claimData) => {
   }
 };
 
-export const getItemsByUserId = async (userId) => {
+export const getItemsByUserId = async (studentId) => {
   try {
     const itemsCollection = collection(db, "items");
-    const q = query(itemsCollection, where("userId", "==", userId));
+    const q = query(itemsCollection, where("studentId", "==", studentId));
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {

@@ -10,6 +10,7 @@ import { useAuth } from "../AuthContext";
 const ListingFound = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    studentId: "",
     name: "",
     dateTime: "",
     description: "",
@@ -116,7 +117,7 @@ const ListingFound = () => {
     // Add the uploaded image URL to the form data
     const data = {
       ...formData,
-      userId: user.id,
+      studentId: user.id,
       imageUrl,
       status: "found",
       ticket: "pending",

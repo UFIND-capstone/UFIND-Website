@@ -1,59 +1,59 @@
-import { getFirestore, doc, updateDoc, collection, query, where, getDocs, addDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import firebaseApp from '../firebase.js';
 
 const db = getFirestore(firebaseApp);
 
 export const updateUser = async (studentId, updates) => {
-    const userQuery = query(collection(db, 'users'), where('studentId', '==', studentId));
-    const userSnapshot = await getDocs(userQuery);
+    const userRef = doc(db, 'users', studentId); // Directly reference the document by studentId
 
-    if (userSnapshot.empty) {
-        return null;
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+        return null; // User not found
     }
-
-    const userDoc = userSnapshot.docs[0];
-    const userRef = doc(db, 'users', userDoc.id);
 
     // Update user details in Firestore
     await updateDoc(userRef, updates);
 
     // Return updated data
-    return { id: userDoc.id, ...userDoc.data(), ...updates };
+    return { id: studentId, ...userSnap.data(), ...updates };
 };
+
 
 
 
 export const getUser = async (studentId) => {
+    const userRef = doc(db, 'users', studentId);
+    const userSnap = await getDoc(userRef);
 
-    const userQuery = query(collection(db, 'users'), where('studentId', '==', studentId));
-    const userSnapshot = await getDocs(userQuery);
-
-    if (userSnapshot.empty) {
-        return null;
+    if (!userSnap.exists()) {
+        return null; // User not found
     }
 
-    const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    return userList[0];
+    return { id: studentId, ...userSnap.data() };
 };
+
 
 export const addUser = async (userData) => {
+    const { studentId, ...restData } = userData;
+    const userRef = doc(db, "users", studentId);
+
     try {
-        // Add user data to Firestore
-        const docRef = await addDoc(collection(db, 'users'), userData);
-        return docRef.id; // Return the ID of the newly created document
+        await setDoc(userRef, restData); // Store user details in Firestore
+        return studentId; // Return the document ID
     } catch (error) {
-        throw new Error('Error adding user: ' + error.message);
+        throw new Error("Error adding user: " + error.message);
     }
 };
 
-export const getUserById = async (studentId) => {
-    const userQuery = query(collection(db, 'users'), where('studentId', '==', studentId));
-    const userSnapshot = await getDocs(userQuery);
 
-    if (userSnapshot.empty) {
+export const getUserById = async (studentId) => {
+    const userRef = doc(db, 'users', studentId);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
         throw new Error('User not found');
     }
 
-    const userDoc = userSnapshot.docs[0];
-    return { id: userDoc.id, ...userDoc.data() };
+    return { id: studentId, ...userSnap.data() };
 };
+
