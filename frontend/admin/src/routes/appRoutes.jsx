@@ -2,11 +2,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "../AuthContext";
 import { Login } from "../pages/login";
 import Dashboard from "../pages/dashboard"; // Import your Dashboard component
-import { ItemLost } from "../pages/itemLost";
+import  ItemLost from "../pages/ItemLost";
 import { MatchItems } from "../pages/matchItems";
-import { ItemFound } from "../pages/itemFound";
+import ItemFound from "../pages/itemFound";
 import { MyAccount } from "../pages/myAccount";
 import { UnclaimedTicket } from "../pages/unclaimedTicket";
+import TurnoverTicket from "../pages/turnoverTicket";
+import ActiveTicket from "../pages/activeTicket";
+import ImgDescriptions from "../pages/imgDescriptions";
 import ProtectedRoute from "../components/ProtectedRoute"; // Import the ProtectedRoute component
 
 export const AppRoutes = () => {
@@ -25,7 +28,7 @@ export const AppRoutes = () => {
       ), // Protect the dashboard route
     },
     {
-      path: "/lost-items",
+      path: "/itemLost",
       element: (
         <ProtectedRoute>
           <ItemLost />
@@ -41,7 +44,7 @@ export const AppRoutes = () => {
       ), // Protect the dashboard route
     },
     {
-      path: "/found-items",
+      path: "/itemFound",
       element: (
         <ProtectedRoute>
           <ItemFound />
@@ -49,7 +52,7 @@ export const AppRoutes = () => {
       ), // Protect the dashboard route
     },
     {
-      path: "/my-account",
+      path: "/myAccount",
       element: (
         <ProtectedRoute>
           <MyAccount />
@@ -57,10 +60,34 @@ export const AppRoutes = () => {
       ), // Protect the dashboard route
     },
     {
-      path: "/unclaimed-tickets",
+      path: "/unclaimedTicket",
       element: (
         <ProtectedRoute>
           <UnclaimedTicket />
+        </ProtectedRoute>
+      ), // Protect the dashboard route
+    },
+    {
+      path: "/turnoverTicket",
+      element: (
+        <ProtectedRoute>
+          <TurnoverTicket />
+        </ProtectedRoute>
+      ), // Protect the dashboard route
+    },
+    {
+      path: "/activeTicket",
+      element: (
+        <ProtectedRoute>
+          <ActiveTicket />
+        </ProtectedRoute>
+      ), // Protect the dashboard route
+    },
+    {
+      path: "/imgDescriptions",
+      element: (
+        <ProtectedRoute>
+          <ImgDescriptions />
         </ProtectedRoute>
       ), // Protect the dashboard route
     },
