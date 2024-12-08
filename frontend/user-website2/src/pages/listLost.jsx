@@ -11,7 +11,7 @@ const ListingLost = () => {
   const navigate = useNavigate();
   const { user } = useAuth(); // Get user from AuthContext
   const [formData, setFormData] = useState({
-    userId: "",
+    studentId: "",
     name: "",
     lastSeen: "",
     dateTime: "",
@@ -113,7 +113,7 @@ const ListingLost = () => {
     // Add the uploaded image URL to the form data
     const data = {
       ...formData,
-      userId: user.id,
+      studentId: user.id,
       imageUrl,
       status: "lost",
       ticket: "pending",

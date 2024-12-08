@@ -25,7 +25,7 @@ const ItemDescription = () => {
   const [showClaimForm, setShowClaimForm] = useState(false);
   const [claimData, setClaimData] = useState({
     itemId: "",
-    userId:"",
+    studentId:"",
     name: "",
     yearSection: "",
     description: "",
@@ -118,7 +118,7 @@ const ItemDescription = () => {
       const data = {
         ...claimData,
         itemId: itemID,
-        userId: user.id
+        studentId: user.id
       };
       console.log("Submitting claim with data:", data);
       const response = await axios.post(

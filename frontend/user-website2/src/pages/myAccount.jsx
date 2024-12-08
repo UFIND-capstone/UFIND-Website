@@ -22,7 +22,7 @@ export const MyAccount = () => {
   // Fetch the latest user profile from the server
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/user/${user.studentId}`);
+      const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
       setProfile(response.data); // Update profile with fresh data
       setEditedProfile(response.data); // Sync editable data
     } catch (error) {
@@ -46,7 +46,7 @@ export const MyAccount = () => {
   const handleSave = async () => {
     try {
       await axios.put("http://localhost:3000/api/user/edit", {
-        studentId: user.studentId,
+        studentId: user.id,
         ...editedProfile, // Pass all edited fields
       });
       await fetchUserProfile(); // Re-fetch updated profile

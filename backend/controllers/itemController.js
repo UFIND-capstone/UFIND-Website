@@ -2,7 +2,7 @@ import { addItem, getItems, getItemById, getItemsByUserId, getPendingItem, addCl
 
 export const claimItemHandler = async (req, res) => {
     const {
-        userId,
+        studentId,
         name,
         description,
         yearSection,
@@ -12,7 +12,7 @@ export const claimItemHandler = async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!userId || !name || !description || !yearSection || !timeLost || !locationLost || !itemId) {
+    if (!studentId || !name || !description || !yearSection || !timeLost || !locationLost || !itemId) {
         return res.status(400).json({
             message: 'All fields are required',
         });
@@ -20,7 +20,7 @@ export const claimItemHandler = async (req, res) => {
 
     try {
         const addedItemId = await addClaimItem({
-            userId,
+            studentId,
             name,
             description,
             yearSection,
@@ -45,10 +45,10 @@ export const getItemsHandler = async (req, res) => {
 };
 
 export const getItemsByUserIdHandler = async (req, res) => {
-    const { userId } = req.params;
+    const { studentId } = req.params;
   
     try {
-      const items = await getItemsByUserId(userId); // Fetch items for the specific user
+      const items = await getItemsByUserId(studentId); // Fetch items for the specific user
       res.status(200).json(items); // Return an empty array if no items are found
     } catch (error) {
       res.status(500).json({ message: `Error retrieving items: ${error.message}` });
@@ -81,7 +81,7 @@ export const getItemByIdHandler = async (req, res) => {
 
 export const addItemHandler = async (req, res) => {
     const {
-        userId,
+        studentId,
         name,
         description,
         dateTime,
@@ -92,11 +92,10 @@ export const addItemHandler = async (req, res) => {
         ticket,
         location,
         imageUrl,
-        claimStatus,
     } = req.body;
 
     // Validate required fields
-    if (!userId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !imageUrl) {
+    if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !imageUrl) {
         return res.status(400).json({
             message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, location, and imageURL.',
         });
@@ -104,7 +103,7 @@ export const addItemHandler = async (req, res) => {
 
     try {
         const itemId = await addItem({
-            userId,
+            studentId,
             name,
             description,
             dateTime,
@@ -115,7 +114,6 @@ export const addItemHandler = async (req, res) => {
             ticket,
             location,
             imageUrl, // Pass imageURL to the model
-            claimStatus,
         });
         res.status(201).json({ message: 'Item added successfully', itemId });
     } catch (error) {
