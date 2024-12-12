@@ -1,35 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../components/Footer";
 import Topbar from "../components/Topbar";
+import { useAuth } from "../AuthContext";
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [activeContact, setActiveContact] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [contacts, setContacts] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const { user } = useAuth();
+  const [newMessage, setNewMessage] = useState("");
 
-  const contacts = [
-    { name: "Jared Salvan", message: "Hello, have you seen my items?" },
-    { name: "Jowana Shayn", message: "Hello, have you seen my items?" },
-    { name: "Prince Charlang", message: "Hello, have you seen my items?" },
-    { name: "Rey Valera", message: "Hello, have you seen my items?" },
-    { name: "Bobby Stark", message: "Hello, have you seen my items?" },
-    { name: "Rickyboy", message: "Hello, have you seen my items?" },
-  ];
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return; // Prevent sending empty messages
+
+    const messageData = {
+      senderId: user.id, // Replace `user.id` with actual sender ID
+      recipientId: activeContact.otherUserId, // Replace with the recipient's ID
+      content: newMessage.trim(),
+    };
+
+    try {
+      // Send the message to the backend
+      const response = await axios.post(
+        "http://localhost:3000/api/messages",
+        messageData
+      );
+      // Update the local state with the new message
+      setMessages((prevMessages) => [...prevMessages, response.data]);
+      setNewMessage(""); // Clear the input field
+    } catch (error) {
+      console.error("Error sending message", error);
+    }
+  };
+
+  // Fetch chats from the backend
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const userId = user.id; // Replace with actual user ID
+        const response = await axios.post(
+          "http://localhost:3000/api/getChats",
+          { userId }
+        );
+        setContacts(response.data);
+      } catch (error) {
+        console.error("Error fetching chats", error);
+      }
+    };
+    fetchChats();
+  }, []);
 
   // Filter contacts based on the search term
   const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+    contact.otherUserData.firstName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
-  const openChat = (contact) => {
-    setActiveContact(contact);
+  const openChat = async (chat) => {
+    setActiveContact(chat);
     setIsChatOpen(true);
+
+    // Fetch messages for the selected chat
+    console.log(chat.chatId);
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/messages/${chat.chatId}`
+      );
+      setMessages(response.data);
+    } catch (error) {
+      console.error("Error fetching messages", error);
+    }
   };
 
   const closeChat = () => {
     setIsChatOpen(false);
     setActiveContact(null);
+    setMessages([]);
   };
 
   return (
@@ -52,20 +103,25 @@ const ChatApp = () => {
             />
           </div>
           <ul className="overflow-y-auto">
-            {filteredContacts.map((contact, index) => (
+            {filteredContacts.map((contact) => (
               <li
-                key={index}
+                key={contact.chatId}
                 className="p-4 flex items-center hover:bg-gray-100 cursor-pointer"
                 onClick={() => openChat(contact)}
               >
                 <img
                   src="/src/assets/defaultProfile.png"
-                  alt={contact.name}
+                  alt={contact.otherUserData.firstName}
                   className="w-12 h-12 rounded-full object-cover mr-3"
                 />
                 <div>
-                  <h3 className="font-bold">{contact.name}</h3>
-                  <p className="text-gray-500 text-sm">{contact.message}</p>
+                  <h3 className="font-bold">
+                    {contact.otherUserData.firstName}{" "}
+                    {contact.otherUserData.lastName}
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    {contact.otherUserData.contactNumber}
+                  </p>
                 </div>
               </li>
             ))}
@@ -86,10 +142,13 @@ const ChatApp = () => {
                 <div className="flex items-center">
                   <img
                     src="/src/assets/defaultProfile.png"
-                    alt={activeContact.name}
+                    alt={activeContact.otherUserData.firstName}
                     className="w-10 h-10 rounded-full object-cover mr-3"
                   />
-                  <h2 className="text-lg font-bold">{activeContact.name}</h2>
+                  <h2 className="text-lg font-bold">
+                    {activeContact.otherUserData.firstName}{" "}
+                    {activeContact.otherUserData.lastName}
+                  </h2>
                 </div>
                 <button
                   className="text-white text-lg font-semibold"
@@ -98,36 +157,37 @@ const ChatApp = () => {
                   Back
                 </button>
               </div>
-
               {/* Chat Body */}
               <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-                <div className="space-x-4">
-                  <div className="self-start max-w-xs bg-blue-100 rounded-lg p-2">
-                    <p>Hi, have you seen my items?</p>
-                  </div>
-                  <div className="self-end max-w-xs bg-blue-500 text-white rounded-lg p-2">
-                    <p>Yes, I found here at CSM Bldg</p>
-                  </div>
-                  <div className="self-start max-w-xs bg-blue-100 rounded-lg p-2">
-                    <p>Where are you now? Can we meet up right now?</p>
-                  </div>
-                  <div className="self-end max-w-xs bg-blue-500 text-white rounded-lg p-2">
-                    <p>I'm here at cafeteria sitting around</p>
-                  </div>
-                  <div className="self-start max-w-xs bg-blue-100 rounded-lg p-2">
-                    <p>Okay, I’m going right now</p>
-                  </div>
-                </div>
+                {messages.length === 0 ? (
+                  <p className="text-center text-gray-500">No messages yet.</p>
+                ) : (
+                  messages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`max-w-xs p-2 rounded-lg ${
+                        message.senderId === activeContact.otherUserId
+                          ? "bg-blue-100 self-start"
+                          : "bg-blue-500 text-white self-end"
+                      }`}
+                    >
+                      <p>{message.content}</p>
+                    </div>
+                  ))
+                )}
               </div>
-
-              {/* Message Input */}
               <div className="bg-white px-4 py-3 flex items-center border-t">
                 <input
                   type="text"
                   placeholder="Chat message"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
                   className="flex-1 border rounded-lg px-3 py-2 focus:outline-none"
                 />
-                <button className="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                <button
+                  onClick={sendMessage}
+                  className="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
                   Send
                 </button>
               </div>

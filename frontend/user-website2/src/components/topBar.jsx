@@ -79,7 +79,7 @@ export default function Topbar() {
         </div>
 
         <div>
-          <Link to="/messages" aria-label="Messages">
+          <Link to="/chatApp" aria-label="Messages">
             <img
               src="/src/assets/Mail.png" // Replace with your mail icon path
               alt="Mail"
