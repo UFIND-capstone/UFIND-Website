@@ -16,7 +16,7 @@ import Topbar from "../components/Topbar";
 import { useAuth } from "../AuthContext";
 
 const ItemDescription = () => {
-  const { user } = useAuth(); // Get user from AuthContext  
+  const { user } = useAuth(); // Get user from AuthContext
   const navigate = useNavigate();
   const { itemID } = useParams();
   const [item, setItem] = useState(null);
@@ -25,7 +25,7 @@ const ItemDescription = () => {
   const [showClaimForm, setShowClaimForm] = useState(false);
   const [claimData, setClaimData] = useState({
     itemId: "",
-    studentId:"",
+    studentId: "",
     name: "",
     yearSection: "",
     description: "",
@@ -105,7 +105,13 @@ const ItemDescription = () => {
     return () => map.setTarget(null);
   }, [item]);
 
-  const handleClaimToggle = () => setShowClaimForm(!showClaimForm);
+  const handleClaimToggle = () => {
+    if (user.id === item.studentId) {
+      alert("You cannot claim your own item.");
+      return;
+    }
+    setShowClaimForm(!showClaimForm);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -118,17 +124,39 @@ const ItemDescription = () => {
       const data = {
         ...claimData,
         itemId: itemID,
-        studentId: user.id
+        studentId: user.id,
       };
       console.log("Submitting claim with data:", data);
+
+      // Submit the claim
       const response = await axios.post(
         "http://localhost:3000/api/items/claim",
         data
       );
-      
+      console.log("User ID:", user.id);
+      console.log("Receiver ID:", item.studentId);
+
+      // Once the claim is submitted, send the message to the poster
+      const messageData = {
+        senderId: user.id, // The ID of the user claiming the item
+        recipientId: item.studentId, // The ID of the poster of the item (receiver)
+        content: `
+          Item: ${item.name}
+          Name: ${claimData.name}
+          Year and Section: ${claimData.yearSection}
+          Description: ${claimData.description}
+          Time Lost: ${claimData.timeLost}
+          Location Lost: ${claimData.locationLost}
+        `,
+      };
+
+      // Send the message
+      await axios.post("http://localhost:3000/api/messages", messageData);
 
       console.log("Claim Submitted:", response.data);
-      alert("Your details are pending admin approval. You will be notified once the approval is processed.");
+      alert(
+        "Your details are pending admin approval. You will be notified once the approval is processed."
+      );
       setShowClaimForm(false);
       setClaimData({
         name: "",
@@ -142,7 +170,6 @@ const ItemDescription = () => {
       alert("Failed to submit claim. Please try again.");
     }
   };
-  
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -185,9 +212,7 @@ const ItemDescription = () => {
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Description:</p>
-                  <p>
-                    {item.description || "N/A"}
-                  </p>
+                  <p>{item.description || "N/A"}</p>
                 </div>
                 <div>
                   <p className="font-medium text-gray-700">Date:</p>
@@ -228,7 +253,10 @@ const ItemDescription = () => {
                     Claim This Item
                   </button>
                   {showClaimForm && (
-                    <form className="mt-4 space-y-4" onSubmit={handleClaimSubmit}>
+                    <form
+                      className="mt-4 space-y-4"
+                      onSubmit={handleClaimSubmit}
+                    >
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Name
@@ -310,10 +338,11 @@ const ItemDescription = () => {
                 </div>
               ) : (
                 <button
-                    className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
-                    onClick={() => navigate("/chatApp")}>
-                    Contact Me
-              </button>
+                  className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
+                  onClick={() => navigate("/chatApp")}
+                >
+                  Contact Me
+                </button>
               )}
             </div>
           </div>
