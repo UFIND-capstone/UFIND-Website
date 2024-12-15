@@ -157,6 +157,7 @@ const ChatApp = () => {
                   Back
                 </button>
               </div>
+
               {/* Chat Body */}
               <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                 {messages.length === 0 ? (
@@ -165,17 +166,25 @@ const ChatApp = () => {
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`max-w-xs p-2 rounded-lg ${
-                        message.senderId === activeContact.otherUserId
-                          ? "bg-blue-100 self-start"
-                          : "bg-blue-500 text-white self-end"
-                      }`}
+                      className={`flex ${
+                        message.senderId === user.id ? "justify-end" : "justify-start"
+                      } mb-2`}
                     >
-                      <p>{message.content}</p>
+                      <div
+                        className={`max-w-xs p-3 rounded-lg ${
+                          message.senderId === user.id
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200 text-gray-900"
+                        }`}
+                      >
+                        <p>{message.content}</p>
+                      </div>
                     </div>
                   ))
                 )}
               </div>
+
+              {/* Chat Input */}
               <div className="bg-white px-4 py-3 flex items-center border-t">
                 <input
                   type="text"
@@ -197,7 +206,8 @@ const ChatApp = () => {
               Select a conversation to start chatting
             </div>
           )}
-        </div>
+</div>
+
       </div>
 
       <Footer />
