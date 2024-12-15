@@ -20,7 +20,6 @@ const ListingLost = () => {
     fullName: "",
     contactNumber: "",
     email: "",
-    imageUrl: "", // Store the image URL here
   });
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");

@@ -1,73 +1,75 @@
-import React from 'react';
-import Sidebar from '../components/sidebar';
-import Topbar from '../components/topBar';
+import React from "react";
+import Sidebar from "../components/sideBar";
+import Topbar from "../components/topBar";
 
 export const MyAccount = () => {
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <div className="w-full">
+      <div className="flex flex-col flex-1">
         {/* Topbar */}
         <Topbar />
 
-        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-cyan-400 p-10">
-          <h1 className="text-4xl text-white font-bold text-center mb-10">MY ACCOUNT</h1>
+        {/* Page Content */}
+        <div className="flex-1 bg-gray-100 p-6 md:p-5 overflow-auto">
+          <h1 className="text-4xl font-bold text-center mb-6 text-gray-800">
+            MY ACCOUNT
+          </h1>
 
-          {/* Profile Card */}
-          <div className="max-w-2xl mx-auto bg-white p-10 rounded-lg shadow-lg">
+          {/* Profile Card Container */}
+          <div className="max-w-4xl mx-auto bg-white p-10 rounded-lg shadow-lg">
             {/* Profile Image */}
-            <div className="flex justify-center mb-6">
+            <div className="flex flex-col items-center mb-6">
               <img
-                src="/src/assets/PROFILE.png" // Replace with actual profile image
+                src="/src/assets/PROFILE.png" // Replace with actual profile image path
                 alt="Profile"
-                className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-md"
+                className="w-32 h-32 rounded-full border-4 border-blue-400 shadow-md"
               />
+              <h2 className="mt-4 text-2xl font-semibold text-gray-800">
+                Jared Salvan
+              </h2>
+              <p className="text-gray-500">rarasalvan@gmail.com</p>
             </div>
 
             {/* User Information */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Jared Salvan</h2>
-              <p className="text-gray-600 mb-2">rarasalvan@gmail.com</p>
-            </div>
-
-            <div className="space-y-4">
-              {/* Username */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Username:</strong> JaredSalvan101
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Username:</span>
+                <span className="border-b pb-1">JaredSalvan101</span>
               </div>
 
-              {/* Email */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Email Address:</strong> rarasalvan@gmail.com
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Email Address:</span>
+                <span className="border-b pb-1">rarasalvan@gmail.com</span>
               </div>
 
-              {/* Contact Number */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Contact Number:</strong> +1234567890
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Contact Number:</span>
+                <span className="border-b pb-1">+1234567890</span>
               </div>
 
-              {/* Address */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Address:</strong> Iponan, Cagayan de Oro City
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Address:</span>
+                <span className="border-b pb-1">Iponan, Cagayan de Oro City</span>
               </div>
 
-              {/* Gender */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Gender:</strong> Male
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Gender:</span>
+                <span className="border-b pb-1">Male</span>
               </div>
 
-              {/* Password */}
-              <div className="flex justify-between text-gray-600">
-                <strong>Password:</strong> ********
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-600">Password:</span>
+                <span className="border-b pb-1">********</span>
               </div>
             </div>
 
-            {/* Edit Button */}
-            <div className="flex justify-center mt-6">
-              <button className="py-2 px-6 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            {/* Edit Profile Button */}
+            <div className="flex justify-center mt-8">
+              <button className="py-3 px-10 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 Edit Profile
               </button>
             </div>
@@ -77,4 +79,3 @@ export const MyAccount = () => {
     </div>
   );
 };
-

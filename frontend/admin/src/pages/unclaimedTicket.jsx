@@ -1,95 +1,114 @@
-import React from 'react';
-import Topbar from '../components/topBar';
+import React, { useState } from "react";
 import Sidebar from '../components/sideBar';
+import Topbar from '../components/topBar';
 
+const UnclaimedTicket = () => {
+  const [search, setSearch] = useState("");
 
-const unclaimedTickets = [
-  {
-    id: 1,
-    fullName: 'Angelo Alfeche',
-    itemDescription: 'Black Leather Wallet',
-    location: 'Library',
-    features: 'Small scratch on the left corner',
-  },
-  {
-    id: 2,
-    fullName: 'April Bakulyo',
-    itemDescription: 'Blue Backpack',
-    location: 'Cafeteria',
-    features: 'Keychain of a yellow duck',
-  },
-  {
-    id: 3,
-    fullName: 'Ragheil Atacador',
-    itemDescription: 'Blue Backpack',
-    location: 'Cafeteria',
-    features: 'Keychain of a yellow duck',
-  },
-  {
-    id: 4,
-    fullName: 'Josh Delos Cielos',
-    itemDescription: 'Blue Backpack',
-    location: 'Cafeteria',
-    features: 'Keychain of a yellow duck',
-  },
-  {
-    id: 5,
-    fullName: 'Mel Alejandrino',
-    itemDescription: 'Blue Backpack',
-    location: 'Cafeteria',
-    features: 'Keychain of a yellow duck',
-  },
-  {
-    id: 6,
-    fullName: 'Christopher Cuarteros',
-    itemDescription: 'Blue Backpack',
-    location: 'Cafeteria',
-    features: 'Keychain of a yellow duck',
-  },
-  // Add more unclaimed tickets as needed
-];
+  // Manually entered unclaimed tickets
+  const tickets = [
+    {
+      id: 1,
+      itemName: "Water Bottle",
+      fullName: "Frince Villarte",
+      location: "Outside Cafeteria",
+      description: "Dark Green bottle",
+      dateTime: "June 24, 2024",
+      image: "/src/assets/tumbler.jpg", // Replace with actual image path
+    },
+    {
+      id: 2,
+      itemName: "Backpack",
+      fullName: "John Doe",
+      location: "Library",
+      description: "Blue backpack with books",
+      dateTime: "June 25, 2024",
+      image: "/src/assets/backpack.png", // Replace with actual image path
+    },
+    {
+      id: 3,
+      itemName: "Umbrella",
+      fullName: "Jane Smith",
+      location: "Hallway",
+      description: "Red umbrella with white spots",
+      dateTime: "June 26, 2024",
+      image: "/src/assets/umbrella.png", // Replace with actual image path
+    },
+  ];
 
-export const UnclaimedTicket = () => {
+  // Filter tickets based on search input
+  const filteredTickets = tickets.filter((ticket) =>
+    ticket.itemName.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="w-full">
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-1">
         {/* Topbar */}
         <Topbar />
 
-        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-cyan-400 p-10">
-          <h1 className="text-5xl text-white font-bold text-center mb-12">Unclaimed Tickets</h1>
+        {/* Page Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <h1 className="text-4xl font-bold mb-6 text-center">UNCLAIMED TICKETS</h1>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {unclaimedTickets.map(ticket => (
-              <div 
-                key={ticket.id} 
-                className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">{ticket.fullName}</h2>
-                
-                <p className="text-gray-600 mb-2">
-                  <strong>Item Description:</strong> {ticket.itemDescription}
-                </p>
-                <p className="text-gray-600 mb-2">
-                  <strong>Last Seen Location:</strong> {ticket.location}
-                </p>
-                <p className="text-gray-600 mb-4">
-                  <strong>Distinguishing Features:</strong> {ticket.features}
-                </p>
-
-                {/* Claim Ticket Button */}
-                <button className="w-full py-3 bg-green-600 text-white font-semibold rounded hover:bg-green-500 transition duration-200">
-                  Claim Ticket
-                </button>
-              </div>
-            ))}
+          {/* Search Bar */}
+          <div className="flex justify-center mb-6">
+            <input
+              type="text"
+              placeholder="Search tickets"
+              className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
-        </div>
+
+          {/* Ticket Containers */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredTickets.length > 0 ? (
+              filteredTickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+                >
+                  <img
+                    src={ticket.image}
+                    alt={ticket.itemName}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4 flex-1">
+                    <h2 className="text-xl font-bold mb-2">{ticket.itemName}</h2>
+                    <p className="text-gray-700 mb-1">
+                      <strong>Full Name:</strong> {ticket.fullName}
+                    </p>
+                    <p className="text-gray-700 mb-1">
+                      <strong>Last Seen Location:</strong> {ticket.location}
+                    </p>
+                    <p className="text-gray-700 mb-1">
+                      <strong>Description:</strong> {ticket.description}
+                    </p>
+                    <p className="text-gray-700 mb-4">
+                      <strong>Date & Time:</strong> {ticket.dateTime}
+                    </p>
+                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                      DELETE
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 col-span-full">
+                No tickets found.
+              </p>
+            )}
+          </div>
+        </main>
       </div>
     </div>
   );
 };
+
+export default UnclaimedTicket;

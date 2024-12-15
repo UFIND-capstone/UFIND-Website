@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Topbar from '../components/Topbar';
+import qrImage from '/src/assets/QRCODE.png'; // Path to the QR Code image
 
 const Dashboard = () => {
 
@@ -181,6 +182,31 @@ const Dashboard = () => {
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">CUSTOMER SUPPORT</h3>
                             <p className="text-justify text-gray-600">Our support team is available from 8:00 AM to 5:00 PM, Monday to Friday, to assist with lost and found items, and any inquiries outside these hours will be addressed on the next business day.</p>
                         </div>
+                    </div>
+                </div>
+
+                {/* QR Code Section */}
+                <div className="mt-10 flex justify-center items-center bg-gray-50 py-10">
+                    <div className="flex items-center space-x-10 border border-gray-300 rounded-lg shadow-md px-10 py-6">
+                        {/* Text */}
+                        <div className="text-center md:text-left">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                                TRY IT ON YOUR MOBILE DEVICE
+                            </h2>
+                            <p className="text-gray-500 text-sm">
+                                SCAN TO VIEW ON YOUR MOBILE DEVICE
+                            </p>
+                        </div>
+
+                        {/* Arrow */}
+                        <div className="text-4xl font-thin text-gray-700">&rarr;</div>
+
+                        {/* QR Code */}
+                        <img
+                            src={qrImage}
+                            alt="QR Code"
+                            className="w-32 h-32 md:w-40 md:h-40 object-cover"
+                        />
                     </div>
                 </div>
 
