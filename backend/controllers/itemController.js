@@ -1,4 +1,4 @@
-import { addItem, getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
+import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
 
 export const claimItemHandler = async (req, res) => {
     const {
@@ -92,12 +92,13 @@ export const addItemHandler = async (req, res) => {
         ticket,
         location,
         imageUrl,
+        claimStatus, // Optional field
     } = req.body;
 
-    // Validate required fields
+    // Validate required fields (exclude claimStatus as it's optional)
     if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !imageUrl) {
         return res.status(400).json({
-            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, location, and imageURL.',
+            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, ticket, location, and imageUrl.',
         });
     }
 
@@ -114,10 +115,41 @@ export const addItemHandler = async (req, res) => {
             ticket,
             location,
             imageUrl, // Pass imageURL to the model
+            ...(claimStatus && { claimStatus }), // Include claimStatus only if it exists
         });
+
         res.status(201).json({ message: 'Item added successfully', itemId });
     } catch (error) {
         res.status(500).json({ message: `Error adding item: ${error.message}` });
+    }
+};
+
+export const updateItemHandler = async (req, res) => {
+    const { itemID } = req.params;
+    const { ticket } = req.body;
+
+    if (!ticket) {
+        return res.status(400).json({ message: 'Ticket field is required' });
+    }
+
+    try {
+        await updateItem(itemID, { ticket }); // Call the model function to update the item
+
+        res.status(200).json({ message: 'Item updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: `Error updating item: ${error.message}` });
+    }
+};
+
+export const deleteItemHandler = async (req, res) => {
+    const { itemID } = req.params;
+
+    try {
+        await deleteItem(itemID); // Call the model function to delete the item
+
+        res.status(200).json({ message: 'Item deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: `Error deleting item: ${error.message}` });
     }
 };
 

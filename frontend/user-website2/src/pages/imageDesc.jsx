@@ -110,6 +110,11 @@ const ItemDescription = () => {
       alert("You cannot claim your own item.");
       return;
     }
+
+    if (item.claimStatus === "turnover") {
+      alert("This Item was turnover to OSA. Go to OSA to claim your item.");
+      return;
+    }
     setShowClaimForm(!showClaimForm);
   };
 
@@ -147,6 +152,7 @@ const ItemDescription = () => {
           Description: ${claimData.description}
           Time Lost: ${claimData.timeLost}
           Location Lost: ${claimData.locationLost}
+          Item ID: ${item.id}
         `,
       };
 
@@ -339,7 +345,9 @@ const ItemDescription = () => {
               ) : (
                 <button
                   className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
-                  onClick={() => navigate("/chatApp")}
+                  onClick={() =>
+                    navigate(`/chatApp?recipientId=${item.studentId}`)
+                  }
                 >
                   Contact Me
                 </button>

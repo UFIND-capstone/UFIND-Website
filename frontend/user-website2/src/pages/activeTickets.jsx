@@ -1,35 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../AuthContext";
 import Topbar from "../components/Topbar";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 const ActiveTicket = () => {
-  // Array of ticket data for multiple items
-  const tickets = [
-    {
-      id: 1,
-      name: "Aquaflask",
-      category: "Lost",
-      lastSeenLocation: "Inside Cafeteria Table",
-      description: "Color Purple and 40oz",
-      dateTime: "November 25, 2024 - 12:50 PM",
-      status: "Pending",
-      image: "src/assets/aquaflask.png",
-    },
-    {
-      id: 2,
-      name: "Umbrella",
-      category: "Found",
-      lastSeenLocation: "Library",
-      description: "Black with white handle",
-      dateTime: "November 24, 2024 - 10:30 AM",
-      status: "Matched",
-      image: "src/assets/aquaflask.png",
-    },
-  ];
-
-  // State for managing search query and filtered tickets
+  const { user } = useAuth(); // Access the user information from context
+  const [tickets, setTickets] = useState([]);
+  const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTickets, setFilteredTickets] = useState(tickets);
+
+  // Fetch the tickets data from the API
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/items");
+        const data = await response.json();
+
+        // Filter the tickets by matching studentId with user.id
+        const userTickets = data.filter((item) => item.studentId === user.id && item.claimStatus !== 'turnover');
+        setTickets(userTickets); // Update tickets state with filtered data
+        setFilteredTickets(userTickets); // Set filteredTickets to the same initially
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+
+    fetchTickets();
+  }, [user.id]); // Re-fetch tickets if user.id changes
 
   // Handle search input changes
   const handleSearch = (event) => {
@@ -45,6 +43,38 @@ const ActiveTicket = () => {
     setFilteredTickets(filtered);
   };
 
+  // Handle success (mark ticket as 'success')
+  const handleSuccess = async (id) => {
+    try {
+      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: 'success' });
+      // Update the item state locally
+      setTickets(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, ticket: 'success' } : item
+        )
+      );
+      setFilteredTickets(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, ticket: 'success' } : item
+        )
+      );
+    } catch (err) {
+      console.error('Failed to mark item as success:', err);
+    }
+  };
+
+  // Handle delete
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/items/${id}`);
+      // Remove the deleted item from the state
+      setTickets(prevItems => prevItems.filter(item => item.id !== id));
+      setFilteredTickets(prevItems => prevItems.filter(item => item.id !== id));
+    } catch (err) {
+      console.error('Failed to delete item:', err);
+    }
+  };
+
   // Dynamic Styling for Status and Category
   const statusColors = {
     Lost: "bg-gray-900 text-white",
@@ -53,6 +83,7 @@ const ActiveTicket = () => {
     Matched: "bg-blue-500 text-white",
     Resolved: "bg-green-500 text-white",
     Rejected: "bg-red-500 text-white",
+    Success: "bg-green-500 text-white",  // Added success status
   };
 
   return (
@@ -72,8 +103,8 @@ const ActiveTicket = () => {
             type="text"
             className="w-full p-4 border border-gray-300 rounded-l-lg focus:outline-none"
             placeholder="Search tickets..."
-            value={searchQuery} // Controlled input
-            onChange={handleSearch} // Update search query on input change
+            value={searchQuery}
+            onChange={handleSearch}
           />
           <button className="px-6 py-4 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600">
             🔍
@@ -91,7 +122,7 @@ const ActiveTicket = () => {
                 {/* Image Section */}
                 <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
                   <img
-                    src={ticket.image}
+                    src={ticket.imageUrl}
                     alt={`Image of ${ticket.name}`}
                     className="max-h-80 object-contain rounded"
                   />
@@ -106,9 +137,7 @@ const ActiveTicket = () => {
                         {ticket.name.toUpperCase()}
                       </h3>
                       <span
-                        className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
-                          statusColors[ticket.category] || "bg-gray-400 text-white"
-                        }`}
+                        className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${statusColors[ticket.category] || "bg-gray-400 text-white"}`}
                       >
                         {ticket.category}
                       </span>
@@ -129,7 +158,7 @@ const ActiveTicket = () => {
                         Last Seen Location
                       </label>
                       <span className="w-full p-2 border rounded-md bg-gray-50">
-                        {ticket.lastSeenLocation}
+                        {ticket.location}
                       </span>
                     </div>
 
@@ -154,21 +183,25 @@ const ActiveTicket = () => {
 
                   {/* Buttons Section */}
                   <div className="flex flex-col space-y-4 mt-6">
-                    {/* Edit and Delete Buttons */}
-                    <div className="flex space-x-4">
-                      <button className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow">
-                        Edit
-                      </button>
-                      <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow">
-                        Delete
-                      </button>
-                    </div>
+                    {/* Success Button */}
+                    <button
+                      onClick={() => handleSuccess(ticket.id)}  // Attach handleSuccess
+                      className="bg-green-500 text-white font-semibold px-4 py-2 rounded hover:bg-green-600 flex-grow"
+                    >
+                      Mark as Success
+                    </button>
+
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => handleDelete(ticket.id)}  // Attach handleDelete
+                      className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-600 flex-grow"
+                    >
+                      Delete
+                    </button>
 
                     {/* Status Button */}
                     <button
-                      className={`w-full py-2 rounded-full font-semibold ${
-                        statusColors[ticket.status] || "bg-gray-400 text-white"
-                      }`}
+                      className={`w-full py-2 rounded-full font-semibold ${statusColors[ticket.status] || "bg-gray-400 text-white"}`}
                     >
                       {ticket.status}
                     </button>

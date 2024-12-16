@@ -23,7 +23,7 @@ router.get('/getNotifications', async (req, res) => {
   try {
     // 1. Query the 'items' collection for items where userId matches the provided userId
     const itemsCollection = collection(db, 'items');
-    const itemsQuery = query(itemsCollection, where('userId', '==', userId));
+    const itemsQuery = query(itemsCollection, where('studentId', '==', userId));
     const itemsSnapshot = await getDocs(itemsQuery);
     
     if (itemsSnapshot.empty) {

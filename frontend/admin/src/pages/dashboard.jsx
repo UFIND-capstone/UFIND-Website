@@ -20,26 +20,46 @@ const Dashboard = () => {
   const [itemCounts, setItemCounts] = useState({
     itemsFound: 0,
     itemLost: 0,
-    matchItems: 0,
-    ticketing: 0,
+    ticketsPending: 0,
+    ticketsSuccess: 0,
+    keepTickets: 0, // New state for Keep Tickets
+    turnoverTickets: 0, // New state for Turnover Tickets
   });
+  const [ticketTrends, setTicketTrends] = useState([]);
 
   // Fetch items and calculate counts
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/items'); // Adjust the URL as needed
+        const response = await axios.get('http://localhost:3000/api/items');
         const items = response.data;
 
         // Calculate counts based on status
         const counts = {
-          itemsFound: items.filter(item => item.status === 'Found').length,
-          itemLost: items.filter(item => item.status === 'Lost').length,
-          matchItems: items.filter(item => item.category === 'Match').length,
-          ticketing: items.filter(item => item.category === 'Ticketing').length,
+          itemsFound: items.filter(item => item.status === 'found').length,
+          itemLost: items.filter(item => item.status === 'lost').length,
+          ticketsPending: items.filter(item => item.ticket === 'pending').length,
+          ticketsSuccess: items.filter(item => item.ticket === 'success').length,
+          keepTickets: items.filter(item => item.claimStatus === 'keep').length,
+          turnoverTickets: items.filter(item => item.claimStatus === 'turnover').length,
         };
 
         setItemCounts(counts);
+
+        // Calculate ticket trends based on item.dateTime
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const trends = items.reduce((acc, item) => {
+          if (item.dateTime) {
+            const date = new Date(item.dateTime);
+            const month = months[date.getMonth()];
+            acc[month] = (acc[month] || 0) + 1;
+          }
+          return acc;
+        }, {});
+
+        // Prepare trends data for the chart
+        const trendData = months.map(month => trends[month] || 0); // Fill missing months with 0
+        setTicketTrends(trendData);
       } catch (error) {
         console.error("Error fetching items:", error.message);
       }
@@ -50,27 +70,32 @@ const Dashboard = () => {
 
   // Data for Donut Chart
   const donutData = {
-    labels: ["Lost Items", "Found Items", "Active Tickets", "Turnover Tickets", "Unclaimed Tickets"],
+    labels: ["Lost Items", "Found Items", "Pending Tickets", "Success Tickets", "Keep Tickets", "Turnover Tickets"], // Added labels
     datasets: [
       {
-        data: [itemCounts.itemLost, itemCounts.itemsFound, 15, 10, 8],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+        data: [
+          itemCounts.itemLost,
+          itemCounts.itemsFound,
+          itemCounts.ticketsPending,
+          itemCounts.ticketsSuccess,
+          itemCounts.keepTickets, // Added data for Keep Tickets
+          itemCounts.turnoverTickets, // Added data for Turnover Tickets
+        ],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56"], // Added colors
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56"], // Added colors
       },
     ],
   };
 
-  // Data for Bar Chart
+  // Data for Bar Chart (Ticket Trends)
   const barData = {
-    labels: ["August", "September", "October", "November", "December"],
+    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     datasets: [
       {
         label: "Tickets",
-        data: [50, 40, 60, 70, 20],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
-        
+        data: ticketTrends,
+        backgroundColor: "#36A2EB",
       },
-      
     ],
   };
 
@@ -89,7 +114,7 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold mb-6 text-center">ADMIN DASHBOARD</h1>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
               {itemCounts.itemLost} Item Lost
             </div>
@@ -97,13 +122,16 @@ const Dashboard = () => {
               {itemCounts.itemsFound} Item Found
             </div>
             <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              {itemCounts.matchItems} Matched Items
+              {itemCounts.ticketsPending} Pending Tickets
             </div>
             <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              {itemCounts.ticketing} Active Tickets
+              {itemCounts.ticketsSuccess} Success Tickets
             </div>
-            <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              0 Unclaimed Tickets
+            <div className="bg-green-100 text-green-900 p-4 rounded-lg shadow-sm text-center font-bold">
+              {itemCounts.keepTickets} Kept Tickets {/* Added Keep Tickets stat */}
+            </div>
+            <div className="bg-yellow-100 text-yellow-900 p-4 rounded-lg shadow-sm text-center font-bold">
+              {itemCounts.turnoverTickets} Turnover Tickets {/* Added Turnover Tickets stat */}
             </div>
           </div>
 
@@ -111,43 +139,20 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Donut Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">OVERALL TICKETS</h2>
+              <h2 className="text-lg font-bold text-center mb-4">OVERALL ITEMS & TICKETS</h2>
               <Doughnut data={donutData} />
             </div>
 
             {/* Bar Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">ITEM LOST</h2>
+              <h2 className="text-lg font-bold text-center mb-4">TICKET TRENDS</h2>
               <Bar data={barData} />
             </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">ITEM FOUND</h2>
-              <Bar data={barData} />
-            </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">ACTIVE TICKET</h2>
-              <Bar data={barData} />
-            </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">TURNOVER TICKET</h2>
-              <Bar data={barData} />
-            </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">UNCLAIMED TICKET</h2>
-              <Bar data={barData} />
-            </div>
-
           </div>
         </main>
-      
       </div>
     </div>
   );
-  
 };
 
 export default Dashboard;
