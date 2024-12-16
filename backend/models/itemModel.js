@@ -7,10 +7,30 @@ import {
   getDoc,
   query,
   where,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import firebaseApp from "../firebase.js";
 
 const db = getFirestore(firebaseApp);
+
+export const updateItem = async (itemID, updateData) => {
+  try {
+      const itemRef = doc(db, "items", itemID);
+      await updateDoc(itemRef, updateData); // Update the document with the provided data
+  } catch (error) {
+      throw new Error("Error updating item: " + error.message);
+  }
+};
+
+export const deleteItem = async (itemID) => {
+    try {
+        const itemRef = doc(db, "items", itemID);
+        await deleteDoc(itemRef); // Delete the document
+    } catch (error) {
+        throw new Error("Error deleting item: " + error.message);
+    }
+};
 
 export const addItem = async (itemData) => {
   try {

@@ -32,37 +32,61 @@ const ChatApp = () => {
       const response = await axios.post("http://localhost:3000/api/getChats", {
         userId: user.id,
       });
-      const contact = response.data.find(
-        (c) => c.otherUserId === recipientId
-      );
+      const contact = response.data.find((c) => c.otherUserId === recipientId);
+  
       if (contact) {
+        // Open the existing chat
         openChat(contact);
+      } else {
+        // Fetch recipient's name dynamically
+        const userResponse = await axios.get(
+          `http://localhost:3000/api/user/${recipientId}`
+        );
+  
+        setActiveContact({
+          otherUserId: recipientId,
+          otherUserData: {
+            firstName: userResponse.data.firstName,
+            lastName: userResponse.data.lastName,
+          },
+        });
+        setIsChatOpen(true);
+        setMessages([]); // Clear messages since it's a new chat
       }
     } catch (error) {
-      console.error("Error fetching chat for recipient ID", error);
+      console.error("Error fetching chat or recipient user details", error);
     }
   };
+  
+  
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
-
+  
     const messageData = {
       senderId: user.id,
       recipientId: activeContact.otherUserId,
       content: newMessage.trim(),
     };
-
+  
     try {
       const response = await axios.post(
         "http://localhost:3000/api/messages",
         messageData
       );
       setMessages((prevMessages) => [...prevMessages, response.data]);
+  
+      // If the chatId wasn't available before, it might now be returned by the backend
+      if (!activeContact.chatId && response.data.chatId) {
+        setActiveContact((prev) => ({ ...prev, chatId: response.data.chatId }));
+      }
+  
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message", error);
     }
   };
+  
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -87,9 +111,11 @@ const ChatApp = () => {
   );
 
   const openChat = async (chat) => {
-    setActiveContact(chat);
-    setIsChatOpen(true);
+  setActiveContact(chat);
+  setIsChatOpen(true);
 
+  if (chat.chatId) {
+    // Fetch messages for existing chat
     try {
       const response = await axios.get(
         `http://localhost:3000/api/messages/${chat.chatId}`
@@ -98,7 +124,12 @@ const ChatApp = () => {
     } catch (error) {
       console.error("Error fetching messages", error);
     }
-  };
+  } else {
+    // No messages yet for new chat
+    setMessages([]);
+  }
+};
+
 
   const closeChat = () => {
     setIsChatOpen(false);

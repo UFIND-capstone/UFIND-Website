@@ -1,63 +1,80 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/sideBar';
 import Topbar from '../components/topBar';
+import axios from 'axios';
 
 const ItemLost = () => {
-  // Manually entered lost items
-  const initialItems = [
-    {
-      name: 'Water Bottle',
-      date: 'June 24, 2023 10:59 AM',
-      location: 'Cafeteria',
-      image: 'src/assets/tumbler.jpg', // Replace with actual path
-    },
-    {
-      name: 'Backpack',
-      date: 'July 1, 2023 2:00 PM',
-      location: 'Library',
-      image: 'src/assets/backpack.png', // Replace with actual path
-    },
-    {
-      name: 'Umbrella',
-      date: 'July 10, 2023 9:30 AM',
-      location: 'Hallway',
-      image: 'src/assets/umbrella.png', // Replace with actual path
-    },
-    {
-      name: 'Jacket',
-      date: 'August 5, 2023 4:00 PM',
-      location: 'Gym',
-      image: 'src/assets/jacket.png', // Replace with actual path
-    },
-    {
-      name: 'Notebook',
-      date: 'August 15, 2023 1:45 PM',
-      location: 'Classroom 101',
-      image: 'src/assets/notebook.png', // Replace with actual path
-    },
-    {
-      name: 'Phone Charger',
-      date: 'September 1, 2023 3:15 PM',
-      location: 'Study Area',
-      image: 'src/assets/charger.jpg', // Replace with actual path
-    },
-  ];
+  const [items, setItems] = useState([]); // All items from the API
+  const [filteredItems, setFilteredItems] = useState([]); // Items filtered by search
+  const [searchTerm, setSearchTerm] = useState(''); // User's search input
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [items, setItems] = useState(initialItems);
-  const [searchTerm, setSearchTerm] = useState('');
+  // Fetch lost items from the backend
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/items');
+        const lostItems = response.data.filter(item => item.status === 'lost' && item.ticket === 'pending');
+        setItems(lostItems);
+        setFilteredItems(lostItems); // Initially display all items
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch items');
+        setLoading(false);
+      }
+    };
 
-  // Function to filter items based on search input
+    fetchItems();
+  }, []);
+
+  // Handle search input changes
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
+    // Filter items based on name, description, or other fields
     if (value === '') {
-      setItems(initialItems); // Reset to original list
+      setFilteredItems(items); // Reset to all items if search is cleared
     } else {
-      const filteredItems = initialItems.filter((item) =>
-        item.name.toLowerCase().includes(value)
+      const filtered = items.filter(item =>
+        item.name.toLowerCase().includes(value) ||
+        item.description?.toLowerCase().includes(value) ||
+        item.detailedDescription?.toLowerCase().includes(value)
       );
-      setItems(filteredItems);
+      setFilteredItems(filtered);
+    }
+  };
+
+  // Mark an item as "Success"
+  const handleSuccess = async (id) => {
+    try {
+      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: 'success' });
+      // Update the item state locally
+      setItems(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, ticket: 'success' } : item
+        )
+      );
+      setFilteredItems(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, ticket: 'success' } : item
+        )
+      );
+    } catch (err) {
+      setError('Failed to mark item as success');
+    }
+  };
+
+  // Delete an item
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/items/${id}`);
+      // Remove the deleted item from the state
+      setItems(prevItems => prevItems.filter(item => item.id !== id));
+      setFilteredItems(prevItems => prevItems.filter(item => item.id !== id));
+    } catch (err) {
+      setError('Failed to delete item');
     }
   };
 
@@ -85,32 +102,56 @@ const ItemLost = () => {
               className="w-full max-w-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button className="px-6 py-4 bg-blue-300 text-white rounded-r-lg hover:bg-blue-500">
-                        🔍
-                    </button>
+              🔍
+            </button>
           </div>
 
-          {/* Lost Items Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {items.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1"
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
-                <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Date:</strong> {item.date}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Location:</strong> {item.location}
-                </p>
-              </div>
-            ))}
-          </div>
+          {/* Loading/Error Message */}
+          {loading ? (
+            <p className="text-center text-gray-500">Loading items...</p>
+          ) : error ? (
+            <p className="text-center text-red-500">{error}</p>
+          ) : filteredItems.length === 0 ? (
+            <p className="text-center text-gray-500">No items found.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {filteredItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1"
+                >
+                  <img
+                    src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
+                    alt={item.name}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                  <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <strong>Date:</strong> {item.dateTime}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Location:</strong> {item.location}
+                  </p>
+
+                  {/* Buttons */}
+                  <div className="mt-4 flex justify-between">
+                    <button
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      onClick={() => handleSuccess(item.id)}
+                    >
+                      Mark as Success
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -1,17 +1,26 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // Import AuthContext hook
 import {
   MdDashboard,
   MdOutlineSearch,
   MdOutlineCheckCircle,
   MdOutlineListAlt,
   MdOutlineAssignmentTurnedIn,
-  MdOutlineHourglassEmpty,
   MdAccountCircle,
   MdLogout,
 } from "react-icons/md";
 
 const Sidebar = () => {
+  const { logout } = useAuth(); // Get user and logout function from AuthContext
+  const navigate = useNavigate(); // For navigation after logout
+
+  // Logout handler function
+  const handleLogout = () => {
+    logout(); // Perform logout from AuthContext
+    navigate("/login"); // Navigate to the login page
+  };
+
   return (
     <div className="h-full w-70 bg-gradient-to-b from-blue-600 to-blue-500 text-white shadow-lg flex flex-col">
       {/* Logo and Profile */}
@@ -81,16 +90,6 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/unclaimedTicket"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <MdOutlineHourglassEmpty size={24} />
-              <span>Unclaimed Tickets</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
               to="/myAccount"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
@@ -99,14 +98,15 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
+          {/* Logout Link */}
           <li>
-            <NavLink
-              to="/login"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-red-600 transition"
+            <button
+              onClick={handleLogout} // Trigger the logout function
+              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-red-600 transition w-full text-left"
             >
               <MdLogout size={24} />
               <span>Logout</span>
-            </NavLink>
+            </button>
           </li>
         </ul>
       </nav>

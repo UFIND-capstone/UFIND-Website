@@ -19,6 +19,7 @@ const ListingFound = () => {
     contactNumber: "",
     email: "",
     imageUrl: "", // Store the image URL here
+    claimStatus: "",
   });
   const [alertMessage, setAlertMessage] = useState(null); // State for alert message
   const [isLoading, setIsLoading] = useState(false);
