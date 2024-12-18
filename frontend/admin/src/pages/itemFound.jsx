@@ -14,7 +14,7 @@ const ItemFound = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/items');
+        const response = await axios.get(`${hostUrl}/api/items`);
         const foundItems = response.data.filter(item => item.status === 'found' && item.ticket === 'pending');
         setItems(foundItems);
         setFilteredItems(foundItems); // Initially display all items
