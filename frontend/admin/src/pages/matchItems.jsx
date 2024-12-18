@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../components/sidebar';
+import Sidebar from '../components/sideBar';
 import Topbar from '../components/topBar';
 
 export const MatchItems = () => {

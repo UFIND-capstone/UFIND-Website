@@ -9,6 +9,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
   const { login, user } = useAuth(); // Get the login function and user state from context
+  const hostUrl = import.meta.env.VITE_HOST_URL
 
   // Check if user is already logged in
   useEffect(() => {
@@ -20,7 +21,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/admin', {
+      const response = await axios.post(`${hostUrl}/api/admin`, {
         username,
         password,
       });

@@ -9,11 +9,13 @@ const ActiveTicket = () => {
   const [searchTerm, setSearchTerm] = useState(''); // User's search input
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const hostUrl = import.meta.env.VITE_HOST_URL
 
   useEffect(() => {
+    console.log(hostUrl)
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/items');
+        const response = await axios.get(`${hostUrl}/api/items`);
         const activeItems = response.data.filter(item => item.ticket === 'pending');
         setItems(activeItems);
         setFilteredItems(activeItems); // Initially display all items
@@ -48,7 +50,7 @@ const ActiveTicket = () => {
   // Mark an item as "Success"
   const handleSuccess = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: 'success' });
+      await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
       // Update the item state locally
       setItems(prevItems =>
         prevItems.map(item =>
@@ -68,7 +70,7 @@ const ActiveTicket = () => {
   // Delete an item
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/items/${id}`);
+      await axios.delete(`${hostUrl}/api/items/${id}`);
       // Remove the deleted item from the state
       setItems(prevItems => prevItems.filter(item => item.id !== id));
       setFilteredItems(prevItems => prevItems.filter(item => item.id !== id));

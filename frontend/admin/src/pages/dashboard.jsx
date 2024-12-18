@@ -17,6 +17,7 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
 const Dashboard = () => {
+  const hostUrl = import.meta.env.VITE_HOST_URL
   const [itemCounts, setItemCounts] = useState({
     itemsFound: 0,
     itemLost: 0,
@@ -31,7 +32,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/items');
+        const response = await axios.get(`${hostUrl}/api/items`);
         const items = response.data;
 
         // Calculate counts based on status
