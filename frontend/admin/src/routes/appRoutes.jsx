@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "../AuthContext";
 import { Login } from "../pages/login";
 import Dashboard from "../pages/dashboard"; // Import your Dashboard component
-import  ItemLost from "../pages/ItemLost";
+import  ItemLost from "../pages/itemLost";
 import { MatchItems } from "../pages/matchItems";
 import ItemFound from "../pages/itemFound";
 import { MyAccount } from "../pages/myAccount";

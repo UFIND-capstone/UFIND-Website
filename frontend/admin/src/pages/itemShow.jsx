@@ -1,4 +1,4 @@
-import Sidebar from "../components/sidebar";
+import Sidebar from "../components/sideBar";
 import Topbar from "../components/topBar";
 import data from "../assets/data.json";
 
