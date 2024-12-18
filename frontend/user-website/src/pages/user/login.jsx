@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
 export const Login = () => {
@@ -94,6 +94,17 @@ export const Login = () => {
             </p>
           </div>
         </form>
+
+        {/* Administrator Here Link */}
+        <div className="mt-4">
+          <Link
+            to="/adminLogin"
+            className="text-sm text-blue-500 hover:underline"
+          >
+            ADMIN HERE
+          </Link>
+        </div>
+
       </div>
     </div>
   );

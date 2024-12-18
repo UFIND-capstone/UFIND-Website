@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext"; // Import AuthContext hook
+import { useAuth } from "../../AuthContext"; // Import AuthContext hook
 import {
   MdDashboard,
   MdOutlineSearch,
