@@ -13,6 +13,7 @@ export const Login = () => {
 
   // Check if user is already logged in
   useEffect(() => {
+    console.log(hostUrl);
     if (user) {
       navigate('/dashboard'); // Redirect to dashboard if user is logged in
     }
