@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/sideBar';
-import Topbar from '../components/topBar';
+import Sidebar from "../../components/admin/sideBar";
+import Topbar from "../../components/admin/topBar";
 import { Doughnut, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,

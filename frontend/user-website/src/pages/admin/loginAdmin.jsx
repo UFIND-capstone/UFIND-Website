@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
-import { useAuth } from "../AuthContext"; // Import the custom hook
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../AuthContext"; // Import the custom hook
 
+// Exporting the LoginAdmin component
 export const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
   const { login, user } = useAuth(); // Get the login function and user state from context
-  const hostUrl = import.meta.env.VITE_HOST_URL
+  const hostUrl = import.meta.env.VITE_HOST_URL;
 
   // Check if user is already logged in
   useEffect(() => {
-    console.log(hostUrl);
     if (user) {
-      navigate('/dashboard'); // Redirect to dashboard if user is logged in
+      navigate('/admin/dashboard'); // Redirect to admin dashboard if logged in
     }
   }, [user, navigate]);
 
@@ -29,7 +29,7 @@ export const LoginAdmin = () => {
 
       console.log("User logged in successfully:", response.data);
       login({ username }); // Call login function with user data
-      navigate('/dashboard'); 
+      navigate('/admin/dashboard'); // Redirect to admin dashboard after login
     } catch (error) {
       setError("Invalid username or password");
       console.error("Error logging in:", error.message);
@@ -71,8 +71,21 @@ export const LoginAdmin = () => {
             <a href="#" className="text-sm text-blue-500 hover:underline">Forgot Password?</a>
           </div>
 
-          <button type="submit" className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">LOGIN</button>
+          <button type="submit" className="w-full py-3 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            LOGIN
+          </button>
         </form>
+
+        {/* Administrator Here Link */}
+        <div className="mt-4">
+          <Link
+            to="/user/Login"
+            className="text-sm text-blue-500 hover:underline"
+          >
+            STUDENT HERE
+          </Link>
+        </div>
+
       </div>
     </div>
   );

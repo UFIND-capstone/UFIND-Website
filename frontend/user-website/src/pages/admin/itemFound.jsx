@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/sideBar';
-import Topbar from '../components/topBar';
+import Sidebar from "../../components/admin/sideBar";
+import Topbar from "../../components/admin/topBar";
 import axios from 'axios';
 
 const ItemFound = () => {
