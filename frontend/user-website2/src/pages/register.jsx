@@ -18,8 +18,8 @@ export const Register = () => {
     e.preventDefault();
     try {
       await register({ firstName, lastName, emailAddress, contactNumber, password, studentId });
-      setSuccess("Registration successful! Redirecting to dashboard...");
-      setTimeout(() => navigate("/dashboard"), 2000);
+      setSuccess("Registration successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed. Please try again.");
     }

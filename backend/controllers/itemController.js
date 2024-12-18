@@ -96,9 +96,9 @@ export const addItemHandler = async (req, res) => {
     } = req.body;
 
     // Validate required fields (exclude claimStatus as it's optional)
-    if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !imageUrl) {
+    if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location) {
         return res.status(400).json({
-            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, ticket, location, and imageUrl.',
+            message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, ticket, and location.',
         });
     }
 
@@ -114,7 +114,7 @@ export const addItemHandler = async (req, res) => {
             status,
             ticket,
             location,
-            imageUrl, // Pass imageURL to the model
+            ...(imageUrl && { imageUrl }), // Include claimStatus only if it exists
             ...(claimStatus && { claimStatus }), // Include claimStatus only if it exists
         });
 

@@ -16,7 +16,7 @@ const BrowseItemsFound = () => {
         const fetchItems = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/items');
-                const lostItems = response.data.filter(item => item.status === 'found');
+                const lostItems = response.data.filter(item => item.status === 'found' && item.ticket === "pending");
                 setItems(lostItems);
                 setFilteredItems(lostItems); // Set filteredItems initially as all items
                 setLoading(false);
