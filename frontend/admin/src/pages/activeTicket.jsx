@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/sideBar';
+import { useNavigate } from "react-router-dom";
 import Topbar from '../components/topBar';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ const ActiveTicket = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(hostUrl)
@@ -65,6 +67,11 @@ const ActiveTicket = () => {
     } catch (err) {
       setError('Failed to mark item as success');
     }
+  };
+
+  // Navigate to image description page
+  const navigateToDescription = (item) => {
+    navigate('/imgDescriptions', { state: { item } });
   };
 
   // Delete an item
@@ -125,6 +132,8 @@ const ActiveTicket = () => {
                     src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
                     alt={item.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
+                    onClick={() => handleImageClick(item)}
+
                   />
                   <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
                   <p className="text-sm text-gray-600 mb-1">
