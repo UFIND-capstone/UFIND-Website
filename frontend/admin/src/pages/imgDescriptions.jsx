@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import Sidebar from '../components/sideBar';
+import Topbar from '../components/topBar';
 
 // Sample data for multiple items
 const items = [

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import Sidebar from '../components/sideBar';
 import Topbar from '../components/topBar';
 import axios from 'axios';
@@ -10,6 +11,7 @@ const TurnoverTicket = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -64,6 +66,11 @@ const TurnoverTicket = () => {
     } catch (err) {
       setError('Failed to mark item as success');
     }
+  };
+
+  // Navigate to image description page
+  const navigateToDescription = (item) => {
+    navigate('/imgDescriptions', { state: { item } });
   };
 
   // Delete an item
