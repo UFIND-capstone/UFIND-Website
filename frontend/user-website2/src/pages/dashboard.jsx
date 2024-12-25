@@ -59,10 +59,12 @@ const Dashboard = () => {
                                     className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition"
                                 >
                                     <Link to={`/items/${item.id}`}>
-                                        <img
+                                    <img
                                             src={item.imageUrl || '/src/assets/default.png'} // Fallback for missing images
                                             alt={item.name}
-                                            className="w-full h-50 object-cover mb-4 rounded-md"
+                                            className={`w-full h-50 object-cover mb-4 rounded-md ${
+                                                item.status === 'found' ? 'filter blur-sm' : ''
+                                            }`}
                                         />
                                         <h3 className="font-semibold text-gray-800">{item.name}</h3>
                                         <div>
