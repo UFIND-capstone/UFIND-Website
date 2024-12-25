@@ -96,20 +96,28 @@ const ChatApp = () => {
           "http://localhost:3000/api/getChats",
           { userId }
         );
-        setContacts(response.data);
+        setContacts(
+          response.data.map((contact) => ({
+            ...contact,
+            otherUserData: contact.otherUserData || { firstName: "", lastName: "" },
+          }))
+        );
       } catch (error) {
         console.error("Error fetching chats", error);
       }
     };
+    
     fetchChats();
   }, []);
 
-  const filteredContacts = contacts.filter((contact) =>
-    contact.otherUserData.firstName
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+  const filteredContacts = contacts.filter(
+    (contact) =>
+      contact.otherUserData &&
+      contact.otherUserData.firstName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
-
+  
   const openChat = async (chat) => {
   setActiveContact(chat);
   setIsChatOpen(true);
@@ -153,7 +161,8 @@ const ChatApp = () => {
             />
           </div>
           <ul className="overflow-y-auto">
-            {filteredContacts.map((contact) => (
+          {filteredContacts.map((contact) => (
+            contact.otherUserData && (
               <li
                 key={contact.chatId}
                 className="p-4 flex items-center hover:bg-gray-100 cursor-pointer"
@@ -171,7 +180,9 @@ const ChatApp = () => {
                   </h3>
                 </div>
               </li>
-            ))}
+            )
+          ))}
+
           </ul>
         </div>
 
