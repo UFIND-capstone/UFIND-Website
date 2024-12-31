@@ -10,6 +10,7 @@ import { useAuth } from "../../AuthContext";
 const ListingLost = () => {
   const navigate = useNavigate();
   const { user } = useAuth(); // Get user from AuthContext
+  const userFullname = user.firstName + " " + user.lastName;
   const [formData, setFormData] = useState({
     studentId: "",
     name: "",
@@ -17,9 +18,9 @@ const ListingLost = () => {
     dateTime: "",
     description: "",
     location: "",
-    fullName: "",
-    contactNumber: "",
-    email: "",
+    fullName: userFullname || " ", // Use user details if available
+    contactNumber: user?.contactNumber || "",
+    email: user?.emailAddress || "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
@@ -29,13 +30,17 @@ const ListingLost = () => {
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
 
   const handleCoordinates = (coords) => {
+    const [latitude, longitude] = coords; // Destructure coordinates
+    const formattedLocation = `${latitude}, ${longitude}`; // Format as "latitude, longitude"
+  
     setCoordinates(coords);
     setFormData({
       ...formData,
-      location: coords.join(", "), // Update the location field in formData
+      location: formattedLocation, // Update location with formatted value
     });
     setIsMapVisible(false); // Hide the map after confirmation
   };
+  
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -226,7 +231,6 @@ const ListingLost = () => {
                 name="image"
                 onChange={handleImageChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
               />
             </div>
 

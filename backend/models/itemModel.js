@@ -9,6 +9,7 @@ import {
   where,
   updateDoc,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 import firebaseApp from "../firebase.js";
 
@@ -32,18 +33,20 @@ export const deleteItem = async (itemID) => {
     }
 };
 
-export const addItem = async (itemData) => {
+export const addItem = async (documentId, itemData) => {
   try {
     const newItem = {
       ...itemData, // Include all fields, including imageURL
     };
 
-    const docRef = await addDoc(collection(db, "items"), newItem);
-    return docRef.id; // Return the ID of the newly created document
+    // Use the custom document ID when adding the item
+    const docRef = await setDoc(doc(db, "items", documentId), newItem);
+    return documentId; // Return the custom document ID
   } catch (error) {
     throw new Error("Error adding item: " + error.message);
   }
 };
+
 
 export const getItems = async () => {
   try {

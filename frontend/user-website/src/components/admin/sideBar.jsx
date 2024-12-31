@@ -40,7 +40,7 @@ const Sidebar = () => {
         <ul className="space-y-4">
           <li>
             <NavLink
-              to="/dashboard"
+              to="/admin/dashboard"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdDashboard size={24} />
@@ -50,7 +50,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/itemLost"
+              to="/admin/itemLost"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineSearch size={24} />
@@ -60,7 +60,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/itemFound"
+              to="/admin/itemFound"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineCheckCircle size={24} />
@@ -70,7 +70,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/activeTicket"
+              to="/admin/activeTicketAdmin"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineListAlt size={24} />
@@ -80,7 +80,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/turnoverTicket"
+              to="/admin/turnoverTicket"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineAssignmentTurnedIn size={24} />
@@ -90,7 +90,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/myAccount"
+              to="/admin/myAccount"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdAccountCircle size={24} />

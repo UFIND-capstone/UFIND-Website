@@ -1,5 +1,15 @@
 import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
 
+function generateRandomId() {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+
 export const claimItemHandler = async (req, res) => {
     const {
         studentId,
@@ -103,7 +113,12 @@ export const addItemHandler = async (req, res) => {
     }
 
     try {
-        const itemId = await addItem({
+        // Generate the custom document ID
+        const randomId = generateRandomId();
+        const documentId = `${studentId}_${randomId}`;
+
+        // Call the model to add the item
+        const itemId = await addItem(documentId, {
             studentId,
             name,
             description,
@@ -114,7 +129,7 @@ export const addItemHandler = async (req, res) => {
             status,
             ticket,
             location,
-            ...(imageUrl && { imageUrl }), // Include claimStatus only if it exists
+            ...(imageUrl && { imageUrl }), // Include imageUrl only if it exists
             ...(claimStatus && { claimStatus }), // Include claimStatus only if it exists
         });
 
@@ -123,6 +138,7 @@ export const addItemHandler = async (req, res) => {
         res.status(500).json({ message: `Error adding item: ${error.message}` });
     }
 };
+
 
 export const updateItemHandler = async (req, res) => {
     const { itemID } = req.params;
