@@ -1,16 +1,22 @@
 import { getUser, addUser, updateUser, getUserById } from '../models/userModel.js';
 import crypto from 'crypto';
 
+// Update to use the generateSalt method as required
+const generateSalt = (length = 30) => {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const rnd = crypto.randomBytes(length);
+    return Array.from(rnd).map(byte => chars[byte % chars.length]).join('');
+};
 
 const hashPassword = (password, salt) => {
     const hash = crypto.createHash("sha256");
-    hash.update(salt + password); // Combine password with salt
+    hash.update(password + salt); // Ensure this matches how the mobile app does it (password + salt)
     return hash.digest("hex");
 };
 
 
 export const updateUserHandler = async (req, res) => {
-    const { studentId, contactNumber, emailAddress, firstName} = req.body;
+    const { studentId, contactNumber, emailAddress, firstName } = req.body;
 
     if (!studentId) {
         return res.status(400).json({ message: 'Student ID is required' });
@@ -40,8 +46,6 @@ export const updateUserHandler = async (req, res) => {
     }
 };
 
-
-
 export const getUserHandler = async (req, res) => {
     const { studentId, password } = req.body;
 
@@ -60,10 +64,8 @@ export const getUserHandler = async (req, res) => {
         // Retrieve the stored hash and salt
         const { password: storedHash, salt } = user;
 
-        // Hash the input password with the stored salt
-        const hash = crypto.createHash("sha256");
-        hash.update(salt + password);
-        const hashedInputPassword = hash.digest("hex");
+        // Hash the input password with the stored salt (this matches the mobile app behavior)
+        const hashedInputPassword = hashPassword(password, salt);
 
         // Compare the hashes
         if (hashedInputPassword === storedHash) {
@@ -87,8 +89,8 @@ export const addUserHandler = async (req, res) => {
     }
 
     try {
-        // Generate salt
-        const salt = crypto.randomBytes(16).toString("hex");
+        // Generate salt using the custom function
+        const salt = generateSalt(30);
 
         // Hash the password with the salt
         const hashedPassword = hashPassword(password, salt);

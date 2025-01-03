@@ -31,11 +31,10 @@ const ListingFound = () => {
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
 
-
   const handleCoordinates = (coords) => {
-    const [latitude, longitude] = coords; // Destructure coordinates
+    const [longitude, latitude] = coords; // Destructure in correct order: longitude first, then latitude
     const formattedLocation = `${latitude}, ${longitude}`; // Format as "latitude, longitude"
-  
+
     setCoordinates(coords);
     setFormData({
       ...formData,
@@ -43,7 +42,18 @@ const ListingFound = () => {
     });
     setIsMapVisible(false); // Hide the map after confirmation
   };
-  
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Format as "yyyy-mm-dd hh:mm"
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -121,12 +131,19 @@ const ListingFound = () => {
       return;
     }
 
-    // Add the uploaded image URL to the form data
-    const data = {
+    const formattedDateTime = formatDate(formData.dateTime);
+
+    // Update formData with the formatted date
+    const updatedFormData = {
       ...formData,
+      dateTime: formattedDateTime, // Use the formatted date
+    };
+
+    const data = {
+      ...updatedFormData,
       studentId: user.id,
       imageUrl,
-      status: "found",
+      status: "lost",
       ticket: "pending",
     };
     console.log(data);
