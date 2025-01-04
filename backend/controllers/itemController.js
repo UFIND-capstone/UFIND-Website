@@ -1,5 +1,18 @@
 import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
 
+<<<<<<< HEAD
+=======
+function generateRandomId() {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 export const claimItemHandler = async (req, res) => {
     const {
         studentId,
@@ -103,7 +116,16 @@ export const addItemHandler = async (req, res) => {
     }
 
     try {
+<<<<<<< HEAD
         const itemId = await addItem({
+=======
+        // Generate the custom document ID
+        const randomId = generateRandomId();
+        const documentId = `${studentId}_${randomId}`;
+
+        // Call the model to add the item
+        const itemId = await addItem(documentId, {
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
             studentId,
             name,
             description,
@@ -114,7 +136,11 @@ export const addItemHandler = async (req, res) => {
             status,
             ticket,
             location,
+<<<<<<< HEAD
             ...(imageUrl && { imageUrl }), // Include claimStatus only if it exists
+=======
+            ...(imageUrl && { imageUrl }), // Include imageUrl only if it exists
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
             ...(claimStatus && { claimStatus }), // Include claimStatus only if it exists
         });
 
@@ -124,6 +150,10 @@ export const addItemHandler = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 export const updateItemHandler = async (req, res) => {
     const { itemID } = req.params;
     const { ticket } = req.body;

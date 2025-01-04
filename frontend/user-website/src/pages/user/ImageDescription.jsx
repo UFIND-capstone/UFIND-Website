@@ -188,6 +188,7 @@ const ItemDescription = () => {
         ) : (
           <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
             <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
+<<<<<<< HEAD
               <button
                 onClick={() => navigate(-1)}
                 className="self-start text-gray-600 hover:text-gray-900 mb-4"
@@ -199,6 +200,21 @@ const ItemDescription = () => {
                 alt={item.name || "Lost Item"}
               />
             </div>
+=======
+            <button
+              onClick={() => navigate(-1)}
+              className="self-start text-gray-600 hover:text-gray-900 mb-4"
+            >
+              ← Back
+            </button>
+            <img
+              src={item.imageUrl || "/placeholder-image.png"}
+              alt={item.name || "Lost Item"}
+              className={item.status === "found" ? "blur-md" : ""}
+            />
+          </div>
+
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-1">

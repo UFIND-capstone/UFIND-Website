@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import axios from "axios";
+=======
+import { useLocation, useNavigate } from "react-router-dom";
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
+<<<<<<< HEAD
 import { useLocation } from "react-router-dom";
+=======
+import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy } from "../../config/firebase";
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -14,6 +22,7 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState("");
+<<<<<<< HEAD
 
   const location = useLocation();
 
@@ -59,6 +68,66 @@ const ChatApp = () => {
   };
   
   
+=======
+  
+  const location = useLocation();  // Get location object
+  const navigate = useNavigate();  // To navigate programmatically
+
+  useEffect(() => {
+    fetchChats();
+
+    // Check if recipientId is in the query and fetch the contact info
+    const params = new URLSearchParams(location.search);
+    const recipientId = params.get("recipientId");
+
+    if (recipientId) {
+      openChatWithRecipient(recipientId);
+    }
+  }, [location.search]);  // Re-run effect when the URL changes
+
+  const fetchChats = async () => {
+    try {
+      const chatsRef = collection(db, "chats");
+      const q = query(chatsRef, where("participants", "array-contains", user.id));
+      const querySnapshot = await getDocs(q);
+  
+      const fetchedContacts = [];
+  
+      for (const docSnapshot of querySnapshot.docs) {
+        const chatData = docSnapshot.data();
+        const otherUserId = chatData.participants.find(p => p !== user.id);
+        
+        const otherUserRef = doc(db, "users", otherUserId);
+        const otherUserDoc = await getDoc(otherUserRef);
+  
+        if (otherUserDoc.exists()) {
+          const otherUserData = otherUserDoc.data();
+          fetchedContacts.push({
+            chatId: docSnapshot.id,
+            otherUserId,
+            otherUserData: {
+              firstName: otherUserData.firstName,
+              lastName: otherUserData.lastName
+            },
+            participants: chatData.participants
+          });
+        }
+      }
+  
+      setContacts(fetchedContacts);
+    } catch (error) {
+      console.error("Error fetching chats", error);
+    }
+  };
+
+  const fetchMessages = async (chatId) => {
+    const messagesRef = collection(db, `chats/${chatId}/messages`);
+    const q = query(messagesRef, orderBy("timestamp", "asc"));
+    const querySnapshot = await getDocs(q);
+    const fetchedMessages = querySnapshot.docs.map(doc => doc.data());
+    setMessages(fetchedMessages);
+  };
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
@@ -67,6 +136,7 @@ const ChatApp = () => {
       senderId: user.id,
       recipientId: activeContact.otherUserId,
       content: newMessage.trim(),
+<<<<<<< HEAD
     };
   
     try {
@@ -81,6 +151,37 @@ const ChatApp = () => {
         setActiveContact((prev) => ({ ...prev, chatId: response.data.chatId }));
       }
   
+=======
+      timestamp: new Date(),
+    };
+  
+    try {
+      let chatId = activeContact.chatId;
+  
+      // If no chatId exists, create a new chat document
+      if (!chatId) {
+        // Create a new chat document with the participants
+        const newChatRef = await addDoc(collection(db, "chats"), {
+          participants: [user.id, activeContact.otherUserId],
+        });
+  
+        // Once the chat is created, get the chatId
+        chatId = newChatRef.id;
+  
+        // Update the active contact to reflect the new chatId
+        setActiveContact((prev) => ({ ...prev, chatId }));
+      }
+  
+      // Now, send the message to the chat
+      const messagesRef = collection(db, `chats/${chatId}/messages`);
+      const messageDoc = await addDoc(messagesRef, messageData);
+      const sentMessage = { ...messageData, id: messageDoc.id };
+  
+      // Update the state with the new message
+      setMessages((prevMessages) => [...prevMessages, sentMessage]);
+  
+      // Clear the new message input
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message", error);
@@ -88,6 +189,7 @@ const ChatApp = () => {
   };
   
 
+<<<<<<< HEAD
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -130,6 +232,41 @@ const ChatApp = () => {
   }
 };
 
+=======
+  const openChat = async (chat) => {
+    setActiveContact(chat);
+    setIsChatOpen(true);
+    if (chat.chatId) {
+      fetchMessages(chat.chatId);
+    } else {
+      setMessages([]);
+    }
+  };
+
+  const openChatWithRecipient = async (recipientId) => {
+    // Fetch the recipient data from the 'users' collection
+    const recipientRef = doc(db, "users", recipientId);
+    const recipientDoc = await getDoc(recipientRef);
+
+    if (recipientDoc.exists()) {
+      const recipientData = recipientDoc.data();
+
+      // If the recipient data exists, open the chat
+      const newContact = {
+        otherUserId: recipientId,
+        otherUserData: {
+          firstName: recipientData.firstName,
+          lastName: recipientData.lastName,
+        },
+        participants: [user.id, recipientId],
+      };
+
+      openChat(newContact);
+    } else {
+      console.error("Recipient not found");
+    }
+  };
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   const closeChat = () => {
     setIsChatOpen(false);
@@ -137,6 +274,13 @@ const ChatApp = () => {
     setMessages([]);
   };
 
+<<<<<<< HEAD
+=======
+  const filteredContacts = contacts.filter(contact =>
+    contact.otherUserData.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   return (
     <div className="min-h-screen flex flex-col">
       <Topbar />
@@ -190,9 +334,13 @@ const ChatApp = () => {
                   <div
                     key={index}
                     className={`flex ${
+<<<<<<< HEAD
                       message.senderId === user.id
                         ? "justify-end"
                         : "justify-start"
+=======
+                      message.senderId === user.id ? "justify-end" : "justify-start"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
                     }`}
                   >
                     <div

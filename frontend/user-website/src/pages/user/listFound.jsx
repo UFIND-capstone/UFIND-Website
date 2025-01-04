@@ -9,15 +9,26 @@ import { useAuth } from "../../AuthContext";
 
 const ListingFound = () => {
   const navigate = useNavigate();
+<<<<<<< HEAD
+=======
+  const { user } = useAuth();
+  const userFullname = user.firstName + " " + user.lastName;
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   const [formData, setFormData] = useState({
     studentId: "",
     name: "",
     dateTime: "",
     description: "",
     location: "",
+<<<<<<< HEAD
     fullName: "",
     contactNumber: "",
     email: "",
+=======
+    fullName: userFullname || " ", // Use user details if available
+    contactNumber: user?.contactNumber || "",
+    email: user?.emailAddress || "",
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     imageUrl: "", // Store the image URL here
     claimStatus: "",
   });
@@ -28,6 +39,7 @@ const ListingFound = () => {
   const [uploading, setUploading] = useState(false); // State for upload status
   const [coordinates, setCoordinates] = useState(null);
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
+<<<<<<< HEAD
   const { user } = useAuth();
 
   const handleCoordinates = (coords) => {
@@ -35,10 +47,36 @@ const ListingFound = () => {
     setFormData({
       ...formData,
       location: coords.join(", "), // Update the location field in formData
+=======
+
+  const handleCoordinates = (coords) => {
+    const [longitude, latitude] = coords; // Destructure in correct order: longitude first, then latitude
+    const formattedLocation = `${latitude}, ${longitude}`; // Format as "latitude, longitude"
+
+    setCoordinates(coords);
+    setFormData({
+      ...formData,
+      location: formattedLocation, // Update location with formatted value
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     });
     setIsMapVisible(false); // Hide the map after confirmation
   };
 
+<<<<<<< HEAD
+=======
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Format as "yyyy-mm-dd hh:mm"
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,12 +153,28 @@ const ListingFound = () => {
       return;
     }
 
+<<<<<<< HEAD
     // Add the uploaded image URL to the form data
     const data = {
       ...formData,
       studentId: user.id,
       imageUrl,
       status: "found",
+=======
+    const formattedDateTime = formatDate(formData.dateTime);
+
+    // Update formData with the formatted date
+    const updatedFormData = {
+      ...formData,
+      dateTime: formattedDateTime, // Use the formatted date
+    };
+
+    const data = {
+      ...updatedFormData,
+      studentId: user.id,
+      imageUrl,
+      status: "lost",
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
       ticket: "pending",
     };
     console.log(data);
@@ -240,7 +294,10 @@ const ListingFound = () => {
                 name="image"
                 onChange={handleImageChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+<<<<<<< HEAD
                 required
+=======
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               />
             </div>
 
@@ -285,7 +342,11 @@ const ListingFound = () => {
               <input
                 type="text"
                 name="fullName"
+<<<<<<< HEAD
                 value={formData.firstName}
+=======
+                value={formData.fullName}
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your full name"

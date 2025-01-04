@@ -40,7 +40,11 @@ const Sidebar = () => {
         <ul className="space-y-4">
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/dashboard"
+=======
+              to="/admin/dashboard"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdDashboard size={24} />
@@ -50,7 +54,11 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/itemLost"
+=======
+              to="/admin/itemLost"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineSearch size={24} />
@@ -60,7 +68,11 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/itemFound"
+=======
+              to="/admin/itemFound"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineCheckCircle size={24} />
@@ -70,7 +82,11 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/activeTicket"
+=======
+              to="/admin/activeTicketAdmin"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineListAlt size={24} />
@@ -80,7 +96,11 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/turnoverTicket"
+=======
+              to="/admin/turnoverTicket"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdOutlineAssignmentTurnedIn size={24} />
@@ -90,7 +110,11 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+<<<<<<< HEAD
               to="/myAccount"
+=======
+              to="/admin/myAccount"
+>>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
               <MdAccountCircle size={24} />
