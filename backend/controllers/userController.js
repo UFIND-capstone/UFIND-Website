@@ -1,12 +1,5 @@
 import { getUser, addUser, updateUser, getUserById } from '../models/userModel.js';
 import crypto from 'crypto';
-<<<<<<< HEAD
-
-
-const hashPassword = (password, salt) => {
-    const hash = crypto.createHash("sha256");
-    hash.update(salt + password); // Combine password with salt
-=======
 import { auth } from '../firebase.js';
 
 
@@ -20,17 +13,12 @@ const generateSalt = (length = 30) => {
 const hashPassword = (password, salt) => {
     const hash = crypto.createHash("sha256");
     hash.update(password + salt); // Ensure this matches how the mobile app does it (password + salt)
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     return hash.digest("hex");
 };
 
 
 export const updateUserHandler = async (req, res) => {
-<<<<<<< HEAD
-    const { studentId, contactNumber, emailAddress, firstName} = req.body;
-=======
     const { studentId, contactNumber, emailAddress, firstName } = req.body;
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
     if (!studentId) {
         return res.status(400).json({ message: 'Student ID is required' });
@@ -60,11 +48,6 @@ export const updateUserHandler = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 export const getUserHandler = async (req, res) => {
     const { studentId, password } = req.body;
 
@@ -83,15 +66,8 @@ export const getUserHandler = async (req, res) => {
         // Retrieve the stored hash and salt
         const { password: storedHash, salt } = user;
 
-<<<<<<< HEAD
-        // Hash the input password with the stored salt
-        const hash = crypto.createHash("sha256");
-        hash.update(salt + password);
-        const hashedInputPassword = hash.digest("hex");
-=======
         // Hash the input password with the stored salt (this matches the mobile app behavior)
         const hashedInputPassword = hashPassword(password, salt);
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
         // Compare the hashes
         if (hashedInputPassword === storedHash) {
@@ -115,12 +91,6 @@ export const addUserHandler = async (req, res) => {
     }
 
     try {
-<<<<<<< HEAD
-        // Generate salt
-        const salt = crypto.randomBytes(16).toString("hex");
-
-        // Hash the password with the salt
-=======
         // Create user with Firebase Admin SDK
         const userRecord = await auth.createUser({
             email: emailAddress,
@@ -130,7 +100,6 @@ export const addUserHandler = async (req, res) => {
 
         // Generate salt and hash password for Firestore
         const salt = generateSalt(30);
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
         const hashedPassword = hashPassword(password, salt);
 
         // Create the user object
@@ -139,18 +108,6 @@ export const addUserHandler = async (req, res) => {
             lastName,
             emailAddress,
             contactNumber,
-<<<<<<< HEAD
-            password: hashedPassword, // Store hashed password
-            salt, // Store the salt for validation later
-            studentId,
-        };
-
-        const userId = await addUser(newUser); // Save user to Firestore
-        res.status(201).json({ message: "User added successfully", userId });
-    } catch (error) {
-        console.error("Error in addUserHandler:", error);
-        res.status(500).send(error.message);
-=======
             password: hashedPassword,
             salt,
             studentId,
@@ -178,7 +135,6 @@ export const addUserHandler = async (req, res) => {
         }
 
         res.status(500).json({ message: error.message });
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     }
 };
 
@@ -191,8 +147,4 @@ export const getUserByIdHandler = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: `Error retrieving user: ${error.message}` });
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a

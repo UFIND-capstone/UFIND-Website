@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-// firebase.js
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
-=======
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, where, onSnapshot, doc, setDoc, getDoc, addDoc, getDocs, orderBy } from "firebase/firestore";
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
 // Your Firebase config (replace with your actual config)
 const firebaseConfig = {
@@ -24,8 +18,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(app);
 
-<<<<<<< HEAD
-export { db, collection, query, where, onSnapshot };
-=======
 export { db, collection, query, where, onSnapshot, doc, setDoc, getDoc, addDoc, getDocs, orderBy };
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a

@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { initializeApp } from 'firebase/app';
-import config from './config.js';
-
-const firebaseApp = initializeApp(config.firebaseConfig);
-export default firebaseApp;
-=======
 // firebase.js
 import admin from 'firebase-admin';
 import dotenv from 'dotenv';
@@ -40,4 +33,3 @@ const serviceAccount = {
   export const auth = admin.auth();
   export const db = admin.firestore();
   export default adminApp;
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
