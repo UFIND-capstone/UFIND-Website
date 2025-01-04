@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
-<<<<<<< HEAD
-import axios from 'axios';
-
-const ActiveTicket = () => {
-=======
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const ActiveTicketAdmin = () => {
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   const [items, setItems] = useState([]); // All items from the API
   const [filteredItems, setFilteredItems] = useState([]); // Items filtered by search
   const [searchTerm, setSearchTerm] = useState(''); // User's search input
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL
-<<<<<<< HEAD
-=======
   const navigate = useNavigate();
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   useEffect(() => {
     console.log(hostUrl)
@@ -78,14 +69,11 @@ const ActiveTicketAdmin = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   // Navigate to image description page
   const navigateToDescription = (item) => {
     navigate('/imgDescriptions', { state: { item } });
   };
 
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   // Delete an item
   const handleDelete = async (id) => {
     try {
@@ -144,11 +132,8 @@ const ActiveTicketAdmin = () => {
                     src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
                     alt={item.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
-<<<<<<< HEAD
-=======
                     onClick={() => handleImageClick(item)}
 
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
                   />
                   <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
                   <p className="text-sm text-gray-600 mb-1">
@@ -183,8 +168,4 @@ const ActiveTicketAdmin = () => {
   );
 };
 
-<<<<<<< HEAD
-export default ActiveTicket;
-=======
 export default ActiveTicketAdmin;
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a

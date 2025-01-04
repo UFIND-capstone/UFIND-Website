@@ -10,28 +10,18 @@ import { useAuth } from "../../AuthContext";
 const ListingLost = () => {
   const navigate = useNavigate();
   const { user } = useAuth(); // Get user from AuthContext
-<<<<<<< HEAD
-  const [formData, setFormData] = useState({
-=======
   const userFullname = user.firstName + " " + user.lastName;
   const [formData, setFormData] = useState({
     claimStatus: "keep",
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     studentId: "",
     name: "",
     lastSeen: "",
     dateTime: "",
     description: "",
     location: "",
-<<<<<<< HEAD
-    fullName: "",
-    contactNumber: "",
-    email: "",
-=======
     fullName: userFullname || " ", // Use user details if available
     contactNumber: user?.contactNumber || "",
     email: user?.emailAddress || "",
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   });
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
@@ -41,15 +31,6 @@ const ListingLost = () => {
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
 
   const handleCoordinates = (coords) => {
-<<<<<<< HEAD
-    setCoordinates(coords);
-    setFormData({
-      ...formData,
-      location: coords.join(", "), // Update the location field in formData
-    });
-    setIsMapVisible(false); // Hide the map after confirmation
-  };
-=======
     const [latitude, longitude] = coords; // Destructure in correct order: longitude first, then latitude
     const formattedLocation = `${latitude}, ${longitude}`; // Format as "latitude, longitude"
   
@@ -74,7 +55,6 @@ const formatDate = (dateString) => {
 };
 
   
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -148,16 +128,6 @@ const formatDate = (dateString) => {
       return;
     }
 
-<<<<<<< HEAD
-    // Add the uploaded image URL to the form data
-    const data = {
-      ...formData,
-      studentId: user.id,
-      imageUrl,
-      status: "lost",
-      ticket: "pending",
-    };
-=======
     const formattedDateTime = formatDate(formData.dateTime);
   
   // Update formData with the formatted date
@@ -173,7 +143,6 @@ const formatDate = (dateString) => {
     status: "lost",
     ticket: "pending",
   };
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
     try {
       const response = await axios.post(
@@ -283,10 +252,6 @@ const formatDate = (dateString) => {
                 name="image"
                 onChange={handleImageChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-<<<<<<< HEAD
-                required
-=======
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
               />
             </div>
 

@@ -98,11 +98,7 @@ export const Login = () => {
         {/* Administrator Here Link */}
         <div className="mt-4">
           <Link
-<<<<<<< HEAD
-            to="/adminLogin"
-=======
             to="/admin/adminLogin"
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
             className="text-sm text-blue-500 hover:underline"
           >
             ADMIN HERE

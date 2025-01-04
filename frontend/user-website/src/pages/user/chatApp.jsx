@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import axios from "axios";
-=======
 import { useLocation, useNavigate } from "react-router-dom";
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
-<<<<<<< HEAD
-import { useLocation } from "react-router-dom";
-=======
 import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy } from "../../config/firebase";
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -22,53 +14,6 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState("");
-<<<<<<< HEAD
-
-  const location = useLocation();
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const recipientId = queryParams.get("recipientId");
-
-    if (recipientId) {
-      // Automatically fetch contact and open chat
-      fetchChatByRecipientId(recipientId);
-    }
-  }, [location]);
-
-  const fetchChatByRecipientId = async (recipientId) => {
-    try {
-      const response = await axios.post("http://localhost:3000/api/getChats", {
-        userId: user.id,
-      });
-      const contact = response.data.find((c) => c.otherUserId === recipientId);
-  
-      if (contact) {
-        // Open the existing chat
-        openChat(contact);
-      } else {
-        // Fetch recipient's name dynamically
-        const userResponse = await axios.get(
-          `http://localhost:3000/api/user/${recipientId}`
-        );
-  
-        setActiveContact({
-          otherUserId: recipientId,
-          otherUserData: {
-            firstName: userResponse.data.firstName,
-            lastName: userResponse.data.lastName,
-          },
-        });
-        setIsChatOpen(true);
-        setMessages([]); // Clear messages since it's a new chat
-      }
-    } catch (error) {
-      console.error("Error fetching chat or recipient user details", error);
-    }
-  };
-  
-  
-=======
   
   const location = useLocation();  // Get location object
   const navigate = useNavigate();  // To navigate programmatically
@@ -127,7 +72,6 @@ const ChatApp = () => {
     const fetchedMessages = querySnapshot.docs.map(doc => doc.data());
     setMessages(fetchedMessages);
   };
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
@@ -136,22 +80,6 @@ const ChatApp = () => {
       senderId: user.id,
       recipientId: activeContact.otherUserId,
       content: newMessage.trim(),
-<<<<<<< HEAD
-    };
-  
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/messages",
-        messageData
-      );
-      setMessages((prevMessages) => [...prevMessages, response.data]);
-  
-      // If the chatId wasn't available before, it might now be returned by the backend
-      if (!activeContact.chatId && response.data.chatId) {
-        setActiveContact((prev) => ({ ...prev, chatId: response.data.chatId }));
-      }
-  
-=======
       timestamp: new Date(),
     };
   
@@ -181,7 +109,6 @@ const ChatApp = () => {
       setMessages((prevMessages) => [...prevMessages, sentMessage]);
   
       // Clear the new message input
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message", error);
@@ -189,50 +116,6 @@ const ChatApp = () => {
   };
   
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const userId = user.id;
-        const response = await axios.post(
-          "http://localhost:3000/api/getChats",
-          { userId }
-        );
-        setContacts(response.data);
-      } catch (error) {
-        console.error("Error fetching chats", error);
-      }
-    };
-    fetchChats();
-  }, []);
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.otherUserData.firstName
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
-
-  const openChat = async (chat) => {
-  setActiveContact(chat);
-  setIsChatOpen(true);
-
-  if (chat.chatId) {
-    // Fetch messages for existing chat
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/messages/${chat.chatId}`
-      );
-      setMessages(response.data);
-    } catch (error) {
-      console.error("Error fetching messages", error);
-    }
-  } else {
-    // No messages yet for new chat
-    setMessages([]);
-  }
-};
-
-=======
   const openChat = async (chat) => {
     setActiveContact(chat);
     setIsChatOpen(true);
@@ -266,7 +149,6 @@ const ChatApp = () => {
       console.error("Recipient not found");
     }
   };
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 
   const closeChat = () => {
     setIsChatOpen(false);
@@ -274,13 +156,10 @@ const ChatApp = () => {
     setMessages([]);
   };
 
-<<<<<<< HEAD
-=======
   const filteredContacts = contacts.filter(contact =>
     contact.otherUserData.firstName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   return (
     <div className="min-h-screen flex flex-col">
       <Topbar />
@@ -334,13 +213,7 @@ const ChatApp = () => {
                   <div
                     key={index}
                     className={`flex ${
-<<<<<<< HEAD
-                      message.senderId === user.id
-                        ? "justify-end"
-                        : "justify-start"
-=======
                       message.senderId === user.id ? "justify-end" : "justify-start"
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
                     }`}
                   >
                     <div

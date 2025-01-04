@@ -47,11 +47,7 @@ const MapWithRestrictedArea = ({ onConfirm }) => {
     });
 
     map.on('click', (event) => {
-<<<<<<< HEAD
-      const coords = toLonLat(event.coordinate); 
-=======
       const coords = toLonLat(event.coordinate); // Returns [longitude, latitude]
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
       setCoordinates(coords);
       const markerFeature = new Feature(new Point(event.coordinate));
 
@@ -75,13 +71,9 @@ const MapWithRestrictedArea = ({ onConfirm }) => {
   // Handle "Confirm" button click
   const handleConfirm = () => {
     if (coordinates) {
-<<<<<<< HEAD
-      onConfirm(coordinates); // Send coordinates to parent
-=======
       const [longitude, latitude] = coordinates; // Destructure coords
       const formattedCoords = [latitude, longitude]; // Swap to latitude-first, longitude-second
       onConfirm(formattedCoords); // Send swapped coordinates to parent
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
     }
   };
 
@@ -93,8 +85,4 @@ const MapWithRestrictedArea = ({ onConfirm }) => {
   );
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 export default MapWithRestrictedArea;

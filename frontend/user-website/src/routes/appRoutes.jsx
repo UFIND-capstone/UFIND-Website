@@ -27,11 +27,7 @@ import ChatApp from "../pages/user/chatApp";
 import WhyIsItImportantToSecureYourBelongings from "../pages/user/whyisitimportanttosecureyourBelongings";
 
 // Admin Routes
-<<<<<<< HEAD
-import { LoginAdmin } from "../pages/admin/loginAdmin"; 
-=======
 import { LoginAdmin } from "../pages/admin/loginAdmin";
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 import DashboardAdmin from "../pages/admin/dashboard";
 import ItemLost from "../pages/admin/itemLost";
 import { MatchItems } from "../pages/admin/matchItems";
@@ -39,135 +35,13 @@ import ItemFound from "../pages/admin/itemFound";
 import { MyAccountAdmin } from "../pages/admin/myAccount";
 import UnclaimedTicket from "../pages/admin/unclaimedTicket";
 import TurnoverTicket from "../pages/admin/turnoverTicket";
-<<<<<<< HEAD
-import ActiveTicketAdmin from "../pages/admin/ActiveTicketAdmin"; 
-=======
 import ActiveTicketAdmin from "../pages/admin/ActiveTicketAdmin";
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
 import ImgDescriptions from "../pages/admin/imgDescriptions";
 
 export const AppRoutes = () => {
   const router = createBrowserRouter([
     // Public routes
     { path: "/", element: <Login />, errorElement: <Login /> },
-<<<<<<< HEAD
-    { path: "/aboutUs", element: <AboutUs /> },
-    { path: "/register", element: <Register /> },
-    { path: "/howtoProtectYourBelongings", element: <HowtoProtectYourBelongings /> },
-    { path: "/howtoreportalostorfounditem", element: <HowtoReportaLostorFoundItem /> },
-    { path: "/whyisitimportanttosecureyourBelongings", element: <WhyIsItImportantToSecureYourBelongings /> },
-
-    // Protected User Routes
-    {
-      path: "/dashboard",
-      element: (
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/myAccount",
-      element: (
-        <ProtectedRoute>
-          <MyAccount />
-        </ProtectedRoute>
-      ),
-    },
-    { path: "/contactUs", element: <ContactUs /> },
-    { path: "/listLost", element: <ListLost /> },
-    { path: "/listFound", element: <ListFound /> },
-    { path: "/browseItemsLost", element: <BrowseitemsLost /> },
-    { path: "/browseItemsFound", element: <BrowseitemsFound /> },
-    { path: "/items/:itemID", element: <ImageDescription /> },
-    { path: "/reportPage", element: <ReportPage /> },
-    { path: "/viewmyTickets", element: <ViewMyTickets /> },
-    { path: "/unclaimedTickets", element: <UnclaimedTickets /> },
-    { path: "/contactForm", element: <ContactForm /> },
-    { path: "/activeTickets", element: <ActiveTickets /> },
-    { path: "/turnover", element: <Turnover /> },
-    { path: "/notification", element: <Notification /> },
-    { path: "/chatApp", element: <ChatApp /> },
-
-    // Admin Routes
-    {
-      path: "/admin/adminLogin", // Fixed route name for admin login
-      element: <loginAdmin />,  // Using the correct AdminLogin component
-      errorElement: <LoginAdmin />, // Handle error with the same component
-    },
-    {
-      path: "/admin/dashboard",
-      element: (
-        <ProtectedRoute>
-          <DashboardAdmin />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/itemLost",
-      element: (
-        <ProtectedRoute>
-          <ItemLost />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/match-items",
-      element: (
-        <ProtectedRoute>
-          <MatchItems />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/itemFound",
-      element: (
-        <ProtectedRoute>
-          <ItemFound />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/myAccount",
-      element: (
-        <ProtectedRoute>
-          <MyAccountAdmin />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/unclaimedTicket",
-      element: (
-        <ProtectedRoute>
-          <UnclaimedTicket />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/turnoverTicket",
-      element: (
-        <ProtectedRoute>
-          <TurnoverTicket />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/activeTicketAdmin",
-      element: (
-        <ProtectedRoute>
-          <ActiveTicketAdmin />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: "/admin/imgDescriptions",
-      element: (
-        <ProtectedRoute>
-          <ImgDescriptions />
-        </ProtectedRoute>
-      ),
-    },
-=======
     { path: "/aboutUs", element: <AboutUs />, errorElement: <AboutUs /> },
     { path: "/register", element: <Register />, errorElement: <Register /> },
     { path: "/howtoProtectYourBelongings", element: <HowtoProtectYourBelongings />, errorElement: <HowtoProtectYourBelongings /> },
@@ -203,7 +77,6 @@ export const AppRoutes = () => {
     { path: "/admin/turnoverTicket", element: <ProtectedRoute><TurnoverTicket /></ProtectedRoute>, errorElement: <TurnoverTicket /> },
     { path: "/admin/activeTicketAdmin", element: <ProtectedRoute><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
     { path: "/admin/items/:itemID", element: <ProtectedRoute><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
->>>>>>> d706f433329312b8dac206e6393ea2642b090a6a
   ]);
 
   return (
