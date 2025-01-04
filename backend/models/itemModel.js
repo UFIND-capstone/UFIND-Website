@@ -1,131 +1,91 @@
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  getDoc,
-  query,
-  where,
-  updateDoc,
-  deleteDoc,
-  setDoc,
-} from "firebase/firestore";
-import firebaseApp from "../firebase.js";
-
-const db = getFirestore(firebaseApp);
+import { db } from '../firebase.js';
 
 export const updateItem = async (itemID, updateData) => {
   try {
-      const itemRef = doc(db, "items", itemID);
-      await updateDoc(itemRef, updateData); // Update the document with the provided data
+      await db.collection('items').doc(itemID).update(updateData);
   } catch (error) {
-      throw new Error("Error updating item: " + error.message);
+      throw new Error(`Error updating item: ${error.message}`);
   }
 };
 
 export const deleteItem = async (itemID) => {
-    try {
-        const itemRef = doc(db, "items", itemID);
-        await deleteDoc(itemRef); // Delete the document
-    } catch (error) {
-        throw new Error("Error deleting item: " + error.message);
-    }
+  try {
+      await db.collection('items').doc(itemID).delete();
+  } catch (error) {
+      throw new Error(`Error deleting item: ${error.message}`);
+  }
 };
 
 export const addItem = async (documentId, itemData) => {
   try {
-    const newItem = {
-      ...itemData, // Include all fields, including imageURL
-    };
-
-    // Use the custom document ID when adding the item
-    const docRef = await setDoc(doc(db, "items", documentId), newItem);
-    return documentId; // Return the custom document ID
+      await db.collection('items').doc(documentId).set(itemData);
+      return documentId;
   } catch (error) {
-    throw new Error("Error adding item: " + error.message);
+      throw new Error(`Error adding item: ${error.message}`);
   }
 };
 
-
 export const getItems = async () => {
   try {
-    const itemsCollection = collection(db, "items");
-    const snapshot = await getDocs(itemsCollection);
-    const itemsList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return itemsList; // Return the list of items
+      const snapshot = await db.collection('items').get();
+      return snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+      }));
   } catch (error) {
-    throw new Error("Error retrieving items: " + error.message);
+      throw new Error(`Error retrieving items: ${error.message}`);
   }
 };
 
 export const addClaimItem = async (claimData) => {
   try {
-    const newItem = {
-      ...claimData, // Include all fields, including imageURL
-    };
-
-    const docRef = await addDoc(collection(db, "Claim"), newItem);
-    return docRef.id; // Return the ID of the newly created document
+      const docRef = await db.collection('Claim').add(claimData);
+      return docRef.id;
   } catch (error) {
-    throw new Error("Error adding item: " + error.message);
+      throw new Error(`Error adding claim: ${error.message}`);
   }
 };
 
 export const getItemsByUserId = async (studentId) => {
   try {
-    const itemsCollection = collection(db, "items");
-    const q = query(itemsCollection, where("studentId", "==", studentId));
-    const snapshot = await getDocs(q);
+      const snapshot = await db.collection('items')
+          .where('studentId', '==', studentId)
+          .get();
 
-    if (snapshot.empty) {
-      return []; // Return empty array if no items are found
-    }
-
-    const itemsList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return itemsList;
+      return snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+      }));
   } catch (error) {
-    throw new Error("Error retrieving items: " + error.message);
+      throw new Error(`Error retrieving items: ${error.message}`);
   }
 };
 
 export const getPendingItem = async (status) => {
   try {
-    const itemsCollection = collection(db, "items");
-    const q = query(itemsCollection, where("ticket", "==", status));
-    const snapshot = await getDocs(q);
+      const snapshot = await db.collection('items')
+          .where('ticket', '==', status)
+          .get();
 
-    if (snapshot.empty) {
-      return []; // Return empty array if no items are found
-    }
-
-    const itemsList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return itemsList;
+      return snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+      }));
   } catch (error) {
-    throw new Error("Error retrieving tickets: " + error.message);
+      throw new Error(`Error retrieving tickets: ${error.message}`);
   }
 };
 
 export const getItemById = async (itemID) => {
   try {
-    const docRef = doc(db, "items", itemID); // Reference to the specific item
-    const docSnap = await getDoc(docRef); // Fetch the document
-
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() }; // Return the item if it exists
-    } else {
-      throw new Error("Item not found"); // Return error if no item exists
-    }
+      const doc = await db.collection('items').doc(itemID).get();
+      
+      if (!doc.exists) {
+          throw new Error('Item not found');
+      }
+      
+      return { id: doc.id, ...doc.data() };
   } catch (error) {
-    throw new Error("Error retrieving item: " + error.message);
+      throw new Error(`Error retrieving item: ${error.message}`);
   }
 };

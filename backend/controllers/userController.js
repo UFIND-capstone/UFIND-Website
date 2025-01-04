@@ -1,5 +1,7 @@
 import { getUser, addUser, updateUser, getUserById } from '../models/userModel.js';
 import crypto from 'crypto';
+import { auth } from '../firebase.js';
+
 
 // Update to use the generateSalt method as required
 const generateSalt = (length = 30) => {
@@ -89,10 +91,15 @@ export const addUserHandler = async (req, res) => {
     }
 
     try {
-        // Generate salt using the custom function
-        const salt = generateSalt(30);
+        // Create user with Firebase Admin SDK
+        const userRecord = await auth.createUser({
+            email: emailAddress,
+            password: password,
+            displayName: `${firstName} ${lastName}`
+        });
 
-        // Hash the password with the salt
+        // Generate salt and hash password for Firestore
+        const salt = generateSalt(30);
         const hashedPassword = hashPassword(password, salt);
 
         // Create the user object
@@ -101,16 +108,33 @@ export const addUserHandler = async (req, res) => {
             lastName,
             emailAddress,
             contactNumber,
-            password: hashedPassword, // Store hashed password
-            salt, // Store the salt for validation later
+            password: hashedPassword,
+            salt,
             studentId,
+            firebaseUid: userRecord.uid
         };
 
-        const userId = await addUser(newUser); // Save user to Firestore
-        res.status(201).json({ message: "User added successfully", userId });
+        const userId = await addUser(newUser);
+        res.status(201).json({ 
+            message: "User added successfully", 
+            userId,
+            firebaseUid: userRecord.uid 
+        });
     } catch (error) {
         console.error("Error in addUserHandler:", error);
-        res.status(500).send(error.message);
+        
+        // Handle specific Firebase Auth errors
+        if (error.code === 'auth/email-already-exists') {
+            return res.status(400).json({ message: "Email address is already in use" });
+        } else if (error.code === 'auth/invalid-email') {
+            return res.status(400).json({ message: "Invalid email address" });
+        } else if (error.code === 'auth/operation-not-allowed') {
+            return res.status(500).json({ message: "Email/password accounts are not enabled" });
+        } else if (error.code === 'auth/invalid-password') {
+            return res.status(400).json({ message: "Password must be at least 6 characters" });
+        }
+
+        res.status(500).json({ message: error.message });
     }
 };
 
