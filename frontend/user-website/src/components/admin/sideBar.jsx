@@ -90,6 +90,16 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+              to="/admin/unclaimedTickets"
+              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
+            >
+              <MdOutlineAssignmentTurnedIn size={24} />
+              <span>Unclaimed Tickets</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
               to="/admin/myAccount"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >

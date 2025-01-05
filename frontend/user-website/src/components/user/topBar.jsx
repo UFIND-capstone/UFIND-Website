@@ -90,7 +90,7 @@ export default function Topbar() {
             onClick={toggleDropdown}
             aria-label="View My Ticket"
           >
-            TICKETS
+            MY TICKETS
           </button>
 
           {isDropdownOpen && (
@@ -103,18 +103,11 @@ export default function Topbar() {
                 Active Tickets
               </Link>
               <Link
-                to="/turnover"
+                to="/completed"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 onClick={() => setIsDropdownOpen(false)}
               >
-                Turnover
-              </Link>
-              <Link
-                to="/unclaimedTickets"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                onClick={() => setIsDropdownOpen(false)}
-              >
-                Unclaimed Tickets
+                Completed Tickets
               </Link>
             </div>
           )}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 
-const Turnover = () => {
+const Completed = () => {
   // Array of ticket data for multiple items
   const tickets = [
     {
@@ -63,7 +63,7 @@ const Turnover = () => {
       {/* Main Content */}
       <main className="flex-grow py-10 px-6">
         <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-          TURNOVER TICKETS
+          COMPLETED TICKETS
         </h2>
 
         {/* Search Bar */}
@@ -161,4 +161,4 @@ const Turnover = () => {
   );
 };
 
-export default Turnover;
+export default Completed;

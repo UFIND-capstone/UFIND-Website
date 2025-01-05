@@ -21,7 +21,7 @@ import ViewMyTickets from "../pages/user/viewmyTickets";
 import UnclaimedTickets from "../pages/user/unclaimedTickets";
 import ContactForm from "../pages/user/contactForm";
 import ActiveTickets from "../pages/user/ActiveTickets";
-import Turnover from "../pages/user/turnover";
+import Completed from "../pages/user/completed";
 import Notification from "../pages/user/notification";
 import ChatApp from "../pages/user/chatApp";
 import WhyIsItImportantToSecureYourBelongings from "../pages/user/whyisitimportanttosecureyourBelongings";
@@ -33,7 +33,7 @@ import ItemLost from "../pages/admin/itemLost";
 import { MatchItems } from "../pages/admin/matchItems";
 import ItemFound from "../pages/admin/itemFound";
 import { MyAccountAdmin } from "../pages/admin/myAccount";
-import UnclaimedTicket from "../pages/admin/unclaimedTicket";
+import UnclaimedTicket from "../pages/admin/unclaimedTickets";
 import TurnoverTicket from "../pages/admin/turnoverTicket";
 import ActiveTicketAdmin from "../pages/admin/ActiveTicketAdmin";
 import ImgDescriptions from "../pages/admin/imgDescriptions";
@@ -62,7 +62,7 @@ export const AppRoutes = () => {
     { path: "/unclaimedTickets", element: <UnclaimedTickets />, errorElement: <UnclaimedTickets /> },
     { path: "/contactForm", element: <ContactForm />, errorElement: <ContactForm /> },
     { path: "/activeTickets", element: <ActiveTickets />, errorElement: <ActiveTickets /> },
-    { path: "/turnover", element: <Turnover />, errorElement: <Turnover /> },
+    { path: "/completed", element: <Completed />, errorElement: <Completed /> },
     { path: "/notification", element: <Notification />, errorElement: <Notification /> },
     { path: "/chatApp", element: <ChatApp />, errorElement: <ChatApp /> },
 

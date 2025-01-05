@@ -21,10 +21,11 @@ const DashboardAdmin = () => {
   const [itemCounts, setItemCounts] = useState({
     itemsFound: 0,
     itemLost: 0,
-    ticketsPending: 0,
-    ticketsSuccess: 0,
-    keepTickets: 0, // New state for Keep Tickets
-    turnoverTickets: 0, // New state for Turnover Tickets
+    ticketsClaimed: 0,
+    keepTickets: 0, 
+    turnoverTickets: 0, 
+    unclaimedTickets: 0, 
+
   });
   const [ticketTrends, setTicketTrends] = useState([]);
 
@@ -39,10 +40,10 @@ const DashboardAdmin = () => {
         const counts = {
           itemsFound: items.filter(item => item.status === 'found').length,
           itemLost: items.filter(item => item.status === 'lost').length,
-          ticketsPending: items.filter(item => item.ticket === 'pending').length,
-          ticketsSuccess: items.filter(item => item.ticket === 'success').length,
+          ticketsClaimed: items.filter(item => item.ticket === 'claimed').length,
           keepTickets: items.filter(item => item.claimStatus === 'keep').length,
           turnoverTickets: items.filter(item => item.claimStatus === 'turnover').length,
+          unclaimedTickets: items.filter(item => item.claimStatus === 'unclaimed').length, 
         };
 
         setItemCounts(counts);
@@ -71,22 +72,23 @@ const DashboardAdmin = () => {
 
   // Data for Donut Chart
   const donutData = {
-    labels: ["Lost Items", "Found Items", "Pending Tickets", "Success Tickets", "Keep Tickets", "Turnover Tickets"], // Added labels
+    labels: ["Lost Items", "Found Items", "Claimed Tickets", "Keep Tickets", "Turnover Tickets", "Unclaimed Tickets"],
     datasets: [
       {
         data: [
           itemCounts.itemLost,
           itemCounts.itemsFound,
-          itemCounts.ticketsPending,
-          itemCounts.ticketsSuccess,
-          itemCounts.keepTickets, // Added data for Keep Tickets
-          itemCounts.turnoverTickets, // Added data for Turnover Tickets
+          itemCounts.ticketsClaimed,
+          itemCounts.keepTickets,
+          itemCounts.turnoverTickets,
+          itemCounts.unclaimedTickets, // Add Unclaimed Tickets data
         ],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56"], // Added colors
-        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56"], // Added colors
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56", "#FF6666"], // Add a new color
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#FF9F40", "#FFCD56", "#FF6666"],
       },
     ],
   };
+  
 
   // Data for Bar Chart (Ticket Trends)
   const barData = {
@@ -123,10 +125,7 @@ const DashboardAdmin = () => {
               {itemCounts.itemsFound} Item Found
             </div>
             <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              {itemCounts.ticketsPending} Pending Tickets
-            </div>
-            <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              {itemCounts.ticketsSuccess} Success Tickets
+              {itemCounts.ticketsClaimed} Claimed Tickets
             </div>
             <div className="bg-green-100 text-green-900 p-4 rounded-lg shadow-sm text-center font-bold">
               {itemCounts.keepTickets} Kept Tickets {/* Added Keep Tickets stat */}
@@ -134,6 +133,10 @@ const DashboardAdmin = () => {
             <div className="bg-yellow-100 text-yellow-900 p-4 rounded-lg shadow-sm text-center font-bold">
               {itemCounts.turnoverTickets} Turnover Tickets {/* Added Turnover Tickets stat */}
             </div>
+            <div className="bg-red-100 text-red-900 p-4 rounded-lg shadow-sm text-center font-bold">
+              {itemCounts.unclaimedTickets} Unclaimed Tickets
+            </div>
+
           </div>
 
           {/* Graphs */}

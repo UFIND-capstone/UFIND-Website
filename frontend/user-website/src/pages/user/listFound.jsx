@@ -143,7 +143,7 @@ const ListingFound = () => {
       ...updatedFormData,
       studentId: user.id,
       imageUrl,
-      status: "lost",
+      status: "Found",
       ticket: "pending",
     };
     console.log(data);
