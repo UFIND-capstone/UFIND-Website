@@ -1,35 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
+import axios from "axios";
+import { useAuth } from "../../AuthContext";
 
 const Completed = () => {
-  // Array of ticket data for multiple items
-  const tickets = [
-    {
-      id: 1,
-      name: "Aquaflask",
-      category: "Lost", // New field for category
-      lastSeenLocation: "Inside Cafeteria Table",
-      description: "Color Purple and 40oz",
-      dateTime: "November 25, 2024 - 12:50 PM",
-      status: "Pending",
-      image: "src/assets/aquaflask.png", // Correct path for static assets
-    },
-    {
-      id: 2,
-      name: "Umbrella",
-      category: "Found", // New field for category
-      lastSeenLocation: "Library",
-      description: "Black with white handle",
-      dateTime: "November 24, 2024 - 10:30 AM",
-      status: "Matched",
-      image: "src/assets/aquaflask.png", // Correct path for static assets
-    },
-  ];
-
-  // State for managing search query and filtered tickets
+  const { user } = useAuth(); // Access the user information from context
+  const [tickets, setTickets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTickets, setFilteredTickets] = useState(tickets);
+
+  // Fetch the tickets data from the API
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/items");
+        const data = response.data;
+
+        // Filter the tickets where ticket status is "completed"
+        const completedTickets = data.filter(
+          (item) => item.ticket === "completed"
+        );
+        setTickets(completedTickets); // Update tickets state with filtered data
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+
+    fetchTickets();
+  }, [user.id]);
 
   // Handle search input changes
   const handleSearch = (event) => {
@@ -42,7 +40,7 @@ const Completed = () => {
       ticket.category.toLowerCase().includes(query)
     );
 
-    setFilteredTickets(filtered);
+    setTickets(filtered);
   };
 
   // Dynamic Styling for Status and Category
@@ -53,6 +51,7 @@ const Completed = () => {
     Matched: "bg-blue-500 text-white",
     Resolved: "bg-green-500 text-white",
     Rejected: "bg-red-500 text-white",
+    completed: "bg-green-500 text-white",
   };
 
   return (
@@ -85,73 +84,78 @@ const Completed = () => {
 
         {/* Ticket List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredTickets.map((ticket) => (
-            <div
-              key={ticket.id}
-              className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
-            >
-              {/* Image Section */}
-              <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
-                <img
-                  src={ticket.image}
-                  alt={`Image of ${ticket.name}`}
-                  className="max-h-80 object-contain rounded"
-                />
-              </div>
+          {tickets.length > 0 ? (
+            tickets.map((ticket) => (
+              <div
+                key={ticket.id}
+                className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
+              >
+                {/* Image Section */}
+                <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
+                  <img
+                    src={ticket.imageUrl}
+                    alt={`Image of ${ticket.name}`}
+                    className="max-h-80 object-contain rounded"
+                  />
+                </div>
 
-              {/* Details Section */}
-              <div className="p-6 md:w-1/2">
-                <div className="flex flex-col space-y-4">
-                  {/* Item Name and Category */}
-                  <div>
-                    <h3 className="font-bold text-lg">{ticket.name.toUpperCase()}</h3>
-                    <span
-                      className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
-                        statusColors[ticket.category] || "bg-gray-400 text-white"
+                {/* Details Section */}
+                <div className="p-6 md:w-1/2">
+                  <div className="flex flex-col space-y-4">
+                    {/* Item Name and Category */}
+                    <div>
+                      <h3 className="font-bold text-lg">{ticket.name.toUpperCase()}</h3>
+                      <span
+                        className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
+                          statusColors[ticket.category] || "bg-gray-400 text-white"
+                        }`}
+                      >
+                        {ticket.category}
+                      </span>
+                    </div>
+
+                    {/* Other Details */}
+                    <div>
+                      <label className="block text-sm font-semibold">Last Seen Location</label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.location}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold">Description</label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.description}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold">Date & Time</label>
+                      <span className="w-full p-2 border rounded-md bg-gray-50">
+                        {ticket.dateTime}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Buttons Section */}
+                  <div className="flex flex-col space-y-4 mt-6">
+                    {/* Status */}
+                    <button
+                      className={`w-full py-2 rounded-full font-semibold ${
+                        statusColors[ticket.status] || "bg-gray-400 text-white"
                       }`}
                     >
-                      {ticket.category}
-                    </span>
+                      {ticket.status}
+                    </button>
                   </div>
-
-                  {/* Other Details */}
-                  <div>
-                    <label className="block text-sm font-semibold">Last Seen Location</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.lastSeenLocation}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Description</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.description}
-                    </span>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold">Date & Time</label>
-                    <span className="w-full p-2 border rounded-md bg-gray-50">
-                      {ticket.dateTime}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Buttons Section */}
-                <div className="flex flex-col space-y-4 mt-6">
-
-                  {/* Status */}
-                  <button
-                    className={`w-full py-2 rounded-full font-semibold ${
-                      statusColors[ticket.status] || "bg-gray-400 text-white"
-                    }`}
-                  >
-                    {ticket.status}
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-full">
+              No completed tickets found.
+            </p>
+          )}
         </div>
       </main>
 

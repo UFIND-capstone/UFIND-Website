@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { db, collection, query, where, onSnapshot } from '../../config/firebase';
 import { useAuth } from '../../AuthContext';
 
@@ -8,6 +8,7 @@ export default function Topbar() {
   const [notifications, setNotifications] = useState([]);
   const [newNotifications, setNewNotifications] = useState(0); // Count of new notifications
   const { user } = useAuth();
+  const location = useLocation(); // Get the current location
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
@@ -69,6 +70,13 @@ export default function Topbar() {
       unsubscribeItems();
     };
   }, [user]);
+
+  // Clear notifications when on /notification page
+  useEffect(() => {
+    if (location.pathname === '/notification') {
+      setNewNotifications(0); // Clear notifications when on the notifications page
+    }
+  }, [location]);
 
   return (
     <div className="flex items-center justify-between px-6 py-4 bg-white shadow-md">

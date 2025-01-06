@@ -54,10 +54,13 @@ const ItemDescription = () => {
 
   useEffect(() => {
     if (!item || !item.location) return;
+    console.log(`item.location: ${item.location}`);
+
 
     const locationParts = item.location.split(",").map(Number);
     const [longitude, latitude] = locationParts;
-    const coordinates = fromLonLat([longitude, latitude]);
+    const coordinates = fromLonLat([latitude, longitude]);
+    console.log(`coords: ${locationParts}`);
 
     const bottomLeft = fromLonLat([124.65448369078607, 8.484757587809328]);
     const topRight = fromLonLat([124.6587442680971, 8.487072471046389]);

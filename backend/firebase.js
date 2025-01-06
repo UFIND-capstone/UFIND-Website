@@ -13,7 +13,7 @@ const clientCertUrl = process.env.CLIENT_CERT_URL
 // Initialize Firebase Admin with your service account
 const serviceAccount = {
     "type": "service_account",
-    "project_id": "ufind-cb187",
+    "project_id": "ufind-61cf4",
     "private_key_id": privateKeyId,
     "private_key": privateKey,
     "client_email": clientEmail,

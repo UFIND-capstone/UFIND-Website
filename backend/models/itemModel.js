@@ -37,14 +37,16 @@ export const getItems = async () => {
   }
 };
 
-export const addClaimItem = async (claimData) => {
-  try {
-      const docRef = await db.collection('Claim').add(claimData);
-      return docRef.id;
-  } catch (error) {
-      throw new Error(`Error adding claim: ${error.message}`);
-  }
-};
+export const addClaimItem = async (claimData, itemId) => {
+    try {
+        // Use itemId as the document ID
+        const docRef = await db.collection('Claim').doc(itemId).set(claimData);
+        return itemId; // Return the itemId used as the document ID
+    } catch (error) {
+        throw new Error(`Error adding claim: ${error.message}`);
+    }
+  };
+  
 
 export const getItemsByUserId = async (studentId) => {
   try {

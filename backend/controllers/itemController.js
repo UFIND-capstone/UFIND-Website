@@ -29,6 +29,7 @@ export const claimItemHandler = async (req, res) => {
     }
 
     try {
+        // Pass the itemId as the document ID
         const addedItemId = await addClaimItem({
             studentId,
             name,
@@ -37,13 +38,13 @@ export const claimItemHandler = async (req, res) => {
             timeLost,
             locationLost,
             itemId, // Pass the itemId from the request
-        });
+        }, itemId); // Pass itemId as the document ID
         res.status(201).json({ message: 'Item added successfully', addedItemId });
     } catch (error) {
         res.status(500).json({ message: `Error adding item: ${error.message}` });
     }
-    
 };
+
 
 export const getItemsHandler = async (req, res) => {
     try {

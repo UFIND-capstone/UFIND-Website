@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
-import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy } from "../../config/firebase";
+import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot } from "../../config/firebase";
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -29,6 +29,20 @@ const ChatApp = () => {
       openChatWithRecipient(recipientId);
     }
   }, [location.search]);  // Re-run effect when the URL changes
+
+  useEffect(() => {
+    if (activeContact && activeContact.chatId) {
+      const messagesRef = collection(db, `chats/${activeContact.chatId}/messages`);
+      const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const fetchedMessages = querySnapshot.docs.map(doc => doc.data());
+        setMessages(fetchedMessages);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [activeContact]);
 
   const fetchChats = async () => {
     try {
@@ -65,14 +79,6 @@ const ChatApp = () => {
     }
   };
 
-  const fetchMessages = async (chatId) => {
-    const messagesRef = collection(db, `chats/${chatId}/messages`);
-    const q = query(messagesRef, orderBy("timestamp", "asc"));
-    const querySnapshot = await getDocs(q);
-    const fetchedMessages = querySnapshot.docs.map(doc => doc.data());
-    setMessages(fetchedMessages);
-  };
-
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
   
@@ -102,11 +108,7 @@ const ChatApp = () => {
   
       // Now, send the message to the chat
       const messagesRef = collection(db, `chats/${chatId}/messages`);
-      const messageDoc = await addDoc(messagesRef, messageData);
-      const sentMessage = { ...messageData, id: messageDoc.id };
-  
-      // Update the state with the new message
-      setMessages((prevMessages) => [...prevMessages, sentMessage]);
+      await addDoc(messagesRef, messageData);
   
       // Clear the new message input
       setNewMessage("");
@@ -119,11 +121,6 @@ const ChatApp = () => {
   const openChat = async (chat) => {
     setActiveContact(chat);
     setIsChatOpen(true);
-    if (chat.chatId) {
-      fetchMessages(chat.chatId);
-    } else {
-      setMessages([]);
-    }
   };
 
   const openChatWithRecipient = async (recipientId) => {

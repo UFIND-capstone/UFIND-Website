@@ -32,7 +32,7 @@ const ListingFound = () => {
   const [isMapVisible, setIsMapVisible] = useState(false); // Map visibility toggle
 
   const handleCoordinates = (coords) => {
-    const [longitude, latitude] = coords; // Destructure in correct order: longitude first, then latitude
+    const [latitude, longitude] = coords; // Destructure in correct order: longitude first, then latitude
     const formattedLocation = `${latitude}, ${longitude}`; // Format as "latitude, longitude"
 
     setCoordinates(coords);
@@ -143,7 +143,7 @@ const ListingFound = () => {
       ...updatedFormData,
       studentId: user.id,
       imageUrl,
-      status: "Found",
+      status: "found",
       ticket: "pending",
     };
     console.log(data);
