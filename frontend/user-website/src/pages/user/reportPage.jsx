@@ -47,7 +47,7 @@ const ReportPage = () => {
             <p className="text-gray-700">
               You can now manage it or track its status in your{" "}
               <button
-                onClick={() => navigate("/viewmyTickets")}
+                onClick={() => navigate("/activeTickets")}
                 className="font-semibold text-green-700 underline hover:text-green-900 focus:outline-none"
               >
                 View My Tickets

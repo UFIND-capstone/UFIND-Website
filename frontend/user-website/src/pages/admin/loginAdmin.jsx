@@ -28,7 +28,7 @@ export const LoginAdmin = () => {
       });
 
       console.log("User logged in successfully:", response.data);
-      login({ username }); // Call login function with user data
+      login({ username, role: "admin", }); // Call login function with user data
       navigate('/admin/dashboard'); // Redirect to admin dashboard after login
     } catch (error) {
       setError("Invalid username or password");

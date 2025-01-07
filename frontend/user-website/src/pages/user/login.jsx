@@ -37,6 +37,7 @@ export const Login = () => {
         contactNumber: userData.contactNumber,
         lastName: userData.lastName,
         id: userData.id,
+        role: "user", // Add role "user" here
       });
 
       navigate('/dashboard');
@@ -44,7 +45,8 @@ export const Login = () => {
       setError("Invalid student ID or password");
       console.error("Error logging in:", error.message);
     }
-  };
+};
+
 
   return (
     <div className="h-screen flex justify-center items-center bg-gradient-to-br from-blue-500 to-cyan-400">

@@ -2,7 +2,7 @@ import { db } from '../firebase.js';
 
 export const getAdmin = async (username) => {
     try {
-        const adminSnapshot = await db.collection('admin')
+        const adminSnapshot = await db.collection('users')
             .where('username', '==', username)
             .get();
 

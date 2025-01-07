@@ -7,7 +7,13 @@ const ProtectedRoute = ({ children }) => {
 
   // If user is not authenticated, redirect to the login page
   if (!user) {
-    return <Navigate to="login.jsx" replace />;
+    if (user.role !== 'user'){
+      return <Navigate to="/admin/adminLogin" />;
+    }
+    if (user.role !== 'admin'){
+      return <Navigate to="/login" />;
+    }
+
   }
 
   // If authenticated, render the children components
