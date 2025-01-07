@@ -68,15 +68,15 @@ export const AppRoutes = () => {
 
     // Admin Routes
     { path: "/admin/adminLogin", element: <LoginAdmin />, errorElement: <LoginAdmin /> },
-    { path: "/admin/dashboard", element: <ProtectedRoute><DashboardAdmin /></ProtectedRoute>, errorElement: <DashboardAdmin /> },
-    { path: "/admin/itemLost", element: <ProtectedRoute><ItemLost /></ProtectedRoute>, errorElement: <ItemLost /> },
-    { path: "/admin/match-items", element: <ProtectedRoute><MatchItems /></ProtectedRoute>, errorElement: <MatchItems /> },
-    { path: "/admin/itemFound", element: <ProtectedRoute><ItemFound /></ProtectedRoute>, errorElement: <ItemFound /> },
-    { path: "/admin/myAccount", element: <ProtectedRoute><MyAccountAdmin /></ProtectedRoute>, errorElement: <MyAccountAdmin /> },
-    { path: "/admin/unclaimedTicket", element: <ProtectedRoute><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
-    { path: "/admin/turnoverTicket", element: <ProtectedRoute><TurnoverTicket /></ProtectedRoute>, errorElement: <TurnoverTicket /> },
-    { path: "/admin/activeTicketAdmin", element: <ProtectedRoute><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
-    { path: "/admin/items/:itemID", element: <ProtectedRoute><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
+    { path: "/admin/dashboard", element: <ProtectedRoute adminOnly={true}><DashboardAdmin /></ProtectedRoute>, errorElement: <DashboardAdmin /> },
+    { path: "/admin/itemLost", element: <ProtectedRoute adminOnly={true}><ItemLost /></ProtectedRoute>, errorElement: <ItemLost /> },
+    { path: "/admin/match-items", element: <ProtectedRoute adminOnly={true}><MatchItems /></ProtectedRoute>, errorElement: <MatchItems /> },
+    { path: "/admin/itemFound", element: <ProtectedRoute adminOnly={true}><ItemFound /></ProtectedRoute>, errorElement: <ItemFound /> },
+    { path: "/admin/myAccount", element: <ProtectedRoute adminOnly={true}><MyAccountAdmin /></ProtectedRoute>, errorElement: <MyAccountAdmin /> },
+    { path: "/admin/unclaimedTicket", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
+    { path: "/admin/turnoverTicket", element: <ProtectedRoute adminOnly={true}><TurnoverTicket /></ProtectedRoute>, errorElement: <TurnoverTicket /> },
+    { path: "/admin/activeTicketAdmin", element: <ProtectedRoute adminOnly={true}><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
+    { path: "/admin/items/:itemID", element: <ProtectedRoute adminOnly={true}><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
   ]);
 
   return (

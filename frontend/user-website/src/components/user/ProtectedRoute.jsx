@@ -2,21 +2,24 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user } = useAuth();
 
-  // If user is not authenticated, redirect to the login page
+  // If there's no user, redirect to appropriate login
   if (!user) {
-    if (user.role !== 'user'){
-      return <Navigate to="/admin/adminLogin" />;
-    }
-    if (user.role !== 'admin'){
-      return <Navigate to="/login" />;
-    }
-
+    return <Navigate to={adminOnly ? "/admin/adminLogin" : "/"} />;
   }
 
-  // If authenticated, render the children components
+  // Check role-based access
+  if (adminOnly && user.role !== 'admin') {
+    return <Navigate to="/" />; // Redirect non-admins trying to access admin routes
+  }
+
+  if (!adminOnly && user.role === 'admin') {
+    return <Navigate to="/admin/dashboard" />; // Redirect admins trying to access user routes
+  }
+
+  // If all checks pass, render the protected content
   return children;
 };
 

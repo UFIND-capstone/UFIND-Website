@@ -17,7 +17,7 @@ const ItemLost = () => {
       try {
         const response = await axios.get(`${hostUrl}/api/items`);
         const lostItems = response.data.filter(
-          (item) => item.status === 'lost' && item.ticket === 'pending'
+          (item) => item.status === 'lost'
         );
         setItems(lostItems);
         setFilteredItems(lostItems);
