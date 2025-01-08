@@ -19,12 +19,19 @@ export const MyAccount = () => {
   const [isEditing, setIsEditing] = useState(false); // Track editing state
   const [editedProfile, setEditedProfile] = useState(profile); // Editable profile data
 
-  // Fetch the latest user profile from the server
+  // Fetch the latest user profile from the server, with caching
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
-      setProfile(response.data); // Update profile with fresh data
-      setEditedProfile(response.data); // Sync editable data
+      const cachedProfile = JSON.parse(localStorage.getItem("user"));
+      if (cachedProfile && cachedProfile.id === user.id) {
+        setProfile(cachedProfile);
+        setEditedProfile(cachedProfile);
+      } else {
+        const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
+        setProfile(response.data); // Update profile with fresh data
+        setEditedProfile(response.data); // Sync editable data
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
     } catch (error) {
       console.error("Error fetching user profile:", error.message);
     }

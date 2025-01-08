@@ -14,21 +14,20 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState("");
-  
-  const location = useLocation();  // Get location object
-  const navigate = useNavigate();  // To navigate programmatically
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchChats();
 
-    // Check if recipientId is in the query and fetch the contact info
     const params = new URLSearchParams(location.search);
     const recipientId = params.get("recipientId");
 
     if (recipientId) {
       openChatWithRecipient(recipientId);
     }
-  }, [location.search]);  // Re-run effect when the URL changes
+  }, [location.search]);
 
   useEffect(() => {
     if (activeContact && activeContact.chatId) {
@@ -49,30 +48,34 @@ const ChatApp = () => {
       const chatsRef = collection(db, "chats");
       const q = query(chatsRef, where("participants", "array-contains", user.id));
       const querySnapshot = await getDocs(q);
-  
+
       const fetchedContacts = [];
-  
+      const userDocCache = {}; // Cache to store user documents
+
       for (const docSnapshot of querySnapshot.docs) {
         const chatData = docSnapshot.data();
         const otherUserId = chatData.participants.find(p => p !== user.id);
-        
-        const otherUserRef = doc(db, "users", otherUserId);
-        const otherUserDoc = await getDoc(otherUserRef);
-  
-        if (otherUserDoc.exists()) {
-          const otherUserData = otherUserDoc.data();
+
+        if (!userDocCache[otherUserId]) {
+          const otherUserRef = doc(db, "users", otherUserId);
+          const otherUserDoc = await getDoc(otherUserRef);
+          userDocCache[otherUserId] = otherUserDoc.exists() ? otherUserDoc.data() : null;
+        }
+
+        if (userDocCache[otherUserId]) {
+          const otherUserData = userDocCache[otherUserId];
           fetchedContacts.push({
             chatId: docSnapshot.id,
             otherUserId,
             otherUserData: {
               firstName: otherUserData.firstName,
-              lastName: otherUserData.lastName
+              lastName: otherUserData.lastName,
             },
-            participants: chatData.participants
+            participants: chatData.participants,
           });
         }
       }
-  
+
       setContacts(fetchedContacts);
     } catch (error) {
       console.error("Error fetching chats", error);
@@ -81,42 +84,32 @@ const ChatApp = () => {
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
-  
+
     const messageData = {
       senderId: user.id,
       recipientId: activeContact.otherUserId,
       content: newMessage.trim(),
       timestamp: new Date(),
     };
-  
+
     try {
       let chatId = activeContact.chatId;
-  
-      // If no chatId exists, create a new chat document
+
       if (!chatId) {
-        // Create a new chat document with the participants
         const newChatRef = await addDoc(collection(db, "chats"), {
           participants: [user.id, activeContact.otherUserId],
         });
-  
-        // Once the chat is created, get the chatId
         chatId = newChatRef.id;
-  
-        // Update the active contact to reflect the new chatId
         setActiveContact((prev) => ({ ...prev, chatId }));
       }
-  
-      // Now, send the message to the chat
+
       const messagesRef = collection(db, `chats/${chatId}/messages`);
       await addDoc(messagesRef, messageData);
-  
-      // Clear the new message input
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message", error);
     }
   };
-  
 
   const openChat = async (chat) => {
     setActiveContact(chat);
@@ -124,14 +117,11 @@ const ChatApp = () => {
   };
 
   const openChatWithRecipient = async (recipientId) => {
-    // Fetch the recipient data from the 'users' collection
     const recipientRef = doc(db, "users", recipientId);
     const recipientDoc = await getDoc(recipientRef);
 
     if (recipientDoc.exists()) {
       const recipientData = recipientDoc.data();
-
-      // If the recipient data exists, open the chat
       const newContact = {
         otherUserId: recipientId,
         otherUserData: {
@@ -140,7 +130,6 @@ const ChatApp = () => {
         },
         participants: [user.id, recipientId],
       };
-
       openChat(newContact);
     } else {
       console.error("Recipient not found");
@@ -153,7 +142,7 @@ const ChatApp = () => {
     setMessages([]);
   };
 
-  const filteredContacts = contacts.filter(contact =>
+  const filteredContacts = contacts.filter((contact) =>
     contact.otherUserData.firstName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -186,8 +175,7 @@ const ChatApp = () => {
                 />
                 <div>
                   <h3 className="font-bold">
-                    {contact.otherUserData.firstName}{" "}
-                    {contact.otherUserData.lastName}
+                    {contact.otherUserData.firstName} {contact.otherUserData.lastName}
                   </h3>
                 </div>
               </li>
@@ -200,8 +188,7 @@ const ChatApp = () => {
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between bg-blue-500 text-white px-4 py-3">
                 <h2>
-                  {activeContact.otherUserData.firstName}{" "}
-                  {activeContact.otherUserData.lastName}
+                  {activeContact.otherUserData.firstName} {activeContact.otherUserData.lastName}
                 </h2>
                 <button onClick={closeChat}>Back</button>
               </div>
@@ -241,9 +228,7 @@ const ChatApp = () => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-full">
-              Select a conversation to start chatting
-            </div>
+            <div className="flex items-center justify-center h-full">Select a conversation to start chatting</div>
           )}
         </div>
       </div>
