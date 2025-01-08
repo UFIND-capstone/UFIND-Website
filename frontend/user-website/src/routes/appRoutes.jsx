@@ -33,10 +33,14 @@ import ItemLost from "../pages/admin/itemLost";
 import { MatchItems } from "../pages/admin/matchItems";
 import ItemFound from "../pages/admin/itemFound";
 import { MyAccountAdmin } from "../pages/admin/myAccount";
-import UnclaimedTicket from "../pages/admin/unclaimedTickets";
+import UnclaimedTicket from "../pages/admin/unclaimedTicket";
 import TurnoverTicket from "../pages/admin/turnoverTicket";
 import ActiveTicketAdmin from "../pages/admin/ActiveTicketAdmin";
 import ImgDescriptions from "../pages/admin/imgDescriptions";
+import CompletedTickets from "../pages/admin/completedTickets";
+import UserManagement from "../pages/admin/userManagement";
+
+
 
 export const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -75,7 +79,9 @@ export const AppRoutes = () => {
     { path: "/admin/myAccount", element: <ProtectedRoute adminOnly={true}><MyAccountAdmin /></ProtectedRoute>, errorElement: <MyAccountAdmin /> },
     { path: "/admin/unclaimedTicket", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
     { path: "/admin/turnoverTicket", element: <ProtectedRoute adminOnly={true}><TurnoverTicket /></ProtectedRoute>, errorElement: <TurnoverTicket /> },
+    { path: "/admin/completedTickets", element: <ProtectedRoute adminOnly={true}><CompletedTickets /></ProtectedRoute>, errorElement: <CompletedTickets /> },
     { path: "/admin/activeTicketAdmin", element: <ProtectedRoute adminOnly={true}><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
+    { path: "/admin/userManagement", element: <ProtectedRoute adminOnly={true}><UserManagement /></ProtectedRoute>, errorElement: <UserManagement /> },
     { path: "/admin/items/:itemID", element: <ProtectedRoute adminOnly={true}><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
   ]);
 

@@ -139,9 +139,6 @@ const ActiveTicketAdmin = () => {
                   <p className="text-sm text-gray-600 mb-1">
                     <strong>Date:</strong> {item.dateTime}
                   </p>
-                  <p className="text-sm text-gray-600">
-                    <strong>Location:</strong> {item.location}
-                  </p>
 
                   {/* Buttons */}
                   <div className="mt-4 flex justify-between">

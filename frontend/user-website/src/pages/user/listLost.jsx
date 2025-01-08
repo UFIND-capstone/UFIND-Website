@@ -66,9 +66,15 @@ const formatDate = (dateString) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        alert("Only JPG and PNG files are allowed.");
+        return;
+      }
       setImageFile(file);
     }
   };
+  
 
   // Upload image to Supabase
   const uploadImage = async () => {
@@ -251,6 +257,7 @@ const formatDate = (dateString) => {
                 type="file"
                 name="image"
                 onChange={handleImageChange}
+                accept=".jpg,.png"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

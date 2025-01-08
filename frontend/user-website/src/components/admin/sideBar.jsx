@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext"; // Import AuthContext hook
 import {
   MdDashboard,
   MdOutlineSearch,
-  MdOutlineCheckCircle,
-  MdOutlineListAlt,
   MdOutlineAssignmentTurnedIn,
+  MdOutlineListAlt,
   MdAccountCircle,
   MdLogout,
 } from "react-icons/md";
+import { RiTicketLine, RiUserSettingsLine, RiCheckboxCircleLine } from "react-icons/ri";
+import { AiOutlineFileSearch } from "react-icons/ai"; // New icons
 
 const Sidebar = () => {
   const { logout } = useAuth(); // Get user and logout function from AuthContext
@@ -32,7 +33,7 @@ const Sidebar = () => {
             className="w-24 h-24 rounded-full border-4 border-white"
           />
         </div>
-        <h2 className="text-lg font-bold">Jared Rara</h2>
+        <h2 className="text-lg font-bold">Admin</h2>
       </div>
 
       {/* Navigation Links */}
@@ -63,7 +64,7 @@ const Sidebar = () => {
               to="/admin/itemFound"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
-              <MdOutlineCheckCircle size={24} />
+              <AiOutlineFileSearch size={24} />
               <span>Item Found</span>
             </NavLink>
           </li>
@@ -90,11 +91,31 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/admin/unclaimedTickets"
+              to="/admin/unclaimedTicket"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
-              <MdOutlineAssignmentTurnedIn size={24} />
+              <RiTicketLine size={24} />
               <span>Unclaimed Tickets</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/admin/completedTickets"
+              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
+            >
+              <RiCheckboxCircleLine size={24} />
+              <span>Completed Tickets</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/admin/userManagement"
+              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
+            >
+              <RiUserSettingsLine size={24} />
+              <span>Manage Users</span>
             </NavLink>
           </li>
 

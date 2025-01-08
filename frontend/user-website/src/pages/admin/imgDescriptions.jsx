@@ -90,6 +90,7 @@ const ItemDescription = () => {
         extent: boundingExtent,
       }),
     });
+    
 
     const markerFeature = new Feature(new Point(coordinates));
     markerFeature.setStyle(
@@ -236,7 +237,8 @@ const ItemDescription = () => {
                       : "Not specified"}
                   </p>
                 </div>
-                {/* <div>
+                
+                <div>
                   <p className="font-medium text-gray-700">
                     Last Seen Location:
                   </p>
@@ -248,7 +250,7 @@ const ItemDescription = () => {
                   ) : (
                     <p className="text-gray-600">No location available</p>
                   )}
-                </div> */}
+                </div>
               </div>
                 <div className="mt-6">
                   {showClaimForm && (
