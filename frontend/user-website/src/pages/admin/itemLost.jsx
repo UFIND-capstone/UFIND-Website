@@ -122,20 +122,17 @@ const ItemLost = () => {
                     <p className="text-sm text-gray-600 mb-1">
                       <strong>Date:</strong> {item.dateTime}
                     </p>
-                    <p className="text-sm text-gray-600">
-                      <strong>Location:</strong> {item.location}
-                    </p>
                   </Link>
                   <div className="flex justify-between mt-4">
                     <button
                       onClick={() => handleSuccess(item.id)}
-                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="w-15 px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     >
                       Mark as Completed
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="w-15 px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                     >
                       Delete
                     </button>

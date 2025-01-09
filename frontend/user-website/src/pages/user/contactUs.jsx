@@ -44,43 +44,46 @@ const ContactUs = () => {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="max-w-md mx-auto">
-            <h3 className="text-2xl font-semibold mb-4 text-center md:text-left">GET IN TOUCH</h3>
-            <p className="text-gray-600 mb-6 text-center md:text-left">Have any questions? Let's get in touch!</p>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="text"
-                placeholder="Subject"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <textarea
-                placeholder="Message"
-                rows="4"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
-              >
-                SUBMIT
-              </button>
-            </form>
-          </div>
+          {/* Contact Section */}
+            <div className="max-w-md mx-auto">
+              <h3 className="text-2xl font-semibold mb-4 text-center md:text-left">GET IN TOUCH</h3>
+              <p className="text-gray-600 mb-6 text-center md:text-left">Have any questions? Let's connect through our social media!</p>
+              <div className="flex justify-center space-x-8">
+                {/* Facebook */}
+                <a href="https://www.facebook.com/jaredsimon88" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/src/assets/fb.png" // Replace with your Facebook logo image URL
+                    alt="Facebook"
+                    className="w-20 h-20"
+                  />
+                </a>
+                {/* Gmail */}
+                <a href="mailto:example@gmail.com">
+                  <img
+                    src="/src/assets/gmail.png" // Replace with your Gmail logo image URL
+                    alt="Gmail"
+                    className="w-20 h-20"
+                  />
+                </a>
+                {/* Instagram */}
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/src/assets/ig.png" // Replace with your Instagram logo image URL
+                    alt="Instagram"
+                    className="w-20 h-20"
+                  />
+                </a>
+                {/* WhatsApp */}
+                <a href="https://wa.me/yourphonenumber" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/src/assets/whatsapp.jpg" // Replace with your WhatsApp logo image URL
+                    alt="WhatsApp"
+                    className="w-20 h-20"
+                  />
+                </a>
+              </div>
+            </div>
+
         </div>
       </div>
 

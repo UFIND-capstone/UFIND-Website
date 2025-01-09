@@ -50,7 +50,7 @@
                 </p>
                 <Link to="/listLost" className="mt-6">
                   <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
-                    REPORT NOW!
+                    REPORT ITEM
                   </button>
                 </Link>
               </div>
@@ -129,19 +129,19 @@
           <section className="flex flex-wrap justify-center gap-20 p-10">
             {[
               {
-                title: "Easy to Use",
+                title: "User-Friendly Design",
                 description:
                   "The system is simple and easy to understand, so you don’t need much training to use it.",
                 imgSrc: "/src/assets/easytouse.png",
               },
               {
-                title: "Reliable",
+                title: "Dependable Performance",
                 description:
                   "The system works well every time, so you can trust it to do its job without problems.",
                 imgSrc: "/src/assets/easytouse.png",
               },
               {
-                title: "Efficient",
+                title: "Time-Saving Efficiency",
                 description:
                   "The system helps you get things done quickly and with little wasted time or effort.",
                 imgSrc: "/src/assets/easytouse.png",
