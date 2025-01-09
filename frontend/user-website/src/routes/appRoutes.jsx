@@ -77,6 +77,8 @@ export const AppRoutes = () => {
     { path: "/admin/turnoverTicket", element: <ProtectedRoute adminOnly={true}><TurnoverTicket /></ProtectedRoute>, errorElement: <TurnoverTicket /> },
     { path: "/admin/activeTicketAdmin", element: <ProtectedRoute adminOnly={true}><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
     { path: "/admin/items/:itemID", element: <ProtectedRoute adminOnly={true}><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
+    { path: "/admin/unclaimedTickets", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
+
   ]);
 
   return (

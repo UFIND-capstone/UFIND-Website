@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
-import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot } from "../../config/firebase";
+import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot, setDoc } from "../../config/firebase";
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -96,7 +96,8 @@ const ChatApp = () => {
       let chatId = activeContact.chatId;
 
       if (!chatId) {
-        const newChatRef = await addDoc(collection(db, "chats"), {
+        // Use the desired document id format
+        const newChatRef = await setDoc(doc(db, "chats", `${user.id}_${activeContact.otherUserId}`), {
           participants: [user.id, activeContact.otherUserId],
         });
         chatId = newChatRef.id;
@@ -109,7 +110,8 @@ const ChatApp = () => {
     } catch (error) {
       console.error("Error sending message", error);
     }
-  };
+};
+
 
   const openChat = async (chat) => {
     setActiveContact(chat);
