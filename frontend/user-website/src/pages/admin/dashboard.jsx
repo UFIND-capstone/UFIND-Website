@@ -149,7 +149,7 @@ const DashboardAdmin = () => {
 
             {/* Bar Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">TICKET TRENDS</h2>
+              <h2 className="text-lg font-bold text-center mb-4">TICKET GRAPH</h2>
               <Bar data={barData} />
             </div>
           </div>

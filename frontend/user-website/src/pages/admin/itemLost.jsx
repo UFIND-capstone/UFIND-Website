@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useNavigate } from 'react';
 import Sidebar from '../../components/admin/sideBar';
 import Topbar from '../../components/admin/topBar';
 import { Link } from 'react-router-dom';
@@ -116,7 +116,7 @@ const ItemLost = () => {
                     <img
                       src={item.imageUrl || '/placeholder-image.png'}
                       alt={item.name}
-                      className="w-full h-48 object-cover rounded-lg mb-4"
+                      className="w-full h-50 object-cover rounded-lg mb-4"
                     />
                     <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
                     <p className="text-sm text-gray-600 mb-1">
@@ -126,13 +126,13 @@ const ItemLost = () => {
                   <div className="flex justify-between mt-4">
                     <button
                       onClick={() => handleSuccess(item.id)}
-                      className="w-15 px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="w-15 px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     >
                       Mark as Completed
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="w-15 px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="w-15 px-12 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                     >
                       Delete
                     </button>

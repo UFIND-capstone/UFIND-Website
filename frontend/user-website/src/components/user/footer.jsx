@@ -20,15 +20,15 @@ const Footer = () => {
             {/* First Column */}
             <ul className="space-y-2">
               <li><a href="/dashboard" className="text-sm hover:underline">Dashboard</a></li>
-              <li><a href="/report-item" className="text-sm hover:underline">Report Item</a></li>
-              <li><a href="/browse-items" className="text-sm hover:underline">Browse Items</a></li>
+              <li><a href="/listLost" className="text-sm hover:underline">Report Item</a></li>
+              <li><a href="/browseItemsLost" className="text-sm hover:underline">Browse Items</a></li>
             </ul>
 
             {/* Second Column */}
             <ul className="space-y-2">
-              <li><a href="/about-us" className="text-sm hover:underline">About Us</a></li>
-              <li><a href="/contact-us" className="text-sm hover:underline">Contact Us</a></li>
-              <li><a href="/my-account" className="text-sm hover:underline">My Account</a></li>
+              <li><a href="/aboutUs" className="text-sm hover:underline">About Us</a></li>
+              <li><a href="/contactUs" className="text-sm hover:underline">Contact Us</a></li>
+              <li><a href="/myAccount" className="text-sm hover:underline">My Account</a></li>
             </ul>
           </div>
         </div>
@@ -50,14 +50,11 @@ const Footer = () => {
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <img src="/src/assets/fb.png" alt="Facebook" className="h-6" />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <img src="/src/assets/ig.png" alt="Instagram" className="h-6" />
+            <a href="mailto:Jaredrara11@gmail.com" target="_blank" rel="noopener noreferrer">
+              <img src="/src/assets/gmail.png" alt="Gmail" className="h-6" />
             </a>
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
               <img src="/src/assets/twitter.png" alt="X" className="h-6" />
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
-              <img src="/src/assets/tiktok.png" alt="TikTok" className="h-6" />
             </a>
           </div>
         </div>

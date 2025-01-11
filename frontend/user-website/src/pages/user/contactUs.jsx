@@ -58,25 +58,17 @@ const ContactUs = () => {
                   />
                 </a>
                 {/* Gmail */}
-                <a href="mailto:example@gmail.com">
+                <a href="mailto:Jaredrara11@gmail.com">
                   <img
                     src="/src/assets/gmail.png" // Replace with your Gmail logo image URL
                     alt="Gmail"
                     className="w-20 h-20"
                   />
                 </a>
-                {/* Instagram */}
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <img
-                    src="/src/assets/ig.png" // Replace with your Instagram logo image URL
-                    alt="Instagram"
-                    className="w-20 h-20"
-                  />
-                </a>
                 {/* WhatsApp */}
-                <a href="https://wa.me/yourphonenumber" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/topiiiip?t=nOG2M-0cKCnFStrRKL6Kug&mx=2" target="_blank" rel="noopener noreferrer">
                   <img
-                    src="/src/assets/whatsapp.jpg" // Replace with your WhatsApp logo image URL
+                    src="/src/assets/twitter.png" // Replace with your WhatsApp logo image URL
                     alt="WhatsApp"
                     className="w-20 h-20"
                   />

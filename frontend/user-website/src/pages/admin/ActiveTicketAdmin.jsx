@@ -10,11 +10,12 @@ const ActiveTicketAdmin = () => {
   const [searchTerm, setSearchTerm] = useState(''); // User's search input
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const hostUrl = import.meta.env.VITE_HOST_URL
+  const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
+  // Fetch items from the server
   useEffect(() => {
-    console.log(hostUrl)
+    console.log(hostUrl);
     const fetchItems = async () => {
       try {
         const response = await axios.get(`${hostUrl}/api/items`);
@@ -36,14 +37,13 @@ const ActiveTicketAdmin = () => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
-    // Filter items based on name, description, or other fields
+    // Filter items based on name or description
     if (value === '') {
       setFilteredItems(items); // Reset to all items if search is cleared
     } else {
       const filtered = items.filter(item =>
         item.name.toLowerCase().includes(value) ||
-        item.description?.toLowerCase().includes(value) ||
-        item.detailedDescription?.toLowerCase().includes(value)
+        item.description?.toLowerCase().includes(value)
       );
       setFilteredItems(filtered);
     }
@@ -70,8 +70,8 @@ const ActiveTicketAdmin = () => {
   };
 
   // Navigate to image description page
-  const navigateToDescription = (item) => {
-    navigate('/imgDescriptions', { state: { item } });
+  const handleImageClick = (item) => {
+    navigate(`/imgDescriptions/${item.id}`, { state: { item } });
   };
 
   // Delete an item
@@ -126,14 +126,13 @@ const ActiveTicketAdmin = () => {
               {filteredItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1"
+                  className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1 cursor-pointer"
+                  onClick={() => handleImageClick(item)}
                 >
                   <img
                     src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
                     alt={item.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
-                    onClick={() => handleImageClick(item)}
-
                   />
                   <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
                   <p className="text-sm text-gray-600 mb-1">
@@ -143,13 +142,13 @@ const ActiveTicketAdmin = () => {
                   {/* Buttons */}
                   <div className="mt-4 flex justify-between">
                     <button
-                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      className="px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                       onClick={() => handleSuccess(item.id)}
                     >
                       Mark as Success
                     </button>
                     <button
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      className="px-12 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                       onClick={() => handleDelete(item.id)}
                     >
                       Delete

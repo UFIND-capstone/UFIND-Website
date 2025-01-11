@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 const CompletedTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
@@ -38,16 +39,25 @@ const CompletedTickets = () => {
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
-    setSearch(value);
-    setFilteredTickets(
-      tickets.filter(
+    setSearchTerm(value);
+  
+    if (value === "") {
+      setFilteredTickets(tickets);
+    } else {
+      const filtered = tickets.filter(
         (ticket) =>
           ticket.itemName.toLowerCase().includes(value) ||
-          ticket.description.toLowerCase().includes(value)
-      )
-    );
+          ticket.description?.toLowerCase().includes(value)
+      );
+      setFilteredTickets(filtered);
+    }
   };
 
+  const handleNavigateToDetails = (id) => {
+    // Redirect to the imgdesc page with the ticket ID
+    navigate(`/imgDescriptions/${id}`);
+  };
+  
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${hostUrl}/api/tickets/${id}`);
@@ -71,11 +81,14 @@ const CompletedTickets = () => {
           <div className="flex justify-center mb-6">
             <input
               type="text"
-              placeholder="Search tickets"
-              className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={search}
+              placeholder="Search for an item..."
+              value={searchTerm}
               onChange={handleSearch}
+              className="w-full max-w-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button className="px-6 py-4 bg-blue-300 text-white rounded-r-lg hover:bg-blue-500">
+              🔍
+            </button>
           </div>
 
           {loading ? (
@@ -83,12 +96,17 @@ const CompletedTickets = () => {
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
           ) : filteredTickets.length > 0 ? (
+
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredTickets.map((ticket) => (
                 <div
                   key={ticket.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
+                  onClick={() => handleNavigateToDetails(ticket.id)}
                 >
+              
+              <Link to={`/admin/items/${item.id}`}>
+                            
                   <img
                     src={ticket.imageUrl || "/placeholder-image.png"}
                     alt={ticket.itemName}
@@ -104,14 +122,9 @@ const CompletedTickets = () => {
                     </p>
                     <p className="text-gray-700 mb-4">
                       <strong>Date & Time:</strong> {ticket.dateTime}
-                    </p>
-                    <button
-                      onClick={() => handleDelete(ticket.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    >
-                      DELETE
-                    </button>
+                    </p>                  
                   </div>
+                </Link> 
                 </div>
               ))}
             </div>

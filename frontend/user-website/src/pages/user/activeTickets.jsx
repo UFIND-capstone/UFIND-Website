@@ -54,16 +54,6 @@ const ActiveTicket = () => {
     }
   };
 
-  // Handle delete
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3000/api/items/${id}`);
-      fetchTickets();
-    } catch (err) {
-      console.error("Failed to delete item:", err);
-    }
-  };
-
   // Dynamic Styling for Status and Category
   const statusColors = {
     Lost: "bg-gray-900 text-white",
@@ -81,7 +71,7 @@ const ActiveTicket = () => {
 
       <main className="flex-grow py-10 px-6">
         <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-          Active Tickets
+          ACTIVE TICKETS
         </h2>
 
         <div className="flex justify-center mb-8">
@@ -140,16 +130,9 @@ const ActiveTicket = () => {
                 <div className="p-6 pt-0">
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleSuccess(ticket.id)}
                       className="flex-grow bg-green-500 text-white font-medium py-2 rounded hover:bg-green-600 transition duration-300"
                     >
-                      Mark as Complete
-                    </button>
-                    <button
-                      onClick={() => handleDelete(ticket.id)}
-                      className="flex-grow bg-red-500 text-white font-medium py-2 rounded hover:bg-red-600 transition duration-300"
-                    >
-                      Delete
+                      EDIT
                     </button>
                   </div>
                 </div>

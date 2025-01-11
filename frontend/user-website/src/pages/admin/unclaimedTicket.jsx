@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UnclaimedTicket = () => {
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
+  const navigate = useNavigate();
 
   // Fetch tickets from the server
   useEffect(() => {
@@ -36,18 +38,27 @@ const UnclaimedTicket = () => {
     fetchTickets();
   }, []);
 
+  // Handle search input changes
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
-    setSearch(value);
-    setFilteredTickets(
-      tickets.filter(
-        (ticket) =>
-          ticket.itemName.toLowerCase().includes(value) ||
-          ticket.description.toLowerCase().includes(value)
-      )
-    );
+    setSearchTerm(value);
+
+    if (value === '') {
+      setFilteredItems(items); // Reset to all items if search is cleared
+    } else {
+      const filtered = items.filter((item) =>
+        item.name.toLowerCase().includes(value)
+      );
+      setFilteredItems(filtered);
+    }
   };
 
+  // Navigate to imgdesc page when clicking a ticket
+  const handleTicketClick = (ticket) => {
+    navigate(`/imgdesc/${ticket.id}`, { state: { ticket } });
+  };
+
+  // Delete a ticket
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${hostUrl}/api/tickets/${id}`);
@@ -61,10 +72,8 @@ const UnclaimedTicket = () => {
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
-
       <div className="flex flex-col flex-1">
         <Topbar />
-
         <main className="flex-1 p-6 overflow-y-auto">
           <h1 className="text-4xl font-bold mb-6 text-center">
             UNCLAIMED TICKETS
@@ -73,11 +82,14 @@ const UnclaimedTicket = () => {
           <div className="flex justify-center mb-6">
             <input
               type="text"
-              placeholder="Search tickets"
-              className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={search}
+              placeholder="Search for an item..."
+              value={searchTerm}
               onChange={handleSearch}
+              className="w-full max-w-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button className="px-6 py-4 bg-blue-300 text-white rounded-r-lg hover:bg-blue-500">
+              🔍
+            </button>
           </div>
 
           {loading ? (
@@ -89,7 +101,8 @@ const UnclaimedTicket = () => {
               {filteredTickets.map((ticket) => (
                 <div
                   key={ticket.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-transform transform hover:-translate-y-1"
+                  onClick={() => handleTicketClick(ticket)}
                 >
                   <img
                     src={ticket.imageUrl || "/placeholder-image.png"}
@@ -110,7 +123,10 @@ const UnclaimedTicket = () => {
                       <strong>Date & Time:</strong> {ticket.dateTime}
                     </p>
                     <button
-                      onClick={() => handleDelete(ticket.id)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering container click
+                        handleDelete(ticket.id);
+                      }}
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
                       DELETE

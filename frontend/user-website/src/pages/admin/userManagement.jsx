@@ -61,7 +61,7 @@ const ManageUsers = () => {
           <div className="flex justify-center mb-6">
             <input
               type="text"
-              placeholder="Search by name..."
+              placeholder="Search by full name..."
               value={searchQuery}
               onChange={handleSearch}
               className="w-full max-w-md p-4 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
