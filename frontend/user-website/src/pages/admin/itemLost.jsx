@@ -17,7 +17,7 @@ const ItemLost = () => {
       try {
         const response = await axios.get(`${hostUrl}/api/items`);
         const lostItems = response.data.filter(
-          (item) => item.status === 'lost'
+          (item) => item.status === 'lost' && item.ticket === "pending"
         );
         setItems(lostItems);
         setFilteredItems(lostItems);
@@ -50,19 +50,19 @@ const ItemLost = () => {
 
   const handleSuccess = async (id) => {
     try {
-      await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'completed' });
+      await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: 'completed' } : item
+          item.id === id ? { ...item, ticket: 'success' } : item
         )
       );
       setFilteredItems((prevItems) =>
         prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: 'completed' } : item
+          item.id === id ? { ...item, ticket: 'success' } : item
         )
       );
     } catch (err) {
-      setError('Failed to mark item as completed');
+      setError('Failed to mark item as success');
     }
   };
 

@@ -1,4 +1,4 @@
-import { getUser, addUser, updateUser, getUserById } from '../models/userModel.js';
+import { getUser, addUser, updateUser, getUserById, getAllUsers, updateUserStatus } from '../models/userModel.js';
 import crypto from 'crypto';
 import { auth } from '../firebase.js';
 
@@ -111,7 +111,8 @@ export const addUserHandler = async (req, res) => {
             password: hashedPassword,
             salt,
             studentId,
-            firebaseUid: userRecord.uid
+            firebaseUid: userRecord.uid,
+            status: "active"
         };
 
         const userId = await addUser(newUser);
@@ -148,3 +149,32 @@ export const getUserByIdHandler = async (req, res) => {
         res.status(500).json({ message: `Error retrieving user: ${error.message}` });
     }
 };
+
+export const getAllUsersHandler = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error in getAllUsersHandler:", error);
+        res.status(500).json({ message: `Error retrieving users: ${error.message}` });
+    }
+};
+
+export const updateUserStatusHandler = async (req, res) => {
+    const { id, status } = req.body;
+    if (!id || !status) {
+      return res.status(400).json({ message: "User ID and status are required" });
+    }
+    try {
+      const updatedUser = await updateUserStatus(id, status);
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res
+        .status(200)
+        .json({ message: "User status updated successfully", updatedUser });
+    } catch (error) {
+      console.error("Error in updateUserStatusHandler:", error);
+      res.status(500).send(error.message);
+    }
+  };

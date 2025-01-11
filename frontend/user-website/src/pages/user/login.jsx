@@ -28,6 +28,11 @@ export const Login = () => {
 
       const userData = response.data.user;
 
+      if (userData.status === "blocked") {
+        setError("Your account is blocked. Please contact support.");
+        return;
+      }
+
       login({
         studentId: userData.studentId,
         emailAddress: userData.emailAddress,

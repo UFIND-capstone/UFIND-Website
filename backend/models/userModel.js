@@ -1,4 +1,3 @@
-// models/userModel.js
 import { db } from '../firebase.js';
 
 export const updateUser = async (studentId, updates) => {
@@ -48,4 +47,37 @@ export const getUserById = async (studentId) => {
     }
 
     return { id: studentId, ...userSnap.data() };
+};
+
+export const getAllUsers = async () => {
+    const usersRef = db.collection('users');
+    const snapshot = await usersRef.get();
+  
+    if (snapshot.empty) {
+      return []; // No users found
+    }
+  
+    const users = [];
+    snapshot.forEach((doc) => {
+      if (doc.id !== 'admin') { // Exclude the document with id 'admin'
+        users.push({ id: doc.id, ...doc.data() });
+      }
+    });
+  
+    return users;
+};
+
+export const updateUserStatus = async (id, status) => {
+    const userRef = db.collection('users').doc(id);
+
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) {
+        return null; // User not found
+    }
+
+    // Update user status in Firestore
+    await userRef.update({ status });
+
+    // Return updated data
+    return { id, ...userSnap.data(), status };
 };

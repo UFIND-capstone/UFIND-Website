@@ -18,7 +18,7 @@ const ActiveTicket = () => {
       const response = await fetch("http://localhost:3000/api/items");
       const data = await response.json();
       const userTickets = data.filter(
-        (item) => item.studentId === user.id && item.ticket !== "completed" && item.claimStatus !== "turnover"
+        (item) => item.studentId === user.id && item.ticket !== "success" && item.claimStatus !== "turnover"
       );
       setTickets(userTickets);
       setFilteredTickets(userTickets);
@@ -47,10 +47,10 @@ const ActiveTicket = () => {
   // Handle success
   const handleSuccess = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: "completed" });
+      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: "success" });
       fetchTickets();
     } catch (err) {
-      console.error("Failed to mark item as completed:", err);
+      console.error("Failed to mark item as success:", err);
     }
   };
 
