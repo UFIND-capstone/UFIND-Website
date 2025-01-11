@@ -28,12 +28,12 @@ const Sidebar = () => {
       <div className="p-6 text-center border-b border-blue-400">
         <div className="flex justify-center mb-4">
           <img
-            src="/src/assets/PROFILE.png" // Replace with actual profile image path
+            src="/src/assets/USER.png" // Replace with actual profile image path
             alt="Profile"
-            className="w-24 h-24 rounded-full border-4 border-white"
+            className="w-24 h-24 rounded-full"
           />
         </div>
-        <h2 className="text-lg font-bold">Admin</h2>
+        <h2 className="text-lg font-bold">Jared Salvan</h2>
       </div>
 
       {/* Navigation Links */}
@@ -81,6 +81,16 @@ const Sidebar = () => {
 
           <li>
             <NavLink
+              to="/admin/completedTickets"
+              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
+            >
+              <RiCheckboxCircleLine size={24} />
+              <span>Completed Tickets</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
               to="/admin/turnoverTicket"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
@@ -96,16 +106,6 @@ const Sidebar = () => {
             >
               <RiTicketLine size={24} />
               <span>Unclaimed Tickets</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/admin/completedTickets"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <RiCheckboxCircleLine size={24} />
-              <span>Completed Tickets</span>
             </NavLink>
           </li>
 

@@ -46,7 +46,7 @@ export const Register = () => {
       </div>
 
       {/* Registration form */}
-      <div className="bg-white mx-4 px-6 py-8 rounded-lg shadow-lg max-w-md w-full md:h-auto">
+      <div className="bg-white mx-20 px-6 py-8 rounded-lg shadow-lg max-w-md w-full md:h-auto">
         <h2 className="mb-5 text-3xl text-gray-800 font-bold text-center">
           USER REGISTRATION
         </h2>

@@ -125,7 +125,7 @@ const DashboardAdmin = () => {
               {itemCounts.itemsFound} Item Found
             </div>
             <div className="bg-blue-100 text-blue-900 p-4 rounded-lg shadow-sm text-center font-bold">
-              {itemCounts.ticketsClaimed} Claimed Tickets
+              {itemCounts.ticketsClaimed} Completed Tickets
             </div>
             <div className="bg-green-100 text-green-900 p-4 rounded-lg shadow-sm text-center font-bold">
               {itemCounts.keepTickets} Kept Tickets {/* Added Keep Tickets stat */}
