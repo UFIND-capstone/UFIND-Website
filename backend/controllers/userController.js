@@ -112,7 +112,8 @@ export const addUserHandler = async (req, res) => {
             salt,
             studentId,
             firebaseUid: userRecord.uid,
-            status: "active"
+            status: "active",
+            member: "user"
         };
 
         const userId = await addUser(newUser);

@@ -12,22 +12,30 @@ const ItemFound = () => {
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get(`${hostUrl}/api/items`);
-        const foundItems = response.data.filter(
-          (item) => item.status === "found"
-        );
-        setItems(foundItems);
-        setFilteredItems(foundItems);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || "Failed to fetch items");
-        setLoading(false);
-      }
-    };
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(`${hostUrl}/api/items`);
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const foundItems = response.data.filter((item) => {
+        if (item.ticket === "pending" && item.status === "found") {
+          const itemDate = new Date(item.dateTime.replace(" ", "T"));
+          return itemDate > thirtyDaysAgo;
+        }
+        return false;
+      });
+      
+      setItems(foundItems);
+      setFilteredItems(foundItems);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to fetch items");
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchItems();
   }, []);
 
@@ -51,16 +59,7 @@ const ItemFound = () => {
   const handleSuccess = async (id) => {
     try {
       await axios.put(`${hostUrl}/api/items/${id}`, { ticket: "success" });
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: "success" } : item
-        )
-      );
-      setFilteredItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: "success" } : item
-        )
-      );
+      await fetchItems(); // Refetch items after marking as success
     } catch (err) {
       setError("Failed to mark item as success");
     }
@@ -69,10 +68,7 @@ const ItemFound = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${hostUrl}/api/items/${id}`);
-      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-      setFilteredItems((prevItems) =>
-        prevItems.filter((item) => item.id !== id)
-      );
+      await fetchItems(); // Refetch items after deletion
     } catch (err) {
       setError("Failed to delete item");
     }
@@ -122,7 +118,6 @@ const ItemFound = () => {
                     <p className="text-sm text-gray-600 mb-1">
                       <strong>Date:</strong> {item.dateTime}
                     </p>
-                    
                   </Link>
 
                   {/* Buttons for handling success and delete */}

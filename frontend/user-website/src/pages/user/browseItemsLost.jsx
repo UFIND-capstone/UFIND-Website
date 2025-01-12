@@ -14,20 +14,31 @@ const BrowseItemsLost = () => {
     // Fetch lost items from the backend
     useEffect(() => {
         const fetchItems = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/api/items');
-                const lostItems = response.data.filter(item => item.status === 'lost' && item.ticket === 'pending');
-                setItems(lostItems);
-                setFilteredItems(lostItems); // Initially display all items
-                setLoading(false);
-            } catch (err) {
-                setError(err.message || 'Failed to fetch items');
-                setLoading(false);
-            }
+          try {
+            const response = await axios.get('http://localhost:3000/api/items');
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+            const lostItems = response.data.filter((item) => {
+              if (item.status === 'lost' && item.ticket === 'pending') {
+                const itemDate = new Date(item.dateTime.replace(' ', 'T'));
+                return itemDate > thirtyDaysAgo;
+              }
+              return false;
+            });
+      
+            setItems(lostItems);
+            setFilteredItems(lostItems); // Initially display all items
+            setLoading(false);
+          } catch (err) {
+            setError(err.message || 'Failed to fetch items');
+            setLoading(false);
+          }
         };
-
+      
         fetchItems();
-    }, []);
+      }, []);
+      
 
     // Handle search input changes
     const handleSearch = (event) => {

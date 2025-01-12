@@ -55,7 +55,7 @@ const UnclaimedTicket = () => {
 
   // Navigate to imgdesc page when clicking a ticket
   const handleTicketClick = (ticket) => {
-    navigate(`/imgdesc/${ticket.id}`, { state: { ticket } });
+    navigate(`/admin/items/${ticket.id}`, { state: { ticket } });
   };
 
   // Delete a ticket

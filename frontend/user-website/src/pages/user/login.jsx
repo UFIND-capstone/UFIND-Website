@@ -33,6 +33,11 @@ export const Login = () => {
         return;
       }
 
+      if (userData.member === "guard") {
+        setError("This account can only be used in the mobile application.");
+        return;
+      }
+
       login({
         studentId: userData.studentId,
         emailAddress: userData.emailAddress,

@@ -12,20 +12,27 @@
     useEffect(() => {
       const fetchItems = async () => {
         try {
-          const response = await axios.get(
-            "http://localhost:3000/api/items?limit=5"
-          ); // Adjust endpoint as necessary
-          const activeItems = response.data.filter(
-            (item) => item.ticket === "pending"
-          );
+          const response = await axios.get("http://localhost:3000/api/items?limit=5");
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+          const activeItems = response.data.filter((item) => {
+            if (item.ticket === "pending") {
+              const itemDate = new Date(item.dateTime.replace(" ", "T"));
+              return itemDate > thirtyDaysAgo;
+            }
+            return false;
+          });
+    
           setItems(activeItems);
         } catch (error) {
           console.error("Error fetching items:", error);
         }
       };
-
+    
       fetchItems();
     }, []);
+    
 
     return (
       <div className="min-h-screen bg-gray-100">

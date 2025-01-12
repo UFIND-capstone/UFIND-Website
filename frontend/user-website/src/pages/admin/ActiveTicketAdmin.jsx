@@ -13,22 +13,32 @@ const ActiveTicketAdmin = () => {
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(`${hostUrl}/api/items`);
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const foundItems = response.data.filter((item) => {
+        if (item.ticket === "pending") {
+          const itemDate = new Date(item.dateTime.replace(" ", "T"));
+          return itemDate > thirtyDaysAgo;
+        }
+        return false;
+      });
+      
+      setItems(foundItems);
+      setFilteredItems(foundItems);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to fetch items");
+      setLoading(false);
+    }
+  };
+  
+
   // Fetch items from the server
   useEffect(() => {
-    console.log(hostUrl);
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get(`${hostUrl}/api/items`);
-        const activeItems = response.data.filter(item => item.ticket === 'pending');
-        setItems(activeItems);
-        setFilteredItems(activeItems); // Initially display all items
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch items');
-        setLoading(false);
-      }
-    };
-
     fetchItems();
   }, []);
 
@@ -53,37 +63,26 @@ const ActiveTicketAdmin = () => {
   const handleSuccess = async (id) => {
     try {
       await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
-      // Update the item state locally
-      setItems(prevItems =>
-        prevItems.map(item =>
-          item.id === id ? { ...item, ticket: 'success' } : item
-        )
-      );
-      setFilteredItems(prevItems =>
-        prevItems.map(item =>
-          item.id === id ? { ...item, ticket: 'success' } : item
-        )
-      );
+      await fetchItems(); // Refetch items after marking as success
     } catch (err) {
       setError('Failed to mark item as success');
     }
-  };
-
-  // Navigate to image description page
-  const handleImageClick = (item) => {
-    navigate(`/imgDescriptions/${item.id}`, { state: { item } });
   };
 
   // Delete an item
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${hostUrl}/api/items/${id}`);
-      // Remove the deleted item from the state
-      setItems(prevItems => prevItems.filter(item => item.id !== id));
-      setFilteredItems(prevItems => prevItems.filter(item => item.id !== id));
+      await fetchItems(); // Refetch items after deletion
     } catch (err) {
       setError('Failed to delete item');
     }
+  };
+
+  // Navigate to image description page
+  const handleImageClick = (item, e) => {
+    e.stopPropagation(); // Prevent Link from triggering
+    navigate(`/admin/items/${item.id}`, { state: { item } });
   };
 
   return (
@@ -127,7 +126,7 @@ const ActiveTicketAdmin = () => {
                 <div
                   key={item.id}
                   className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1 cursor-pointer"
-                  onClick={() => handleImageClick(item)}
+                  onClick={(e) => handleImageClick(item, e)}
                 >
                   <img
                     src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
@@ -143,13 +142,13 @@ const ActiveTicketAdmin = () => {
                   <div className="mt-4 flex justify-between">
                     <button
                       className="px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                      onClick={() => handleSuccess(item.id)}
+                      onClick={(e) => { e.stopPropagation(); handleSuccess(item.id); }}
                     >
                       Mark as Success
                     </button>
                     <button
                       className="px-12 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
                     >
                       Delete
                     </button>

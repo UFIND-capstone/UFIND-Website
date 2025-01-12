@@ -18,7 +18,7 @@ const Completed = () => {
 
         // Filter the tickets where ticket status is "completed"
         const completedTickets = data.filter(
-          (item) => item.ticket === "completed"
+          (item) => item.ticket === "success"
         );
         setTickets(completedTickets); // Update tickets state with filtered data
       } catch (error) {

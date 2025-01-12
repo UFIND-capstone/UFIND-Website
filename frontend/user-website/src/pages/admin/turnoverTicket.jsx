@@ -19,7 +19,7 @@ const TurnoverTicket = () => {
       try {
         const response = await axios.get(`${hostUrl}/api/items`);
         const foundItems = response.data.filter(
-          (item) => item.claimStatus === "turnover" && item.ticket === "pending"
+          (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
         );
         setItems(foundItems);
         setFilteredItems(foundItems);

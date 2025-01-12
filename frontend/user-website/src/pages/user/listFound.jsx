@@ -366,7 +366,7 @@ const ListingFound = () => {
                     setAlertMessage(
                       "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
                     );
-                  } else if (value === "turnover") {
+                  } else if (value === "turnover(guard)") {
                     setAlertMessage(
                       "You’ve handed over the verification to the OSA. Future claims will be managed by them."
                     );
@@ -379,7 +379,7 @@ const ListingFound = () => {
                   Select claim status
                 </option>
                 <option value="keep">Keep</option>
-                <option value="turnover">Turnover</option>
+                <option value="turnover(guard)">Turnover</option>
               </select>
             </div>
 

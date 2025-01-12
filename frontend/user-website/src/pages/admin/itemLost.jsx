@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useNavigate } from 'react';
+import React, { useEffect, useState} from 'react';
 import Sidebar from '../../components/admin/sideBar';
 import Topbar from '../../components/admin/topBar';
 import { Link } from 'react-router-dom';
@@ -12,22 +12,30 @@ const ItemLost = () => {
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get(`${hostUrl}/api/items`);
-        const lostItems = response.data.filter(
-          (item) => item.status === 'lost' && item.ticket === "pending"
-        );
-        setItems(lostItems);
-        setFilteredItems(lostItems);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch items');
-        setLoading(false);
-      }
-    };
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(`${hostUrl}/api/items`);
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const foundItems = response.data.filter((item) => {
+        if (item.ticket === "pending" && item.status === "lost") {
+          const itemDate = new Date(item.dateTime.replace(" ", "T"));
+          return itemDate > thirtyDaysAgo;
+        }
+        return false;
+      });
+      
+      setItems(foundItems);
+      setFilteredItems(foundItems);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to fetch items");
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchItems();
   }, []);
 
@@ -51,16 +59,7 @@ const ItemLost = () => {
   const handleSuccess = async (id) => {
     try {
       await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: 'success' } : item
-        )
-      );
-      setFilteredItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id ? { ...item, ticket: 'success' } : item
-        )
-      );
+      fetchItems(); // Refetch items after marking as completed
     } catch (err) {
       setError('Failed to mark item as success');
     }
@@ -69,10 +68,7 @@ const ItemLost = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${hostUrl}/api/items/${id}`);
-      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-      setFilteredItems((prevItems) =>
-        prevItems.filter((item) => item.id !== id)
-      );
+      fetchItems(); // Refetch items after deletion
     } catch (err) {
       setError('Failed to delete item');
     }

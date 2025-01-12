@@ -13,20 +13,31 @@ const BrowseItemsFound = () => {
 
     useEffect(() => {
         const fetchItems = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/api/items');
-                const lostItems = response.data.filter(item => item.status === 'found' && item.ticket === "pending");
-                setItems(lostItems);
-                setFilteredItems(lostItems);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message || 'Failed to fetch items');
-                setLoading(false);
-            }
+          try {
+            const response = await axios.get('http://localhost:3000/api/items');
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+            const lostItems = response.data.filter((item) => {
+              if (item.status === 'found' && item.ticket === 'pending') {
+                const itemDate = new Date(item.dateTime.replace(' ', 'T'));
+                return itemDate > thirtyDaysAgo;
+              }
+              return false;
+            });
+      
+            setItems(lostItems);
+            setFilteredItems(lostItems);
+            setLoading(false);
+          } catch (err) {
+            setError(err.message || 'Failed to fetch items');
+            setLoading(false);
+          }
         };
-
+      
         fetchItems();
-    }, []);
+      }, []);
+      
 
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
