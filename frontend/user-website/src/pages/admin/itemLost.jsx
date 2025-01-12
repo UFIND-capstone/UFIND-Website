@@ -122,16 +122,11 @@ const ItemLost = () => {
                   <div className="flex justify-between mt-4">
                     <button
                       onClick={() => handleSuccess(item.id)}
-                      className="w-15 px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="w-full px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     >
-                      Mark as Completed
+                      MARK AS SUCCESS
                     </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="w-15 px-12 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
+                
                   </div>
                 </div>
               ))}

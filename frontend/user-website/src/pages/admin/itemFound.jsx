@@ -124,16 +124,11 @@ const ItemFound = () => {
                   <div className="flex justify-between mt-4">
                     <button
                       onClick={() => handleSuccess(item.id)}
-                      className="px-8 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="w-full px-8 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     >
-                      Mark as Success
+                      MARK AS SUCCESS
                     </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="px-12 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
+  
                   </div>
                 </div>
               ))}

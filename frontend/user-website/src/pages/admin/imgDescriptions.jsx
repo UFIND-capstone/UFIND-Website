@@ -252,6 +252,16 @@ const ItemDescription = () => {
                     <p className="text-gray-600">No location available</p>
                   )}
                 </div>
+
+                <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+                >
+                  EDIT THIS ITEM
+                </button>
+                </div>
+                
               </div>
                 <div className="mt-6">
                   {showClaimForm && (

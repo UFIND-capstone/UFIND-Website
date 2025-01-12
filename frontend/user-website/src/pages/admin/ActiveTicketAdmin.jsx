@@ -141,17 +141,12 @@ const ActiveTicketAdmin = () => {
                   {/* Buttons */}
                   <div className="mt-4 flex justify-between">
                     <button
-                      className="px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                       onClick={(e) => { e.stopPropagation(); handleSuccess(item.id); }}
                     >
-                      Mark as Success
+                      MARK AS SUCCESS
                     </button>
-                    <button
-                      className="px-12 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                      onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
-                    >
-                      Delete
-                    </button>
+                  
                   </div>
                 </div>
               ))}

@@ -143,13 +143,13 @@ const DashboardAdmin = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Donut Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">OVERALL ITEMS & TICKETS</h2>
+              <h2 className="text-lg font-bold text-center mb-4">OVERALL ITEMS AND TICKETS REPORTED </h2>
               <Doughnut data={donutData} />
             </div>
 
             {/* Bar Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">TICKET GRAPH</h2>
+              <h2 className="text-lg font-bold text-center mb-4">MONTHLY TICKETS REPORT</h2>
               <Bar data={barData} />
             </div>
           </div>

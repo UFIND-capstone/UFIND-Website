@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Link } from "react";
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 import axios from "axios";
@@ -34,28 +34,18 @@ const Completed = () => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
 
-    const filtered = tickets.filter((ticket) =>
-      ticket.name.toLowerCase().includes(query) ||
-      ticket.description.toLowerCase().includes(query) ||
-      ticket.category.toLowerCase().includes(query)
+    const filtered = tickets.filter(
+      (ticket) =>
+        ticket.name.toLowerCase().includes(query) ||
+        ticket.description.toLowerCase().includes(query) ||
+        ticket.category.toLowerCase().includes(query)
     );
 
     setTickets(filtered);
   };
 
-  // Dynamic Styling for Status and Category
-  const statusColors = {
-    Lost: "bg-gray-900 text-white",
-    Found: "bg-blue-500 text-white",
-    Pending: "bg-yellow-500 text-white",
-    Matched: "bg-blue-500 text-white",
-    Resolved: "bg-green-500 text-white",
-    Rejected: "bg-red-500 text-white",
-    completed: "bg-green-500 text-white",
-  };
-
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-100 via-white to-gray-100">
       {/* Topbar */}
       <Topbar />
 
@@ -70,7 +60,7 @@ const Completed = () => {
           <input
             type="text"
             className="w-full p-4 border border-gray-300 rounded-l-lg focus:outline-none"
-            placeholder="Search tickets..."
+            placeholder="Search tickets by name or description..."
             value={searchQuery} // Controlled input
             onChange={handleSearch} // Update search query on input change
           />
@@ -83,71 +73,57 @@ const Completed = () => {
         </div>
 
         {/* Ticket List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tickets.length > 0 ? (
             tickets.map((ticket) => (
               <div
                 key={ticket.id}
-                className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row overflow-hidden"
+                className="bg-white shadow-md rounded-lg overflow-hidden"
               >
-                {/* Image Section */}
-                <div className="flex justify-center items-center bg-gray-200 p-4 md:w-1/2">
+              <Link to={`/items/${ticket.id}`}>
+              
+                {/* Image */}
+                <div className="p-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex justify-center items-center">
                   <img
-                    src={ticket.imageUrl}
-                    alt={`Image of ${ticket.name}`}
-                    className="max-h-80 object-contain rounded"
+                    src={ticket.imageUrl || "/placeholder-image.png"}
+                    alt={ticket.name}
+                    className="h-40 w-40 object-contain"
                   />
                 </div>
 
-                {/* Details Section */}
-                <div className="p-6 md:w-1/2">
-                  <div className="flex flex-col space-y-4">
-                    {/* Item Name and Category */}
-                    <div>
-                      <h3 className="font-bold text-lg">{ticket.name.toUpperCase()}</h3>
-                      <span
-                        className={`text-sm font-bold px-3 py-1 rounded-full inline-block ${
-                          statusColors[ticket.category] || "bg-gray-400 text-white"
-                        }`}
-                      >
-                        {ticket.category}
-                      </span>
-                    </div>
+                {/* Details */}
 
-                    {/* Other Details */}
-                    <div>
-                      <label className="block text-sm font-semibold">Last Seen Location</label>
-                      <span className="w-full p-2 border rounded-md bg-gray-50">
-                        {ticket.location}
-                      </span>
-                    </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-bold text-gray-700 mb-2">
+                    {ticket.name.toUpperCase()}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <span className="font-semibold">Category:</span>{" "}
+                    {ticket.category || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <span className="font-semibold">Location:</span>{" "}
+                    {ticket.location || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <span className="font-semibold">Description:</span>{" "}
+                    {ticket.description || "No description provided"}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold">Reported on:</span>{" "}
+                    {ticket.dateTime || "N/A"}
+                  </p>
+                </div>
+                </Link>
 
-                    <div>
-                      <label className="block text-sm font-semibold">Description</label>
-                      <span className="w-full p-2 border rounded-md bg-gray-50">
-                        {ticket.description}
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold">Date & Time</label>
-                      <span className="w-full p-2 border rounded-md bg-gray-50">
-                        {ticket.dateTime}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Buttons Section */}
-                  <div className="flex flex-col space-y-4 mt-6">
-                    {/* Status */}
-                    <button
-                      className={`w-full py-2 rounded-full font-semibold ${
-                        statusColors[ticket.status] || "bg-gray-400 text-white"
-                      }`}
-                    >
-                      {ticket.status}
-                    </button>
-                  </div>
+                {/* Action */}
+                <div className="p-4 bg-gray-100 flex justify-end">
+                  <button
+                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                    disabled
+                  >
+                    Found
+                  </button>
                 </div>
               </div>
             ))

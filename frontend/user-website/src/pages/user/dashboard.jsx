@@ -1,18 +1,21 @@
   import React, { useEffect, useState } from "react";
   import axios from "axios";
   import { Link } from "react-router-dom";
-  import Footer from "../../components/user/footer";
-  import Topbar from "../../components/user/topBar";
+  import Footer from "../../components/user/footer"; // FOOTER COMPONENTS
+  import Topbar from "../../components/user/topBar"; // TOPBAR COMPONENTS
   import qrImage from "/src/assets/QRCODE.png"; // Path to the QR Code image
-
+  
+  // Main Dashboard Component
   const Dashboard = () => {
     const [items, setItems] = useState([]);
 
-    // Fetch data on component mount
+    // useEffect hook to fetch data when the component loads
     useEffect(() => {
       const fetchItems = async () => {
         try {
           const response = await axios.get("http://localhost:3000/api/items?limit=5");
+          
+          // Filter items within the last 30 days with a "pending" status
           const thirtyDaysAgo = new Date();
           thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
@@ -23,30 +26,37 @@
             }
             return false;
           });
-    
+          
+          // Update state with the filtered items
           setItems(activeItems);
         } catch (error) {
-          console.error("Error fetching items:", error);
+          console.error("Error fetching items:", error); // Log errors if API call fails
         }
       };
     
-      fetchItems();
+      fetchItems(); // Call fetch function on component mount
     }, []);
     
 
     return (
       <div className="min-h-screen bg-gray-100">
+      
+      {/* TOPBAR COMPONENTS */}
         <Topbar />
 
         <main className="max-w-8xl mx-auto px-10 py-10">
-          {/* Hero Section */}
+          {/* HEADING SECTION */}
           <section className="text-center mb-10">
             <div className="flex justify-center items-center space-x-10">
+              
+              {/* Logo/Image */}
               <img
                 src="/src/assets/dbheading.jpg"
                 alt="U-FIND Logo"
                 className="w-90 h-80 object-cover"
               />
+
+              {/* Platform Description */}
               <div className="text-left max-w-md">
                 <h2 className="text-7xl font-bold text-gray-900 mb-4">U-FIND</h2>
                 <p className="text-justify text-gray-800 mb-12">
@@ -55,12 +65,15 @@
                   real-time notifications help quickly reunite lost items with
                   their owners, while admins efficiently manage reports.
                 </p>
+                
+                {/* Button to Report an Item */}
                 <Link to="/listLost" className="mt-6">
                   <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                     REPORT ITEM
                   </button>
                 </Link>
               </div>
+
             </div>
           </section>
 
@@ -71,12 +84,15 @@
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              
+              {/* Display items or a fallback message */}
               {items.length > 0 ? (
                 items.slice(0, 5).map((item) => (
                   <div
                     key={item.id}
                     className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition"
                   >
+                    {/* Link to Item Details */}
                     <Link to={`/items/${item.id}`}>
                       <img
                         src={item.imageUrl || "/src/assets/default.png"} // Fallback for missing images
@@ -85,8 +101,11 @@
                           item.status === "found" ? "filter blur-sm" : ""
                         }`}
                       />
+
+                      {/* Item Information */}
                       <h3 className="font-semibold text-gray-800">{item.name}</h3>
                       <div>
+                        
                         <p className="font-medium text-gray-700">Date & Time:</p>
                         <p className="text-gray-600">
                           {item.dateTime
@@ -102,6 +121,8 @@
                             : "Not specified"}
                         </p>
                       </div>
+
+                      {/* Item Status */}
                       <p
                         className={`text-${
                           item.status === "lost" ? "red" : "green"
@@ -111,6 +132,7 @@
                       </p>
                     </Link>
                   </div>
+
                 ))
               ) : (
                 <p className="text-gray-500"> No items found.</p>
@@ -159,15 +181,21 @@
                 className="bg-white shadow-lg rounded-lg p-8 w-full sm:w-60 text-center"
               >
                 <div className="flex justify-center mb-4">
+                  
+                {/* Feature Image */}
                   <img
                     src={feature.imgSrc}
                     alt={`${feature.title} icon`}
                     className="w-16 h-16"
                   />
                 </div>
+
+                {/* Feature Title */}
                 <h3 className="text-lg font-semibold text-gray-800">
                   {feature.title}
                 </h3>
+
+                {/* Feature Description */}
                 <p className="text-gray-600 mt-2">{feature.description}</p>
               </div>
             ))}
@@ -182,22 +210,28 @@
                 className="w-full max-w-xs"
               />
             </div>
+
+            {/* About Us Section */}
             <div className="flex-grow md:pl-8">
               <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded mb-2">
                 ABOUT US
               </button>
+
               <h2 className="text-2xl font-bold text-gray-800">U-FIND</h2>
+
               <p className="text-justify text-gray-600 mt-5">
                 U-find is a platform for reporting, tracking, and retrieving lost
                 and found items on campus. Secure authentication and real-time
                 notifications help quickly reunite lost items with their owners,
                 while admins manage reports efficiently.
               </p>
+
               <a href="/aboutUs" className="mt-6">
                 <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded">
                   READ MORE
                 </button>
               </a>
+
             </div>
           </section>
 
@@ -208,60 +242,76 @@
 
           {/* Features Content */}
           <div className="text-left my-10 px-4">
+
             <h2 className="text-center text-3xl font-bold text-gray-900 mb-4">
               CHECK OUT THE UNIQUE FEATURES OF U-FIND PLATFORM
             </h2>
+
             <p className="text-justify text-gray-700 mb-10">
               The Lost and Found App simplifies your workflow by significantly
               reducing the time and effort required to manage lost items, while
               also boosting service efficiency and improving customer
               satisfaction.
             </p>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
               <div className="bg-white shadow-md p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   WORKS ON ANY DEVICE
                 </h3>
+
                 <p className="text-justify text-gray-600">
                   Easily connect and access our service from any device, including
                   tablets, smartphones, desktops, and more, for a seamless
                   experience wherever you are.
                 </p>
+
               </div>
+
               <div className="bg-white shadow-md p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   SMART MATCHING
                 </h3>
+
                 <p className="text-justify text-gray-600">
                   Our automated smart matching system eliminates the need for
                   manual searching by quickly and accurately finding what you're
                   looking for.
                 </p>
               </div>
+
               <div className="bg-white shadow-md p-6 rounded-lg">
+
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   CUSTOMER SUPPORT
                 </h3>
+
                 <p className="text-justify text-gray-600">
                   Our support team is available from 8:00 AM to 5:00 PM, Monday to
                   Friday, to assist with lost and found items, and any inquiries
                   outside these hours will be addressed on the next business day.
                 </p>
+
               </div>
             </div>
           </div>
 
           {/* QR Code Section */}
           <div className="mt-10 flex justify-center items-center bg-gray-50 py-10">
+           
             <div className="flex items-center space-x-10 border border-gray-300 rounded-lg shadow-md px-10 py-6">
+              
               {/* Text */}
               <div className="text-center md:text-left">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
                   TRY IT ON YOUR MOBILE DEVICE
                 </h2>
+
                 <p className="text-gray-500 text-sm">
                   SCAN TO VIEW ON YOUR MOBILE DEVICE
                 </p>
+                
               </div>
 
               {/* Arrow */}

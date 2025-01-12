@@ -132,7 +132,7 @@ const ActiveTicket = () => {
                     <button
                       className="flex-grow bg-green-500 text-white font-medium py-2 rounded hover:bg-green-600 transition duration-300"
                     >
-                      EDIT
+                      MARK AS COMPLETE
                     </button>
                   </div>
                 </div>

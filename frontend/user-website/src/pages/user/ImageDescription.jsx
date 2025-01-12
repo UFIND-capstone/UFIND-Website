@@ -256,13 +256,14 @@ const ItemDescription = () => {
                 </div>
               </div>
               {item.status === "found" ? (
-                <div className="mt-6">
-                  <button
-                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
-                    onClick={handleClaimToggle}
-                  >
-                    Claim This Item
-                  </button>
+                <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+                >
+                  EDIT THIS ITEM
+                </button>
+
                   {showClaimForm && (
                     <form
                       className="mt-4 space-y-4"
@@ -348,14 +349,14 @@ const ItemDescription = () => {
                   )}
                 </div>
               ) : (
+                <div className="flex justify-between mt-4">
                 <button
-                  className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
-                  onClick={() =>
-                    navigate(`/chatApp?recipientId=${item.studentId}`)
-                  }
+                  onClick={() => handleDelete(item.id)}
+                  className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                 >
-                  Contact Me
+                  EDIT THIS ITEM
                 </button>
+                </div>
               )}
             </div>
           </div>
