@@ -106,7 +106,7 @@
                       <h3 className="font-semibold text-gray-800">{item.name}</h3>
                       <div>
                         
-                        <p className="font-medium text-gray-700">Date & Time:</p>
+                        <p className="font-medium text-gray-700">Date & Time</p>
                         <p className="text-gray-600">
                           {item.dateTime
                             ? new Date(item.dateTime).toLocaleString("en-US", {
@@ -150,56 +150,9 @@
           </section>
 
           {/* Banner Section */}
-          <div className="w-full bg-gradient-to-r from-blue-700 to-cyan-500 text-center text-white py-4">
+          <div className="w-full bg-gradient-to-r from-blue-700 to-cyan-500 text-center mb-10 text-white py-4">
             "Because Losing Something Doesn’t Mean It’s Gone Forever."
           </div>
-
-          {/* Features Section */}
-          <section className="flex flex-wrap justify-center gap-20 p-10">
-            {[
-              {
-                title: "User-Friendly Design",
-                description:
-                  "The system is simple and easy to understand, so you don’t need much training to use it.",
-                imgSrc: "/src/assets/easytouse.png",
-              },
-              {
-                title: "Dependable Performance",
-                description:
-                  "The system works well every time, so you can trust it to do its job without problems.",
-                imgSrc: "/src/assets/easytouse.png",
-              },
-              {
-                title: "Time-Saving Efficiency",
-                description:
-                  "The system helps you get things done quickly and with little wasted time or effort.",
-                imgSrc: "/src/assets/easytouse.png",
-              },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-lg rounded-lg p-8 w-full sm:w-60 text-center"
-              >
-                <div className="flex justify-center mb-4">
-                  
-                {/* Feature Image */}
-                  <img
-                    src={feature.imgSrc}
-                    alt={`${feature.title} icon`}
-                    className="w-16 h-16"
-                  />
-                </div>
-
-                {/* Feature Title */}
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {feature.title}
-                </h3>
-
-                {/* Feature Description */}
-                <p className="text-gray-600 mt-2">{feature.description}</p>
-              </div>
-            ))}
-          </section>
 
           {/* About Section */}
           <section className="flex flex-col md:flex-row justify-between items-center bg-white p-6 md:p-10 mx-4 md:mx-12 mb-8 rounded-lg shadow-lg">
@@ -294,6 +247,43 @@
                 </p>
 
               </div>
+
+              <div className="bg-white shadow-md p-6 rounded-lg">
+
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  USER-FRIENDLY DESIGN
+                </h3>
+
+                <p className="text-justify text-gray-600">
+                  The system is simple and easy to understand, so you don’t need much training to use it.
+                </p>
+
+              </div>
+
+              <div className="bg-white shadow-md p-6 rounded-lg">
+
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  DEPENDABLE PERFORMANCE
+                </h3>
+
+                <p className="text-justify text-gray-600">
+                  The system works well every time, so you can trust it to do its job without problems.
+                </p>
+
+              </div>
+
+              <div className="bg-white shadow-md p-6 rounded-lg">
+
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  TIME SAVING EFFICIENCY
+                </h3>
+
+                <p className="text-justify text-gray-600">
+                  The system helps you get things done quickly and with little wasted time or effort.
+                </p>
+
+              </div>
+              
             </div>
           </div>
 
