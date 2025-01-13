@@ -10,6 +10,7 @@ export const MyAccount = () => {
   const { user, logout } = useAuth(); // Get user and logout function from AuthContext
 
   const [profile, setProfile] = useState({
+    studentId: "",
     firstName: "",
     emailAddress: "",
     contactNumber: "",
@@ -53,7 +54,7 @@ export const MyAccount = () => {
   const handleSave = async () => {
     try {
       await axios.put("http://localhost:3000/api/user/edit", {
-        studentId: user.id,
+        studentId: editedProfile.id,
         ...editedProfile, // Pass all edited fields
       });
       localStorage.setItem("user", JSON.stringify(editedProfile));
@@ -100,13 +101,13 @@ export const MyAccount = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    name="firstName"
-                    value={editedProfile.firstName}
+                    name="studentId"
+                    value={editedProfile.id}
                     onChange={handleInputChange}
                     className="border rounded-md p-1 text-sm w-1/2"
                   />
                 ) : (
-                  <span>{profile.firstName || "N/A"}</span>
+                  <span>{profile.id || "N/A"}</span>
                 )}
               </div>
               <div className="flex justify-between text-gray-800">
@@ -129,12 +130,12 @@ export const MyAccount = () => {
                   <input
                     type="text"
                     name="firstName"
-                    value={editedProfile.firstName}
+                    value={editedProfile.lastName}
                     onChange={handleInputChange}
                     className="border rounded-md p-1 text-sm w-1/2"
                   />
                 ) : (
-                  <span>{profile.firstName || "N/A"}</span>
+                  <span>{profile.lastName || "N/A"}</span>
                 )}
               </div>
               <div className="flex justify-between text-gray-800">

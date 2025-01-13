@@ -242,108 +242,110 @@ const ItemDescription = () => {
                 </div>
               </div>
 
-              {item.status === "found" ? (
-                <div className="mt-6">
-                  <button
-                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
-                    onClick={handleClaimToggle}
-                  >
-                    Claim This Item
-                  </button>
-                  {showClaimForm && (
-                    <form
-                      className="mt-4 space-y-4"
-                      onSubmit={handleClaimSubmit}
-                    >
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="Enter your full name"
-                          value={claimData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Year and Section
-                        </label>
-                        <input
-                          type="text"
-                          name="yearSection"
-                          placeholder="Enter your year and section"
-                          value={claimData.yearSection}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Description
-                        </label>
-                        <textarea
-                          name="description"
-                          value={claimData.description}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="If you believe this is yours, provide specific details (e.g., contents, brand, markings) when submitting your claim."
-                          rows="3"
-                          required
-                        ></textarea>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Time Lost
-                        </label>
-                        <input
-                          type="text"
-                          name="timeLost"
-                          placeholder="Enter a time lost"
-                          value={claimData.timeLost}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Location Lost
-                        </label>
-                        <input
-                          type="text"
-                          name="locationLost"
-                          placeholder="Enter a location lost"
-                          value={claimData.locationLost}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600"
-                      >
-                        Submit Claim
-                      </button>
-                    </form>
-                  )}
-                </div>
-              ) : (
-                <button
-                  className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
-                  onClick={() =>
-                    navigate(`/chatApp?recipientId=${item.studentId}`)
-                  }
-                >
-                  Contact Me
-                </button>
-              )}
+              {item.studentId === user.id ? (
+  <div>
+    <button>Edit this Item</button>
+  </div>
+) : (
+  item.status === "found" ? (
+    <div className="mt-6">
+      <button
+        className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+        onClick={handleClaimToggle}
+      >
+        Claim This Item
+      </button>
+      {showClaimForm && (
+        <form className="mt-4 space-y-4" onSubmit={handleClaimSubmit}>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your full name"
+              value={claimData.name}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Year and Section
+            </label>
+            <input
+              type="text"
+              name="yearSection"
+              placeholder="Enter your year and section"
+              value={claimData.yearSection}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={claimData.description}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="If you believe this is yours, provide specific details (e.g., contents, brand, markings) when submitting your claim."
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Time Lost
+            </label>
+            <input
+              type="text"
+              name="timeLost"
+              placeholder="Enter a time lost"
+              value={claimData.timeLost}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Location Lost
+            </label>
+            <input
+              type="text"
+              name="locationLost"
+              placeholder="Enter a location lost"
+              value={claimData.locationLost}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600"
+          >
+            Submit Claim
+          </button>
+        </form>
+      )}
+    </div>
+  ) : (
+    <button
+      className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
+      onClick={() => navigate(`/chatApp?recipientId=${item.studentId}`)}
+    >
+      Contact Me
+    </button>
+  )
+)}
+
             </div>
           </div>
         )}
