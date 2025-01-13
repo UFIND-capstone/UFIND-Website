@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
-import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot, setDoc } from "../../config/firebase";
+import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot, setDoc} from "../../config/firebase";
 
 const ChatApp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -33,6 +33,7 @@ const ChatApp = () => {
     if (activeContact && activeContact.chatId) {
       const messagesRef = collection(db, `chats/${activeContact.chatId}/messages`);
       const q = query(messagesRef, orderBy("timestamp", "asc"));
+      markMessagesAsRead(activeContact.chatId);
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const fetchedMessages = querySnapshot.docs.map(doc => doc.data());
@@ -82,6 +83,26 @@ const ChatApp = () => {
     }
   };
 
+  const markMessagesAsRead = async (chatId) => {
+    if (!chatId) return;
+  
+    try {
+      const messagesRef = collection(db, `chats/${chatId}/messages`);
+      const q = query(messagesRef, where("recipientId", "==", user.id), where("isRead", "==", false));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        // Loop through each message and update it individually
+        querySnapshot.forEach(async (messageDoc) => {
+          const messageRef = doc(db, `chats/${chatId}/messages`, messageDoc.id);
+          await setDoc(messageRef, { isRead: true }, { merge: true }); // Use merge: true to only update the `isRead` field
+        });
+      }
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
+    }
+  };
+  
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
@@ -90,7 +111,9 @@ const ChatApp = () => {
       recipientId: activeContact.otherUserId,
       content: newMessage.trim(),
       timestamp: new Date(),
+      isRead: false, // Mark as unread initially
     };
+    
 
     try {
       let chatId = activeContact.chatId;
@@ -113,10 +136,14 @@ const ChatApp = () => {
 };
 
 
-  const openChat = async (chat) => {
-    setActiveContact(chat);
-    setIsChatOpen(true);
-  };
+const openChat = async (chat) => {
+  setActiveContact(chat); // Just set the active contact, mark messages will be handled by useEffect
+
+  setIsChatOpen(true);
+};
+
+
+
 
   const openChatWithRecipient = async (recipientId) => {
     const recipientRef = doc(db, "users", recipientId);

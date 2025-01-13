@@ -1,12 +1,15 @@
+// src/App.jsx
 import React from "react";
-import { AppRoutes } from "./routes/appRoutes";
-
+import { NotificationProvider } from "./context/contextNotification";
+import NotificationBanner from "./components/user/notification"
+import { AppRoutes } from "./routes/AppRoutes";
 
 const App = () => {
   return (
-    <main>
+    <NotificationProvider>
+      <NotificationBanner />
       <AppRoutes />
-    </main>
+    </NotificationProvider>
   );
 };
 

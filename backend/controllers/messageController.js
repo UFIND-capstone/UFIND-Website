@@ -12,6 +12,7 @@ export const messageController = {
       senderId,
       recipientId,
       content,
+      isRead: "false",
       timestamp: new Date(),
     };
 
