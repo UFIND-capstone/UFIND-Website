@@ -68,7 +68,7 @@
                 
                 {/* Button to Report an Item */}
                 <Link to="/listLost" className="mt-6">
-                  <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                  <button className=" w-full text-2xl px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                     REPORT ITEM
                   </button>
                 </Link>

@@ -126,6 +126,8 @@ const ItemDescription = () => {
     setClaimData((prev) => ({ ...prev, [name]: value }));
   };
 
+  
+
   const handleClaimSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -239,6 +241,7 @@ const ItemDescription = () => {
                   )}
                 </div>
               </div>
+
               {item.status === "found" ? (
                 <div className="mt-6">
                   <button
