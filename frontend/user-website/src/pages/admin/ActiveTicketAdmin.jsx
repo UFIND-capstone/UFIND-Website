@@ -10,6 +10,7 @@ const ActiveTicketAdmin = () => {
   const [searchTerm, setSearchTerm] = useState(''); // User's search input
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [view, setView] = useState('all'); // View state for "all" or "turnover"
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ const ActiveTicketAdmin = () => {
       const response = await axios.get(`${hostUrl}/api/items`);
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
+
       const foundItems = response.data.filter((item) => {
         if (item.ticket === "pending") {
           const itemDate = new Date(item.dateTime.replace(" ", "T"));
@@ -26,7 +27,7 @@ const ActiveTicketAdmin = () => {
         }
         return false;
       });
-      
+
       setItems(foundItems);
       setFilteredItems(foundItems);
       setLoading(false);
@@ -35,19 +36,15 @@ const ActiveTicketAdmin = () => {
       setLoading(false);
     }
   };
-  
 
-  // Fetch items from the server
   useEffect(() => {
     fetchItems();
   }, []);
 
-  // Handle search input changes
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
-    // Filter items based on name or description
     if (value === '') {
       setFilteredItems(items); // Reset to all items if search is cleared
     } else {
@@ -59,7 +56,18 @@ const ActiveTicketAdmin = () => {
     }
   };
 
-  // Mark an item as "Success"
+  const handleViewChange = (viewType) => {
+    setView(viewType);
+    if (viewType === 'turnover') {
+      const turnoverItems = items.filter(
+        (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
+      );
+      setFilteredItems(turnoverItems);
+    } else {
+      setFilteredItems(items); // Reset to all items
+    }
+  };
+
   const handleSuccess = async (id) => {
     try {
       await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
@@ -69,37 +77,48 @@ const ActiveTicketAdmin = () => {
     }
   };
 
-  // Delete an item
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${hostUrl}/api/items/${id}`);
-      await fetchItems(); // Refetch items after deletion
-    } catch (err) {
-      setError('Failed to delete item');
-    }
-  };
-
-  // Navigate to image description page
   const handleImageClick = (item, e) => {
-    e.stopPropagation(); // Prevent Link from triggering
+    e.stopPropagation();
     navigate(`/admin/items/${item.id}`, { state: { item } });
   };
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="flex flex-col flex-1 overflow-y-auto">
-        {/* Topbar */}
         <Topbar />
 
-        {/* Page Content */}
         <main className="flex-1 p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">BROWSE ACTIVE TICKETS</h1>
 
-          {/* Search Bar */}
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={() => handleViewChange('all')}
+              className={`px-10 py-2 mr-2 ${view === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
+            >
+              ALL
+            </button>
+            <button
+              onClick={() => handleViewChange('turnoverTicket')}
+              className={`px-10 py-2 mr-2 ${view === 'turnoverTicket' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
+            >
+              TURNOVER
+            </button>
+            <button
+              onClick={() => handleViewChange('itemLost')}
+              className={`px-10 py-2 mr-2 ${view === 'itemLost' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
+            >
+              ITEM LOST
+            </button>
+            <button
+              onClick={() => handleViewChange('itemFound')}
+              className={`px-10 py-2 mr-2 ${view === 'itemFound' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
+            >
+              ITEM FOUND
+            </button>
+          </div>
+
           <div className="flex justify-center mb-6">
             <input
               type="text"
@@ -113,7 +132,6 @@ const ActiveTicketAdmin = () => {
             </button>
           </div>
 
-          {/* Loading/Error Message */}
           {loading ? (
             <p className="text-center text-gray-500">Loading items...</p>
           ) : error ? (
@@ -129,7 +147,7 @@ const ActiveTicketAdmin = () => {
                   onClick={(e) => handleImageClick(item, e)}
                 >
                   <img
-                    src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
+                    src={item.imageUrl || '/placeholder-image.png'}
                     alt={item.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />
@@ -138,7 +156,6 @@ const ActiveTicketAdmin = () => {
                     <strong>Date:</strong> {item.dateTime}
                   </p>
 
-                  {/* Buttons */}
                   <div className="mt-4 flex justify-between">
                     <button
                       className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
@@ -146,7 +163,6 @@ const ActiveTicketAdmin = () => {
                     >
                       MARK AS SUCCESS
                     </button>
-                  
                   </div>
                 </div>
               ))}

@@ -28,7 +28,7 @@ const Sidebar = () => {
       <div className="p-6 text-center border-b border-blue-400">
         <div className="flex justify-center mb-4">
           <img
-            src="/src/assets/USER.png" // Replace with actual profile image path
+            src="/src/assets/OSA.png" // Replace with actual profile image path
             alt="Profile"
             className="w-24 h-24 rounded-full"
           />
@@ -51,26 +51,6 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to="/admin/itemLost"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <MdOutlineSearch size={24} />
-              <span>Item Lost</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/admin/itemFound"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <AiOutlineFileSearch size={24} />
-              <span>Item Found</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
               to="/admin/activeTicketAdmin"
               className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
             >
@@ -86,16 +66,6 @@ const Sidebar = () => {
             >
               <RiCheckboxCircleLine size={24} />
               <span>Completed Tickets</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/admin/turnoverTicket"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <MdOutlineAssignmentTurnedIn size={24} />
-              <span>Turnover Tickets</span>
             </NavLink>
           </li>
 

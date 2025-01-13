@@ -69,20 +69,7 @@ const TurnoverTicket = () => {
 
   // Navigate to imgdesc page when clicking an item
   const handleItemClick = (item) => {
-    navigate(`/imgdesc/${item.id}`, { state: { item } });
-  };
-
-  // Delete an item
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${hostUrl}/api/items/${id}`);
-      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-      setFilteredItems((prevItems) =>
-        prevItems.filter((item) => item.id !== id)
-      );
-    } catch (err) {
-      setError('Failed to delete item');
-    }
+    navigate(`/admin/items/${item.id}`, { state: { item } });
   };
 
   return (
@@ -136,19 +123,11 @@ const TurnoverTicket = () => {
                         e.stopPropagation(); // Prevent parent onClick
                         handleSuccess(item.id);
                       }}
-                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="w-full text-lg px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     >
-                      Mark as Success
+                      MARK AS SUCCESS
                     </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent parent onClick
-                        handleDelete(item.id);
-                      }}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
+          
                   </div>
                 </div>
               ))}

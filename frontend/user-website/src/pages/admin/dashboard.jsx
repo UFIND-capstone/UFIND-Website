@@ -143,7 +143,7 @@ const DashboardAdmin = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Donut Chart */}
             <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold text-center mb-4">OVERALL ITEMS AND TICKETS REPORTED </h2>
+              <h2 className="text-lg font-bold text-center mb-4"> ITEMS AND TICKETS REPORTED </h2>
               <Doughnut data={donutData} />
             </div>
 
