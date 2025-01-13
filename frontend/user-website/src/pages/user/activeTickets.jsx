@@ -79,19 +79,40 @@ const ActiveTicket = () => {
     }));
   };
 
-  // Handle modal submit
-  const handleSubmit = async () => {
-    try {
-      await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
-        ticket: "success",
-        claimDetails: claimerDetails,
-      });
-      closeModal();
-      fetchTickets();
-    } catch (err) {
-      console.error("Failed to submit claim details:", err);
-    }
-  };
+const handleSubmit = async () => {
+  try {
+    // Prepare the data to be submitted
+    const data = {
+      ...claimerDetails,
+      itemId: currentTicket.id,
+      studentId: user.id,
+    };
+    console.log("Submitting claim with data:", data);
+
+    // Submit the claim
+    const response = await axios.post(
+      "http://localhost:3000/api/items/claim",
+      data
+    );
+
+    // Update the ticket status to 'success' after successful claim submission
+    await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
+      ticket: "success",
+    });
+
+    // Close the modal and refresh the ticket list
+    closeModal();
+    fetchTickets();
+    
+    // Optionally handle the response (e.g., show a success message)
+    alert("Claim submitted successfully!");
+  } catch (err) {
+    console.error("Failed to submit claim:", err);
+    alert("Failed to submit claim. Please try again.");
+  }
+};
+
+
 
   // Dynamic Styling for Status and Category
   const statusColors = {

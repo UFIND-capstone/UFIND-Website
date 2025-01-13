@@ -56,9 +56,11 @@ export const MyAccount = () => {
         studentId: user.id,
         ...editedProfile, // Pass all edited fields
       });
+      localStorage.setItem("user", JSON.stringify(editedProfile));
       await fetchUserProfile(); // Re-fetch updated profile
       setIsEditing(false);
       alert("Profile updated successfully!");
+      
     } catch (error) {
       console.error("Error updating profile:", error.message);
       alert("Failed to update profile. Please try again.");

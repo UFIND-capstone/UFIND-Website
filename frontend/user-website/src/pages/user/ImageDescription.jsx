@@ -129,22 +129,6 @@ const ItemDescription = () => {
   const handleClaimSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = {
-        ...claimData,
-        itemId: itemID,
-        studentId: user.id,
-      };
-      console.log("Submitting claim with data:", data);
-
-      // Submit the claim
-      const response = await axios.post(
-        "http://localhost:3000/api/items/claim",
-        data
-      );
-      console.log("User ID:", user.id);
-      console.log("Receiver ID:", item.studentId);
-
-      // Once the claim is submitted, send the message to the poster
       const messageData = {
         senderId: user.id, // The ID of the user claiming the item
         recipientId: item.studentId, // The ID of the poster of the item (receiver)
