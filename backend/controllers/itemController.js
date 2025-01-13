@@ -14,15 +14,13 @@ export const claimItemHandler = async (req, res) => {
     const {
         studentId,
         name,
-        description,
         yearSection,
-        timeLost,
-        locationLost,
+        contactNumber,
         itemId,
     } = req.body;
 
     // Validate required fields
-    if (!studentId || !name || !description || !yearSection || !timeLost || !locationLost || !itemId) {
+    if (!studentId || !name || !contactNumber || !yearSection || !itemId) {
         return res.status(400).json({
             message: 'All fields are required',
         });
@@ -33,11 +31,9 @@ export const claimItemHandler = async (req, res) => {
         const addedItemId = await addClaimItem({
             studentId,
             name,
-            description,
             yearSection,
-            timeLost,
-            locationLost,
-            itemId, // Pass the itemId from the request
+            contactNumber,
+            itemId,
         }, itemId); // Pass itemId as the document ID
         res.status(201).json({ message: 'Item added successfully', addedItemId });
     } catch (error) {

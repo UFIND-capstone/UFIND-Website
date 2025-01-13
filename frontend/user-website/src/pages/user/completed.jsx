@@ -1,13 +1,15 @@
-import React, { useState, useEffect, Link } from "react";
+import React, { useState, useEffect } from "react";
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 import axios from "axios";
 import { useAuth } from "../../AuthContext";
+import { Link } from "react-router-dom"; // Import Link here
 
 const Completed = () => {
   const { user } = useAuth(); // Access the user information from context
-  const [tickets, setTickets] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [tickets, setTickets] = useState([]); // Holds the original list of tickets
+  const [filteredTickets, setFilteredTickets] = useState([]); // Holds filtered list for display
+  const [searchQuery, setSearchQuery] = useState(""); // Stores search query
 
   // Fetch the tickets data from the API
   useEffect(() => {
@@ -16,11 +18,13 @@ const Completed = () => {
         const response = await axios.get("http://localhost:3000/api/items");
         const data = response.data;
 
-        // Filter the tickets where ticket status is "completed"
+        // Filter the tickets where ticket status is "success"
         const completedTickets = data.filter(
           (item) => item.ticket === "success"
         );
+
         setTickets(completedTickets); // Update tickets state with filtered data
+        setFilteredTickets(completedTickets); // Initialize filteredTickets with the same list
       } catch (error) {
         console.error("Error fetching tickets:", error);
       }
@@ -41,7 +45,7 @@ const Completed = () => {
         ticket.category.toLowerCase().includes(query)
     );
 
-    setTickets(filtered);
+    setFilteredTickets(filtered); // Set the filtered tickets for display
   };
 
   return (
@@ -74,46 +78,44 @@ const Completed = () => {
 
         {/* Ticket List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tickets.length > 0 ? (
-            tickets.map((ticket) => (
+          {filteredTickets.length > 0 ? (
+            filteredTickets.map((ticket) => (
               <div
                 key={ticket.id}
                 className="bg-white shadow-md rounded-lg overflow-hidden"
               >
-              <Link to={`/items/${ticket.id}`}>
-              
-                {/* Image */}
-                <div className="p-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex justify-center items-center">
-                  <img
-                    src={ticket.imageUrl || "/placeholder-image.png"}
-                    alt={ticket.name}
-                    className="h-40 w-40 object-contain"
-                  />
-                </div>
+                <Link to={`/items/${ticket.id}`}>
+                  {/* Image */}
+                  <div className="p-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex justify-center items-center">
+                    <img
+                      src={ticket.imageUrl || "/placeholder-image.png"}
+                      alt={ticket.name}
+                      className="h-40 w-40 object-contain"
+                    />
+                  </div>
 
-                {/* Details */}
-
-                <div className="p-4">
-                  <h3 className="text-lg font-bold text-gray-700 mb-2">
-                    {ticket.name.toUpperCase()}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Category:</span>{" "}
-                    {ticket.category || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Location:</span>{" "}
-                    {ticket.location || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold">Description:</span>{" "}
-                    {ticket.description || "No description provided"}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Reported on:</span>{" "}
-                    {ticket.dateTime || "N/A"}
-                  </p>
-                </div>
+                  {/* Details */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-bold text-gray-700 mb-2">
+                      {ticket.name.toUpperCase()}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-1">
+                      <span className="font-semibold">Category:</span>{" "}
+                      {ticket.category || "N/A"}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                      <span className="font-semibold">Location:</span>{" "}
+                      {ticket.location || "N/A"}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                      <span className="font-semibold">Description:</span>{" "}
+                      {ticket.description || "No description provided"}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">Reported on:</span>{" "}
+                      {ticket.dateTime || "N/A"}
+                    </p>
+                  </div>
                 </Link>
 
                 {/* Action */}
