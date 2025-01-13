@@ -64,7 +64,7 @@ export default function Topbar() {
         <div>
           <Link to="/myAccount" aria-label="My Account">
             <img
-              src="/src/assets/PROFILE.png"
+              src="/src/assets/user.png"
               alt="Profile"
               className="h-8 w-8 rounded-full"
             />

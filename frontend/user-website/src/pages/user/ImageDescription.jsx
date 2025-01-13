@@ -126,6 +126,8 @@ const ItemDescription = () => {
     setClaimData((prev) => ({ ...prev, [name]: value }));
   };
 
+  
+
   const handleClaimSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -255,13 +257,14 @@ const ItemDescription = () => {
                   )}
                 </div>
               </div>
+
               {item.status === "found" ? (
                 <div className="flex justify-between mt-4">
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+                  className="w-full px-20 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                 >
-                  EDIT THIS ITEM
+                  CLAIM THIS ITEM 
                 </button>
 
                   {showClaimForm && (
@@ -349,12 +352,13 @@ const ItemDescription = () => {
                   )}
                 </div>
               ) : (
+                
                 <div className="flex justify-between mt-4">
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                 >
-                  EDIT THIS ITEM
+                  CONTACT ME
                 </button>
                 </div>
               )}
