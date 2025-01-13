@@ -79,9 +79,15 @@ const MapWithRestrictedArea = ({ onConfirm }) => {
 
   return (
     <div>
-      <div ref={mapRef} style={{ width: '100%', height: '100vh' }} />
-      <button onClick={handleConfirm}>Confirm</button>
-    </div>
+  <div ref={mapRef} className="w-full h-screen" />
+  <button
+    onClick={handleConfirm}
+    className="w-full mt-2 px-3 py-1 bg-green-500 text-white text-lg font-semibold rounded-sm shadow hover:bg-green-600"
+  >
+    Confirm
+  </button>
+</div>
+
   );
 };
 

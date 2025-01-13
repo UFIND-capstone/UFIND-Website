@@ -79,7 +79,7 @@ export const Login = () => {
               htmlFor="studentId"
               className="block mb-2 text-sm font-bold text-gray-700"
             >
-              Username
+              Student ID
             </label>
             <input
               type="text"

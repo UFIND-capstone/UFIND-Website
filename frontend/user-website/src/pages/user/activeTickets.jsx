@@ -6,11 +6,20 @@ import Footer from "../../components/user/footer";
 import axios from "axios";
 
 const ActiveTicket = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate(); 
+  const [modalOpen, setModalOpen] = useState(false); // Modal state
+  const [currentTicket, setCurrentTicket] = useState(null); // Current ticket for modal
+  const [claimerDetails, setClaimerDetails] = useState({
+    studentId: "",
+    name: "",
+    yearSection: "",
+    contactNumber: "",
+  });
+
+  const navigate = useNavigate();
 
   // Function to fetch tickets
   const fetchTickets = async () => {
@@ -44,13 +53,43 @@ const ActiveTicket = () => {
     setFilteredTickets(filtered);
   };
 
-  // Handle success
-  const handleSuccess = async (id) => {
+  // Open modal and set current ticket
+  const openModal = (ticket) => {
+    setCurrentTicket(ticket);
+    setModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setClaimerDetails({
+      studentId: "",
+      name: "",
+      yearSection: "",
+      contactNumber: "",
+    });
+  };
+
+  // Handle form input change in modal
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setClaimerDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle modal submit
+  const handleSubmit = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/items/${id}`, { ticket: "success" });
+      await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
+        ticket: "success",
+        claimDetails: claimerDetails,
+      });
+      closeModal();
       fetchTickets();
     } catch (err) {
-      console.error("Failed to mark item as success:", err);
+      console.error("Failed to submit claim details:", err);
     }
   };
 
@@ -131,6 +170,7 @@ const ActiveTicket = () => {
                   <div className="flex space-x-2">
                     <button
                       className="flex-grow bg-green-500 text-white font-medium py-2 rounded hover:bg-green-600 transition duration-300"
+                      onClick={() => openModal(ticket)}
                     >
                       MARK AS COMPLETE
                     </button>
@@ -147,6 +187,80 @@ const ActiveTicket = () => {
       </main>
 
       <Footer />
+
+      {modalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-2xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h3>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">
+                Claimer's/Finder's Student ID
+              </label>
+              <input
+                type="text"
+                name="studentId"
+                placeholder="Enter a Claimer's/Finder's Student ID"
+                value={claimerDetails.studentId}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">
+                Claimer's/Finder's Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter a Claimer's/Finder's Name"
+                value={claimerDetails.name}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">
+                Year & Section
+              </label>
+              <input
+                type="text"
+                name="yearSection"
+                placeholder="Enter a Year & Section"
+                value={claimerDetails.yearSection}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded p-2"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">
+                Contact Number
+              </label>
+              <input
+                type="text"
+                name="contactNumber"
+                placeholder="Enter a Contact Number"
+                value={claimerDetails.contactNumber}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded p-2"
+              />
+            </div>
+            <div className="flex justify-end justify-center space-x-2">
+              <button
+                onClick={closeModal}
+                className="bg-gray-400 text-white w-25 px-12 py-2 rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-500 text-white w-25 px-14 py-2 rounded hover:bg-blue-600"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
