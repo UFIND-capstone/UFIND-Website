@@ -33,7 +33,7 @@ const Sidebar = () => {
             className="w-24 h-24 rounded-full"
           />
         </div>
-        <h2 className="text-lg font-bold">Jared Salvan</h2>
+        <h2 className="text-lg font-bold">ADMINISTRATOR</h2>
       </div>
 
       {/* Navigation Links */}
@@ -116,16 +116,6 @@ const Sidebar = () => {
             >
               <RiUserSettingsLine size={24} />
               <span>Manage Users</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/admin/myAccount"
-              className="flex items-center space-x-3 p-1 rounded-lg hover:bg-blue-700 transition"
-            >
-              <MdAccountCircle size={24} />
-              <span>My Account</span>
             </NavLink>
           </li>
 

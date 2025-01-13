@@ -135,10 +135,6 @@ export const MyAccount = () => {
                   <span>{profile.contactNumber || "N/A"}</span>
                 )}
               </div>
-              <div className="flex justify-between text-gray-800">
-                <strong>Username:</strong>
-                <span>{profile.username || "N/A"}</span>
-              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-8">

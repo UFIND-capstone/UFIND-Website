@@ -293,7 +293,7 @@ const ListingFound = () => {
               <button
                 type="button"
                 onClick={() => setIsMapVisible(true)}
-                className="mt-2 text-white bg-blue-500 hover:bg-blue-700 px-20 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-full mb-5 text-white bg-blue-500 hover:bg-blue-700 px-20 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Show Map
               </button>
@@ -301,6 +301,43 @@ const ListingFound = () => {
                 <MapWithRestrictedArea onConfirm={handleCoordinates} />
               )}
             </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                Claim Status <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="claimStatus"
+                value={formData.claimStatus || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFormData({ ...formData, claimStatus: value });
+                  if (value === "keep") {
+                    setAlertMessage(
+                      "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
+                    );
+                  } else if (value === "turnover(guard)") {
+                    setAlertMessage(
+                      "You’ve handed over the verification to the OSA. Future claims will be managed by them."
+                    );
+                  }
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="" disabled>
+                  Select claim status
+                </option>
+                <option value="keep">Keep</option>
+                <option value="turnover(guard)">Turnover</option>
+              </select>
+            </div>
+
+            <p className="text-sm text-gray-600 text-justify">
+              {" "}
+              <b> Note: </b> Are you going to keep the item and give it yourself, or turn it over to Campus Security - Gate Entrance{" "}
+            </p>
+
 
             {/* Contact Details */}
             <h2 className="text-xl font-bold text-gray-900 mt-6">
@@ -350,37 +387,6 @@ const ListingFound = () => {
                 placeholder="Enter your e-mail address"
                 required
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                Claim Status <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="claimStatus"
-                value={formData.claimStatus || ""}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setFormData({ ...formData, claimStatus: value });
-                  if (value === "keep") {
-                    setAlertMessage(
-                      "You’ve chosen to keep the item. Be sure to check all claim details carefully and confirm ownership before returning it."
-                    );
-                  } else if (value === "turnover(guard)") {
-                    setAlertMessage(
-                      "You’ve handed over the verification to the OSA. Future claims will be managed by them."
-                    );
-                  }
-                }}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="" disabled>
-                  Select claim status
-                </option>
-                <option value="keep">Keep</option>
-                <option value="turnover(guard)">Turnover</option>
-              </select>
             </div>
 
             <p className="text-sm text-gray-600 text-justify">
