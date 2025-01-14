@@ -44,29 +44,62 @@ const ActiveTicketAdmin = () => {
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-
-    if (value === '') {
-      setFilteredItems(items); // Reset to all items if search is cleared
-    } else {
-      const filtered = items.filter(item =>
-        item.name.toLowerCase().includes(value) ||
-        item.description?.toLowerCase().includes(value)
+  
+    let currentViewItems = items; // Default to all items
+  
+    if (view === 'turnoverTicket') {
+      currentViewItems = items.filter(
+        (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
       );
-      setFilteredItems(filtered);
+    } else if (view === 'itemLost') {
+      currentViewItems = items.filter(
+        (item) => item.status === "lost" && item.ticket === "pending"
+      );
+    } else if (view === 'itemFound') {
+      currentViewItems = items.filter(
+        (item) => item.status === "found" && item.ticket === "pending"
+      );
     }
+  
+    const filtered = value
+      ? currentViewItems.filter(item =>
+          item.name.toLowerCase().includes(value) ||
+          item.description?.toLowerCase().includes(value)
+        )
+      : currentViewItems;
+  
+    setFilteredItems(filtered);
   };
+  
 
   const handleViewChange = (viewType) => {
+    console.log("View type selected:", viewType); // Debug
     setView(viewType);
-    if (viewType === 'turnover') {
+  
+    if (viewType === 'turnoverTicket') {
       const turnoverItems = items.filter(
         (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
       );
+      console.log("Filtered turnover items:", turnoverItems); // Debug
       setFilteredItems(turnoverItems);
+    } else if (viewType === 'itemLost') {
+      const lostItems = items.filter(
+        (item) => item.status === "lost" && item.ticket === "pending"
+      );
+      console.log("Filtered lost items:", lostItems); // Debug
+      setFilteredItems(lostItems);
+    } else if (viewType === 'itemFound') {
+      const foundItems = items.filter(
+        (item) => item.status === "found" && item.ticket === "pending"
+      );
+      console.log("Filtered found items:", foundItems); // Debug
+      setFilteredItems(foundItems);
     } else {
-      setFilteredItems(items); // Reset to all items
+      console.log("All items:", items); // Debug
+      setFilteredItems(items);
     }
   };
+  
 
   const handleSuccess = async (id) => {
     try {

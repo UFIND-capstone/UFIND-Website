@@ -1,4 +1,4 @@
-import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem } from '../models/itemModel.js';
+import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem} from '../models/itemModel.js';
 
 function generateRandomId() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -162,6 +162,27 @@ export const deleteItemHandler = async (req, res) => {
         res.status(200).json({ message: 'Item deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: `Error deleting item: ${error.message}` });
+    }
+};
+
+export const reactivateItemHandler = async (req, res) => {
+    const { itemID } = req.params;
+
+    try {
+        // Get the current local time
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
+        const localTime = new Date(now.getTime() - offset);
+
+        // Format the local time as "YYYY-MM-DD HH:mm"
+        const formattedDateTime = localTime.toISOString().slice(0, 16).replace('T', ' ');
+
+        // Update the item with the new dateTime
+        await updateItem(itemID, { dateTime: formattedDateTime });
+
+        res.status(200).json({ message: 'Item reactivated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: `Error reactivating item: ${error.message}` });
     }
 };
 

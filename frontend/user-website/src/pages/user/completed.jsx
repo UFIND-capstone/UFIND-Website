@@ -20,7 +20,7 @@ const Completed = () => {
 
         // Filter the tickets where ticket status is "success"
         const completedTickets = data.filter(
-          (item) => item.ticket === "success"
+          (item) => item.ticket === "success", item.studentId == user.id
         );
 
         setTickets(completedTickets); // Update tickets state with filtered data

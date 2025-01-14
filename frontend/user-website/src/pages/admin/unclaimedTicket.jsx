@@ -58,10 +58,9 @@ const UnclaimedTicket = () => {
     navigate(`/admin/items/${ticket.id}`, { state: { ticket } });
   };
 
-  // Delete a ticket
-  const handleDelete = async (id) => {
+  const reactivateItem = async (id) => {
     try {
-      await axios.delete(`${hostUrl}/api/tickets/${id}`);
+      await axios.put(`${hostUrl}/api/items/${id}/reactivate`);
       setTickets((prev) => prev.filter((ticket) => ticket.id !== id));
       setFilteredTickets((prev) => prev.filter((ticket) => ticket.id !== id));
     } catch (err) {
@@ -125,7 +124,7 @@ const UnclaimedTicket = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent triggering container click
-                        handleDelete(ticket.id);
+                        reactivateItem(ticket.id);
                       }}
                       className="bg-green-500 text-white w-full px-4 py-2 rounded hover:bg-green-600"
                     >

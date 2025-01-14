@@ -8,6 +8,7 @@ import {
     claimItemHandler,
     updateItemHandler,
     deleteItemHandler,
+    reactivateItemHandler
 } from '../controllers/itemController.js';
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.get('/items/user/:userId', getItemsByUserIdHandler); // Route to fetch it
 router.get('/items/status/:status', getPendingHandler); // Route to fetch pending items
 router.put('/items/:itemID', updateItemHandler); // Route for updating an item (mark as success)
 router.delete('/items/:itemID', deleteItemHandler); // Route for deleting an item
+router.put('/items/:itemID/reactivate', reactivateItemHandler);
 
 export default router;
