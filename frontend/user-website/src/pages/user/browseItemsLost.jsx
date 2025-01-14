@@ -65,7 +65,7 @@ const BrowseItemsLost = () => {
             {/* Main Content Wrapper */}
             <div className="w-full px-4 py-10 max-w-7xl mx-auto">
                 {/* Title */}
-                <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Browse Items (Lost)</h1>
+                <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">BROWSE ITEMS</h1>
 
                 {/* Search Bar */}
                 <div className="flex items-center justify-center w-full max-w-2xl mx-auto mb-8">
@@ -109,7 +109,7 @@ const BrowseItemsLost = () => {
                                 <img
                                     src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
                                     alt={item.name}
-                                    className="w-full h-48 object-cover"
+                                    className="w-full h-50 object-cover"
                                 />
                                 <div className="p-4 text-center">
                                     <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>

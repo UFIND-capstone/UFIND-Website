@@ -92,15 +92,14 @@
                     key={item.id}
                     className="bg-white rounded-lg shadow p-4 text-center hover:shadow-lg transition"
                   >
-                    {/* Link to Item Details */}
                     <Link to={`/items/${item.id}`}>
-                      <img
-                        src={item.imageUrl || "/src/assets/default.png"} // Fallback for missing images
-                        alt={item.name}
-                        className={`w-full h-50 object-cover mb-4 rounded-md ${
-                          item.status === "found" ? "filter blur-sm" : ""
-                        }`}
-                      />
+                        <img
+                          src={item.imageUrl || "/src/assets/default.png"} // Fallback for missing images
+                          alt={item.name}
+                          className={`w-full h-[200px] object-cover mb-4 rounded-md ${
+                            item.status === "found" ? "filter blur-sm" : ""
+                          }`}
+                        />
 
                       {/* Item Information */}
                       <h3 className="font-semibold text-gray-800">{item.name}</h3>

@@ -44,62 +44,48 @@ const ActiveTicketAdmin = () => {
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-  
-    let currentViewItems = items; // Default to all items
-  
-    if (view === 'turnoverTicket') {
-      currentViewItems = items.filter(
-        (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
+
+    if (value === '') {
+      setFilteredItems(items); // Reset to all items if search is cleared
+    } else {
+      const filtered = items.filter(item =>
+        item.name.toLowerCase().includes(value) ||
+        item.description?.toLowerCase().includes(value)
       );
-    } else if (view === 'itemLost') {
-      currentViewItems = items.filter(
-        (item) => item.status === "lost" && item.ticket === "pending"
-      );
-    } else if (view === 'itemFound') {
-      currentViewItems = items.filter(
-        (item) => item.status === "found" && item.ticket === "pending"
-      );
+      setFilteredItems(filtered);
     }
-  
-    const filtered = value
-      ? currentViewItems.filter(item =>
-          item.name.toLowerCase().includes(value) ||
-          item.description?.toLowerCase().includes(value)
-        )
-      : currentViewItems;
-  
-    setFilteredItems(filtered);
   };
-  
 
   const handleViewChange = (viewType) => {
-    console.log("View type selected:", viewType); // Debug
     setView(viewType);
-  
-    if (viewType === 'turnoverTicket') {
+    if (viewType === 'turnover') {
       const turnoverItems = items.filter(
         (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
       );
-      console.log("Filtered turnover items:", turnoverItems); // Debug
       setFilteredItems(turnoverItems);
-    } else if (viewType === 'itemLost') {
-      const lostItems = items.filter(
-        (item) => item.status === "lost" && item.ticket === "pending"
-      );
-      console.log("Filtered lost items:", lostItems); // Debug
-      setFilteredItems(lostItems);
-    } else if (viewType === 'itemFound') {
-      const foundItems = items.filter(
-        (item) => item.status === "found" && item.ticket === "pending"
-      );
-      console.log("Filtered found items:", foundItems); // Debug
-      setFilteredItems(foundItems);
     } else {
-      console.log("All items:", items); // Debug
-      setFilteredItems(items);
+      setFilteredItems(items); // Reset to all items
     }
   };
-  
+
+    const [showModal, setShowModal] = useState(false);
+    const [claimerDetails, setClaimerDetails] = useState({
+    studentId: '',
+    name: '',
+    yearSection: '',
+    contactNumber: ''
+});
+
+  const handleModalInputChange = (e) => {
+  const { name, value } = e.target;
+  setClaimerDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
+};
+
+  const handleSubmitModal = () => {
+  console.log("Submitted details:", claimerDetails);
+  setShowModal(false); // Close modal after submission
+};
+
 
   const handleSuccess = async (id) => {
     try {
@@ -189,19 +175,85 @@ const ActiveTicketAdmin = () => {
                     <strong>Date:</strong> {item.dateTime}
                   </p>
 
-                  <div className="mt-4 flex justify-between">
-                    <button
-                      className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                      onClick={(e) => { e.stopPropagation(); handleSuccess(item.id); }}
-                    >
-                      MARK AS SUCCESS
-                    </button>
-                  </div>
+                  <button
+                    className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    onClick={(e) => { e.stopPropagation(); setShowModal(true); }}
+                  >
+                    MARK AS SUCCESS
+                  </button>
+
                 </div>
               ))}
             </div>
           )}
         </main>
+
+        {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-1/3">
+            <h2 className="text-3xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h2>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Student ID</label>
+              <input
+                type="text"
+                name="studentId"
+                placeholder="Enter a Student ID"
+                value={claimerDetails.studentId}
+                onChange={handleModalInputChange}
+                className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter a name"
+                value={claimerDetails.name}
+                onChange={handleModalInputChange}
+                className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Year & Section</label>
+              <input
+                type="text"
+                name="yearSection"
+                placeholder="Enter a Year & Section"
+                value={claimerDetails.yearSection}
+                onChange={handleModalInputChange}
+                className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Contact Number</label>
+              <input
+                type="text"
+                name="contactNumber"
+                placeholder="Enter a Contact Number"
+                value={claimerDetails.contactNumber}
+                onChange={handleModalInputChange}
+                className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded mr-2"
+              >
+                CANCEL
+              </button>
+              <button
+                onClick={handleSubmitModal}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                SUBMIT
+              </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );

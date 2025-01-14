@@ -193,7 +193,7 @@ const handleSubmit = async () => {
                       className="flex-grow bg-green-500 text-white font-medium py-2 rounded hover:bg-green-600 transition duration-300"
                       onClick={() => openModal(ticket)}
                     >
-                      MARK AS COMPLETE
+                      MARK AS SUCCESS
                     </button>
                   </div>
                 </div>

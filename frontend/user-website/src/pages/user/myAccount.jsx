@@ -12,6 +12,7 @@ export const MyAccount = () => {
   const [profile, setProfile] = useState({
     studentId: "",
     firstName: "",
+    lastName: "",
     emailAddress: "",
     contactNumber: "",
     username: "",
@@ -20,19 +21,11 @@ export const MyAccount = () => {
   const [isEditing, setIsEditing] = useState(false); // Track editing state
   const [editedProfile, setEditedProfile] = useState(profile); // Editable profile data
 
-  // Fetch the latest user profile from the server, with caching
   const fetchUserProfile = async () => {
     try {
-      const cachedProfile = JSON.parse(localStorage.getItem("user"));
-      if (cachedProfile && cachedProfile.id === user.id) {
-        setProfile(cachedProfile);
-        setEditedProfile(cachedProfile);
-      } else {
-        const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
-        setProfile(response.data); // Update profile with fresh data
-        setEditedProfile(response.data); // Sync editable data
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
+      const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
+      setProfile(response.data); // Update profile with fresh data
+      setEditedProfile(response.data); // Sync editable data
     } catch (error) {
       console.error("Error fetching user profile:", error.message);
     }
@@ -53,15 +46,15 @@ export const MyAccount = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put("http://localhost:3000/api/user/edit", {
-        studentId: editedProfile.id,
-        ...editedProfile, // Pass all edited fields
+      await axios.put(`http://localhost:3000/api/user/${user.id}`, {
+        firstName: editedProfile.firstName,
+        lastName: editedProfile.lastName,
+        emailAddress: editedProfile.emailAddress,
+        contactNumber: editedProfile.contactNumber,
       });
-      localStorage.setItem("user", JSON.stringify(editedProfile));
-      await fetchUserProfile(); // Re-fetch updated profile
+      setProfile(editedProfile); // Update profile state
       setIsEditing(false);
       alert("Profile updated successfully!");
-      
     } catch (error) {
       console.error("Error updating profile:", error.message);
       alert("Failed to update profile. Please try again.");
@@ -98,17 +91,7 @@ export const MyAccount = () => {
             <div className="space-y-4">
               <div className="flex justify-between text-gray-800">
                 <strong>Student ID:</strong>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="studentId"
-                    value={editedProfile.id}
-                    onChange={handleInputChange}
-                    className="border rounded-md p-1 text-sm w-1/2"
-                  />
-                ) : (
-                  <span>{profile.id || "N/A"}</span>
-                )}
+                <span>{profile.studentId || "N/A"}</span>
               </div>
               <div className="flex justify-between text-gray-800">
                 <strong>First Name:</strong>
@@ -129,7 +112,7 @@ export const MyAccount = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    name="firstName"
+                    name="lastName"
                     value={editedProfile.lastName}
                     onChange={handleInputChange}
                     className="border rounded-md p-1 text-sm w-1/2"

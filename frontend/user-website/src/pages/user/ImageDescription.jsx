@@ -244,16 +244,21 @@ const ItemDescription = () => {
 
               {item.studentId === user.id ? (
   <div>
-    <button>Edit this Item</button>
+    <button
+        className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
+        onClick={handleClaimToggle}
+      >
+        EDIT THIS ITEM
+      </button>
   </div>
 ) : (
   item.status === "found" ? (
     <div className="mt-6">
       <button
-        className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+        className="w-full bg-blue-500 font-semibold text-white py-3 rounded-lg hover:bg-blue-600"
         onClick={handleClaimToggle}
       >
-        Claim This Item
+        CLAIM THIS ITEM
       </button>
       {showClaimForm && (
         <form className="mt-4 space-y-4" onSubmit={handleClaimSubmit}>
@@ -329,9 +334,9 @@ const ItemDescription = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600"
+            className="w-full bg-green-500 font-semibold text-white py-3 rounded-lg hover:bg-green-600"
           >
-            Submit Claim
+            SUBMIT CLAIM
           </button>
         </form>
       )}

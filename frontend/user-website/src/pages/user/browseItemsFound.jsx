@@ -60,7 +60,7 @@ const BrowseItemsFound = () => {
             <Topbar />
 
             <div className="w-full px-4 py-10 max-w-7xl mx-auto">
-                <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Browse Items (Found)</h1>
+                <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">BROWSE ITEMS</h1>
 
                 <div className="flex items-center justify-center w-full max-w-2xl mx-auto mb-8">
                     <input
@@ -89,7 +89,7 @@ const BrowseItemsFound = () => {
                 ) : error ? (
                     <p className="text-center text-red-500">{error}</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
                         {filteredItems.map((item) => (
                             <Link
                                 key={item.id}
