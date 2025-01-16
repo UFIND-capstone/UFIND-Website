@@ -40,7 +40,7 @@ const DashboardAdmin = () => {
         const counts = {
           itemsFound: items.filter(item => item.status === 'found').length,
           itemLost: items.filter(item => item.status === 'lost').length,
-          ticketsClaimed: items.filter(item => item.ticket === 'claimed').length,
+          ticketsClaimed: items.filter(item => item.ticket === 'success').length,
           keepTickets: items.filter(item => item.claimStatus === 'keep').length,
           turnoverTickets: items.filter(item => item.claimStatus === 'turnover').length,
           unclaimedTickets: items.filter(item => item.claimStatus === 'unclaimed').length, 

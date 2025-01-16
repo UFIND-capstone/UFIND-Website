@@ -112,17 +112,12 @@ const handleSubmit = async () => {
   }
 };
 
-
-
   // Dynamic Styling for Status and Category
   const statusColors = {
-    Lost: "bg-gray-900 text-white",
-    Found: "bg-blue-500 text-white",
-    Pending: "bg-yellow-500 text-white",
-    Matched: "bg-blue-500 text-white",
-    Resolved: "bg-green-500 text-white",
-    Rejected: "bg-red-500 text-white",
-    Success: "bg-green-500 text-white",
+    lost: "bg-red-600 text-white",
+    found: "bg-green-500 text-white",
+    pending: "bg-yellow-500 text-white",
+    success: "bg-green-500 text-white",
   };
 
   return (
@@ -167,9 +162,9 @@ const handleSubmit = async () => {
                     <p className="text-gray-500 mb-4">
                       <span className="font-semibold">Category:</span>{" "}
                       <span
-                        className={`inline-block px-2 py-1 text-sm font-medium rounded ${statusColors[ticket.category]}`}
+                        className={`inline-block px-2 py-1 text-sm font-medium rounded ${statusColors[ticket.status]}`}
                       >
-                        {ticket.category}
+                        {ticket.status}
                       </span>
                     </p>
                     <p className="text-gray-600 mb-4">
