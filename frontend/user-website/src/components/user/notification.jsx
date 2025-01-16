@@ -1,12 +1,7 @@
-// src/components/NotificationBanner.jsx
 import { useNotification } from "../../context/contextNotification";
-
-
 const NotificationBanner = () => {
   const { notification, dismissNotification } = useNotification();
-
   if (!notification) return null; // Don't show the banner if there's no notification
-
   return (
     <div className="fixed top-0 left-0 w-full bg-blue-500 text-white text-center py-2 z-50 flex justify-between items-center">
       <span>{notification}</span>
@@ -22,5 +17,4 @@ const NotificationBanner = () => {
     </div>
   );
 };
-
 export default NotificationBanner;
