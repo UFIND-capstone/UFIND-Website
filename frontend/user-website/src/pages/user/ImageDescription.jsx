@@ -139,8 +139,8 @@ const ItemDescription = () => {
         `,
       };
 
-      // Send the message
-      await axios.post("http://localhost:3000/api/messages", messageData);
+      const response = await axios.post("http://localhost:3000/api/messages", messageData);
+console.log("Claim Submitted:", response.data);
 
       console.log("Claim Submitted:", response.data);
       alert(
