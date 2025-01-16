@@ -69,6 +69,7 @@ export const Register = () => {
               value={studentId}
               onChange={(event) => setStudentId(event.target.value)}
               placeholder="Enter your student ID"
+              maxLength={10}
               required
               className="w-full pl-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

@@ -255,7 +255,7 @@ const ItemDescription = () => {
 
                 <div className="flex justify-between mt-4">
                 <button
-                  onClick={() => navigate(`/admin/userItem/${item.id}`)}
+                  onClick={() => navigate(`/admin/edit/${item.id}`)}
                   className="w-full px-20 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                 >
                   EDIT THIS ITEM

@@ -64,7 +64,7 @@ export const AppRoutes = () => {
     { path: "/browseItemsLost", element: <BrowseitemsLost />, errorElement: <BrowseitemsLost /> },
     { path: "/browseItemsFound", element: <BrowseitemsFound />, errorElement: <BrowseitemsFound /> },
     { path: "/items/:itemID", element: <ImageDescription />, errorElement: <ImageDescription /> },
-    { path: "/edit/:itemID", element: <UserItem />, errorElement: <UserItem /> },
+    { path: "/edit/:itemId", element: <UserItem />, errorElement: <UserItem /> },
     { path: "/completedItem/:itemID", element: <CompleteItem />, errorElement: <CompleteItem /> },
     { path: "/reportPage", element: <ReportPage />, errorElement: <ReportPage /> },
     { path: "/viewmyTickets", element: <ViewMyTickets />, errorElement: <ViewMyTickets /> },
@@ -92,10 +92,9 @@ export const AppRoutes = () => {
     { path: "/admin/activeTicketAdmin", element: <ProtectedRoute adminOnly={true}><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
     { path: "/admin/userManagement", element: <ProtectedRoute adminOnly={true}><UserManagement /></ProtectedRoute>, errorElement: <UserManagement /> },
     { path: "/admin/items/:itemID", element: <ProtectedRoute adminOnly={true}><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
-    { path: "/admin/items/complete/:itemID", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
-    { path: "/admin/edit/:itemID", element: <ProtectedRoute adminOnly={true}><EditItemAdmin /></ProtectedRoute>, errorElement: <EditItemAdmin /> },
+    { path: "/admin/edit/:itemId", element: <ProtectedRoute adminOnly={true}><EditItemAdmin /></ProtectedRoute>, errorElement: <EditItemAdmin /> },
     { path: "/admin/unclaimedTickets", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
-    { path: "/admin/completeItemAdmin", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
+    { path: "/admin/items/complete/:itemID", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
 
   ]);
 

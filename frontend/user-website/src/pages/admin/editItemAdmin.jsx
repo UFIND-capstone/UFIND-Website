@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Footer from "../../components/user/footer";
-import Topbar from "../../components/user/topBar";
+import Footer from "../../components/admin/footer";
+import Topbar from "../../components/admin/topBar";
 import axios from "axios";
 
 const editItemAdmin = () => {
-  const { itemId } = useParams(); // Get item ID from URL
+  const { itemId } = useParams();
   const navigate = useNavigate();
   const [itemData, setItemData] = useState({
     name: "",
     description: "",
     dateTime: "",
-    contactName: "",
+    fullName: "", // Changed from contactName to match backend
     contactNumber: "",
     email: "",
-    status: "lost", // Default value is 'lost'
     imageUrl: "",
+    status: "lost", // Added default status
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Fetch item details
     const fetchItem = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/items/${itemId}`
-        );
-        setItemData(response.data);
-        setLoading(false);
+        const response = await axios.get(`http://localhost:3000/api/items/${itemId}`);
+        // Format the datetime string to be compatible with datetime-local input
+        const formattedDateTime = response.data.dateTime 
+          ? new Date(response.data.dateTime).toISOString().slice(0, 16)
+          : "";
+        
+        setItemData({
+          ...response.data,
+          dateTime: formattedDateTime
+        });
       } catch (err) {
-        setError(err.message || "Failed to fetch item details.");
+        setError(err.response?.data?.message || "Failed to fetch item details.");
+      } finally {
         setLoading(false);
       }
     };
@@ -43,29 +49,42 @@ const editItemAdmin = () => {
     setItemData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveChanges = async () => {
+  const handleSaveChanges = async (e) => {
+    e.preventDefault(); // Prevent form submission
+    setIsSubmitting(true);
+  
     try {
-      await axios.put(`http://localhost:3000/api/items/${itemId}`, itemData);
+      await axios.put(`http://localhost:3000/api/items/edit/${itemId}`, {
+        ...itemData,
+        dateTime: new Date(itemData.dateTime).toISOString(), // Format date for backend
+      });
+  
       alert("Item updated successfully!");
       navigate(-1); // Go back to the previous page
     } catch (err) {
-      console.error("Error updating item:", err);
-      alert("Failed to update the item. Please try again.");
+      const errorMessage = err.response?.data?.message || "Failed to update the item. Please try again.";
+      setError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+  
 
   if (loading) {
-    return <p className="text-center text-gray-500">Loading item details...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <Topbar />
+        <div className="flex justify-center items-center h-64">
+          <p className="text-center text-gray-500">Loading item details...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-     <div className="flex flex-col min-h-screen bg-gray-100">
-          <Topbar />
-        <div className="flex-grow p-6">
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Topbar />
+      <div className="flex-grow p-6">
         <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
           {/* Left Side: Image and Back Button */}
           <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
@@ -78,17 +97,21 @@ const editItemAdmin = () => {
             <img
               src={itemData.imageUrl || "/placeholder-image.png"}
               alt={itemData.name || "Lost Item"}
-              className="rounded-lg shadow-md"
+              className="rounded-lg shadow-md max-w-full h-auto"
             />
           </div>
 
           {/* Right Side: Edit Form */}
           <div className="p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
-              Edit Ticket
+              Edit Item Details
             </h2>
-            <form className="space-y-4">
-              {/* Item Name */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                {error}
+              </div>
+            )}
+            <form onSubmit={handleSaveChanges} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Item Name
@@ -98,12 +121,11 @@ const editItemAdmin = () => {
                   name="name"
                   value={itemData.name}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
 
-              {/* Description */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Description
@@ -112,13 +134,12 @@ const editItemAdmin = () => {
                   name="description"
                   value={itemData.description}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   rows="3"
                   required
-                ></textarea>
+                />
               </div>
 
-              {/* Date and Time */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Date and Time
@@ -128,42 +149,39 @@ const editItemAdmin = () => {
                   name="dateTime"
                   value={itemData.dateTime}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
 
-              {/* Contact Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Contact Name
                 </label>
                 <input
                   type="text"
-                  name="contactName"
-                  value={itemData.contactName}
+                  name="fullName"
+                  value={itemData.fullName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
 
-              {/* Contact Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Contact Number
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   name="contactNumber"
                   value={itemData.contactNumber}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
 
-              {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Email
@@ -173,12 +191,11 @@ const editItemAdmin = () => {
                   name="email"
                   value={itemData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
 
-              {/* Status */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Status
@@ -187,27 +204,24 @@ const editItemAdmin = () => {
                   name="status"
                   value={itemData.status}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="lost">Lost</option>
                   <option value="found">Found</option>
                 </select>
               </div>
 
-              {/* Save Changes Button */}
               <button
-                type="button"
-                onClick={handleSaveChanges}
-                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors"
               >
-                Save Changes
+                {isSubmitting ? "Saving..." : "Save Changes"}
               </button>
             </form>
           </div>
         </div>
       </div>
-      
-      {/* Footer */}
       <Footer />
     </div>
   );

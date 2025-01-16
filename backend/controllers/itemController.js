@@ -1,4 +1,4 @@
-import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem} from '../models/itemModel.js';
+import { addItem, updateItem , deleteItem ,getItems, getItemById, getItemsByUserId, getPendingItem, addClaimItem, editItem, getCompletedItem} from '../models/itemModel.js';
 
 function generateRandomId() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -27,19 +27,32 @@ export const claimItemHandler = async (req, res) => {
     }
 
     try {
-        // Pass the itemId as the document ID
+        // Get the current date and format it as "Jan 17, 2025, 12:53 AM"
+        const dateCompleted = new Date().toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        });
+
+        // Pass the itemId as the document ID and include the dateCompleted
         const addedItemId = await addClaimItem({
             studentId,
             name,
             yearSection,
             contactNumber,
             itemId,
+            dateCompleted, // Add the formatted dateCompleted
         }, itemId); // Pass itemId as the document ID
+
         res.status(201).json({ message: 'Item added successfully', addedItemId });
     } catch (error) {
         res.status(500).json({ message: `Error adding item: ${error.message}` });
     }
 };
+
 
 
 export const getItemsHandler = async (req, res) => {
@@ -73,7 +86,16 @@ export const getItemsByUserIdHandler = async (req, res) => {
     }
   };
 
+  export const getCompletedItemHandler = async (req, res) => {
+    const { itemID } = req.params; // Get the item ID from URL parameters
 
+    try {
+        const item = await getCompletedItem(itemID); // Fetch item by ID
+        res.status(200).json(item); // Send the item data as a response
+    } catch (error) {
+        res.status(500).json({ message: `Error retrieving item: ${error.message}` });
+    }
+};
 
 export const getItemByIdHandler = async (req, res) => {
     const { itemID } = req.params; // Get the item ID from URL parameters
@@ -186,3 +208,43 @@ export const reactivateItemHandler = async (req, res) => {
     }
 };
 
+export const editItemHandler = async (req, res) => {
+    const { itemId } = req.params; // Extract itemId from URL params
+    const { name, description, dateTime, fullName, contactNumber, email, status } = req.body;
+  
+    if (!itemId) {
+      return res.status(400).json({ message: 'Item ID is required' });
+    }
+  
+    try {
+      // Prepare the updates object
+      const updates = {
+        ...(name && { name }),
+        ...(description && { description }),
+        ...(dateTime && { dateTime }),
+        ...(fullName && { fullName }),
+        ...(contactNumber && { contactNumber }),
+        ...(email && { email }),
+        ...(status && { status }),
+      };
+  
+      // If no valid fields to update
+      if (Object.keys(updates).length === 0) {
+        return res.status(400).json({ message: 'No updates provided' });
+      }
+  
+      // Call editItem function to update the database
+      const editedItem = await editItem(itemId, updates);
+  
+      if (!editedItem) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+  
+      // Return success response
+      res.status(200).json({ message: 'Item updated successfully', editedItem });
+    } catch (error) {
+      console.error("Error in editItemHandler:", error);
+      res.status(500).json({ message: 'Failed to update the item', error: error.message });
+    }
+  };
+  
