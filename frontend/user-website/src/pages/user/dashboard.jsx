@@ -223,13 +223,11 @@
 
               <div className="bg-white shadow-md p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  SMART MATCHING
+                  USER-FRIENDLY DESIGN
                 </h3>
 
                 <p className="text-justify text-gray-600">
-                  Our automated smart matching system eliminates the need for
-                  manual searching by quickly and accurately finding what you're
-                  looking for.
+                    The system is simple and easy to understand, so you don’t need much training to use it.
                 </p>
               </div>
 
@@ -243,42 +241,6 @@
                   Our support team is available from 8:00 AM to 5:00 PM, Monday to
                   Friday, to assist with lost and found items, and any inquiries
                   outside these hours will be addressed on the next business day.
-                </p>
-
-              </div>
-
-              <div className="bg-white shadow-md p-6 rounded-lg">
-
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  USER-FRIENDLY DESIGN
-                </h3>
-
-                <p className="text-justify text-gray-600">
-                  The system is simple and easy to understand, so you don’t need much training to use it.
-                </p>
-
-              </div>
-
-              <div className="bg-white shadow-md p-6 rounded-lg">
-
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  DEPENDABLE PERFORMANCE
-                </h3>
-
-                <p className="text-justify text-gray-600">
-                  The system works well every time, so you can trust it to do its job without problems.
-                </p>
-
-              </div>
-
-              <div className="bg-white shadow-md p-6 rounded-lg">
-
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  TIME SAVING EFFICIENCY
-                </h3>
-
-                <p className="text-justify text-gray-600">
-                  The system helps you get things done quickly and with little wasted time or effort.
                 </p>
 
               </div>

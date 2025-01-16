@@ -51,7 +51,7 @@ const AboutUs = () => {
             Key Features
           </h3>
           <ul className="text-base pl-8 list-disc text-gray-700 leading-relaxed space-y-3">
-            <li> <b> Real-Time Notifications: </b> Be the first to know when a match is made for your reported item.</li>
+            <li> <b> Real-Time Messaging: </b> Be the first to know when a match is made for your reported item.</li>
             <li> <b> User-Friendly Dashboard: </b> Navigate with ease to manage your lost and found reports.</li>
             <li> <b> Smart Search and Filters: </b> Find items faster with advanced search capabilities and category filters.</li>
             <li> <b> Dedicated Admin Tools: </b> Campus administrators can efficiently oversee and manage all reports to ensure smooth operations.</li>
