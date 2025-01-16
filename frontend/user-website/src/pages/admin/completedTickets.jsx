@@ -97,7 +97,7 @@ const CompletedTickets = () => {
                   onClick={() => handleNavigateToDetails(ticket.id)}
                 >
               
-                  <Link to={`/admin/items/complete/${ticket.id}`}>
+                  <Link to={`/admin/items/completeItemAdmin/${ticket.id}`}>
                     <img
                       src={ticket.imageUrl || "/placeholder-image.png"}
                       alt={ticket.itemName}

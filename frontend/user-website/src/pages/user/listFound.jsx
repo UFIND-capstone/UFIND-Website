@@ -402,7 +402,7 @@ const ListingFound = () => {
                 }`}
                 disabled={isLoading}
               >
-                {isLoading ? "Submitting..." : "SUBMIT"}
+                {isLoading ? "SUBMITTING..." : "SUBMIT"}
               </button>
             </div>
           </form>

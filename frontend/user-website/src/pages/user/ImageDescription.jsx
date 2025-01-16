@@ -242,11 +242,13 @@ const ItemDescription = () => {
                 <div>
                   <button
                     className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
-                    onClick={() => navigate(`/edit/${item.id}`)}
+                    onClick={() => navigate(`/userItem/${item.id}`)}
                   >
                     EDIT THIS ITEM
                   </button>
                 </div>
+              
+                
               ) : item.status === "found" ? (
                 <div className="mt-6">
                   <button

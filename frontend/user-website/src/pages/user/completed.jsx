@@ -90,8 +90,8 @@ const Completed = () => {
                     <img
                       src={ticket.imageUrl || "/placeholder-image.png"}
                       alt={ticket.name}
-                      className="h-40 w-40 object-contain"
-                    />
+                      className="h-30 w-full object-cover"
+                      />
                   </div>
 
                   {/* Details */}
@@ -117,16 +117,6 @@ const Completed = () => {
                     </p>
                   </div>
                 </Link>
-
-                {/* Action */}
-                <div className="p-4 bg-gray-100 flex justify-end">
-                  <button
-                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-                    disabled
-                  >
-                    Found
-                  </button>
-                </div>
               </div>
             ))
           ) : (

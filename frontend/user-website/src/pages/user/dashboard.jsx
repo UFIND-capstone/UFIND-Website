@@ -141,7 +141,7 @@
             {/* View More Button */}
             <div className="mt-6">
               <Link to="/browseItemsLost">
-                <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                <button className="px-10 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                   VIEW MORE
                 </button>
               </Link>
@@ -165,13 +165,13 @@
 
             {/* About Us Section */}
             <div className="flex-grow md:pl-8">
-              <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded mb-2">
+              <button className="bg-blue-500 text-white font-bold mb-8 px-5 py-2 rounded mb-2">
                 ABOUT US
               </button>
 
               <h2 className="text-2xl font-bold text-gray-800">U-FIND</h2>
 
-              <p className="text-justify text-gray-600 mt-5">
+              <p className="text-justify text-gray-600 mb-5">
                 U-find is a platform for reporting, tracking, and retrieving lost
                 and found items on campus. Secure authentication and real-time
                 notifications help quickly reunite lost items with their owners,
@@ -179,7 +179,7 @@
               </p>
 
               <a href="/aboutUs" className="mt-6">
-                <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded">
+                <button className="bg-blue-500 text-white font-bold px-20 py-2 rounded">
                   READ MORE
                 </button>
               </a>

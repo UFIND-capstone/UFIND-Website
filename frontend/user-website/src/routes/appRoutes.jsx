@@ -74,6 +74,10 @@ export const AppRoutes = () => {
     { path: "/completed", element: <Completed />, errorElement: <Completed /> },
     { path: "/notification", element: <Notification />, errorElement: <Notification /> },
     { path: "/chatApp", element: <ChatApp />, errorElement: <ChatApp /> },
+    { path: "/completeItem", element: <CompleteItem />, errorElement: <CompleteItem /> },
+    { path: "/userItem", element: <UserItem />, errorElement: <UserItem /> },
+
+
 
     // Admin Routes
     { path: "/admin/adminLogin", element: <LoginAdmin />, errorElement: <LoginAdmin /> },
@@ -91,6 +95,7 @@ export const AppRoutes = () => {
     { path: "/admin/items/complete/:itemID", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
     { path: "/admin/edit/:itemID", element: <ProtectedRoute adminOnly={true}><EditItemAdmin /></ProtectedRoute>, errorElement: <EditItemAdmin /> },
     { path: "/admin/unclaimedTickets", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
+    { path: "/admin/completeItemAdmin", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
 
   ]);
 

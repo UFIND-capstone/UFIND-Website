@@ -280,9 +280,9 @@ const formatDate = (dateString) => {
               <button
                 type="button"
                 onClick={() => setIsMapVisible(true)}
-                className="mt-2 text-white bg-blue-500 hover:bg-blue-700 px-20 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-full text-white bg-blue-500 hover:bg-blue-700 px-20 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                Show Map
+                SHOW MAP
               </button>
               {isMapVisible && (
                 <MapWithRestrictedArea onConfirm={handleCoordinates} />
@@ -349,7 +349,7 @@ const formatDate = (dateString) => {
                 }`}
                 disabled={isLoading}
               >
-                {isLoading ? "Submitting..." : "SUBMIT"}
+                {isLoading ? "SUBMITTING..." : "SUBMIT"}
               </button>
             </div>
           </form>
