@@ -47,21 +47,21 @@ const Footer = () => {
         <div className="text-center md:text-left">
           <h3 className="text-xl font-semibold mb-3">SOCIAL LINKS</h3>
           <div className="flex justify-center md:justify-start space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/profile.php?id=61572131011000&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
               <img src="/src/assets/fb.png" alt="Facebook" className="h-6" />
             </a>
             <a href="mailto:Jaredrara11@gmail.com" target="_blank" rel="noopener noreferrer">
               <img src="/src/assets/gmail.png" alt="Gmail" className="h-6" />
             </a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/rara_jared72862" target="_blank" rel="noopener noreferrer">
               <img src="/src/assets/twitter.png" alt="X" className="h-6" />
             </a>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-gray-700 py-2 text-center">
-        <p className="text-sm">&copy; U-FIND PHILIPPINES 2024</p>
+      <div className="border-t border-gray-700 py-5 text-center">
+        <p className="text-sm">&copy; TEAM U-FIND 2024</p>
       </div>
     </footer>
   );

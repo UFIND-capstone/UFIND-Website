@@ -88,6 +88,8 @@ const BrowseItemsFound = () => {
                     <p className="text-center text-gray-500">Loading items...</p>
                 ) : error ? (
                     <p className="text-center text-red-500">{error}</p>
+                ) : filteredItems.length === 0 ? (
+                    <p className="text-center text-gray-500">No items found.</p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
                         {filteredItems.map((item) => (

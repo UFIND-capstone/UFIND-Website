@@ -37,20 +37,17 @@ const ReportPage = () => {
           </div>
 
           {/* Success Message */}
-          <div className="border-green-400 text-green-800 rounded-lg p-6 text-center">
-            <h1 className="text-2xl font-bold mb-4">
-              🎉 Item Reported Successfully!
+          <div className="border-green-400 text-green-800 rounded-lg p-1 text-center">
+            <h1 className="text-3xl font-bold mb-4 text-center">
+                ITEM REPORTED SUCCESSFULLY!
             </h1>
-            <p className="text-gray-700 mb-4">
-              Thank you for reporting the item! Your listing has been successfully added to the system.
-            </p>
-            <p className="text-gray-700">
-              You can now manage it or track its status in your{" "}
+            <p className="text-gray-700 mb-2">
+              Thank you for reporting the item! Your listing has been successfully added to the system. You can now manage it or track its status in your{" "}
               <button
                 onClick={() => navigate("/activeTickets")}
                 className="font-semibold text-green-700 underline hover:text-green-900 focus:outline-none"
               >
-                View My Tickets
+                View my tickets
               </button>.
             </p>
           </div>
@@ -60,9 +57,9 @@ const ReportPage = () => {
           {/* Redirect Button */}
           <button
             onClick={handleDashboardRedirect}
-            className="w-full py-3 bg-blue-500 text-white font-bold rounded-full shadow-md hover:bg-blue-600 transition duration-300 transform hover:scale-105"
+            className="w-full py-3 mt-5 bg-blue-500 text-white font-bold rounded-full shadow-md hover:bg-blue-600 transition duration-300 transform hover:scale-105"
           >
-            Go to Dashboard
+            GO TO DASHBOARD
           </button>
         </div>
       </main>

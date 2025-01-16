@@ -84,7 +84,7 @@ const MapWithRestrictedArea = ({ onConfirm }) => {
     onClick={handleConfirm}
     className="w-full mt-2 px-3 py-1 bg-green-500 text-white text-lg font-semibold rounded-sm shadow hover:bg-green-600"
   >
-    Confirm
+    CONFIRM
   </button>
 </div>
 
