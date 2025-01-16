@@ -20,11 +20,13 @@ import ReportPage from "../pages/user/reportPage";
 import ViewMyTickets from "../pages/user/viewmyTickets";
 import UnclaimedTickets from "../pages/user/unclaimedTickets";
 import ContactForm from "../pages/user/contactForm";
-import ActiveTickets from "../pages/user/ActiveTickets";
+import ActiveTickets from "../pages/user/activeTickets";
 import Completed from "../pages/user/completed";
 import Notification from "../pages/user/notification";
 import ChatApp from "../pages/user/chatApp";
 import WhyIsItImportantToSecureYourBelongings from "../pages/user/whyisitimportanttosecureyourBelongings";
+import UserItem from "../pages/user/userItem";
+import CompleteItem from "../pages/user/completeItem";
 
 // Admin Routes
 import { LoginAdmin } from "../pages/admin/loginAdmin";
@@ -39,7 +41,8 @@ import ActiveTicketAdmin from "../pages/admin/ActiveTicketAdmin";
 import ImgDescriptions from "../pages/admin/imgDescriptions";
 import CompletedTickets from "../pages/admin/completedTickets";
 import UserManagement from "../pages/admin/userManagement";
-
+import CompleteItemAdmin from "../pages/admin/completeItemAdmin";
+import EditItemAdmin from "../pages/admin/editItemAdmin";
 
 
 export const AppRoutes = () => {
@@ -61,6 +64,8 @@ export const AppRoutes = () => {
     { path: "/browseItemsLost", element: <BrowseitemsLost />, errorElement: <BrowseitemsLost /> },
     { path: "/browseItemsFound", element: <BrowseitemsFound />, errorElement: <BrowseitemsFound /> },
     { path: "/items/:itemID", element: <ImageDescription />, errorElement: <ImageDescription /> },
+    { path: "/edit/:itemID", element: <UserItem />, errorElement: <UserItem /> },
+    { path: "/completedItem/:itemID", element: <CompleteItem />, errorElement: <CompleteItem /> },
     { path: "/reportPage", element: <ReportPage />, errorElement: <ReportPage /> },
     { path: "/viewmyTickets", element: <ViewMyTickets />, errorElement: <ViewMyTickets /> },
     { path: "/unclaimedTickets", element: <UnclaimedTickets />, errorElement: <UnclaimedTickets /> },
@@ -83,6 +88,8 @@ export const AppRoutes = () => {
     { path: "/admin/activeTicketAdmin", element: <ProtectedRoute adminOnly={true}><ActiveTicketAdmin /></ProtectedRoute>, errorElement: <ActiveTicketAdmin /> },
     { path: "/admin/userManagement", element: <ProtectedRoute adminOnly={true}><UserManagement /></ProtectedRoute>, errorElement: <UserManagement /> },
     { path: "/admin/items/:itemID", element: <ProtectedRoute adminOnly={true}><ImgDescriptions /></ProtectedRoute>, errorElement: <ImgDescriptions /> },
+    { path: "/admin/items/complete/:itemID", element: <ProtectedRoute adminOnly={true}><CompleteItemAdmin /></ProtectedRoute>, errorElement: <CompleteItemAdmin /> },
+    { path: "/admin/edit/:itemID", element: <ProtectedRoute adminOnly={true}><EditItemAdmin /></ProtectedRoute>, errorElement: <EditItemAdmin /> },
     { path: "/admin/unclaimedTickets", element: <ProtectedRoute adminOnly={true}><UnclaimedTicket /></ProtectedRoute>, errorElement: <UnclaimedTicket /> },
 
   ]);

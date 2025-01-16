@@ -16,9 +16,8 @@ const hashPassword = (password, salt) => {
     return hash.digest("hex");
 };
 
-
 export const updateUserHandler = async (req, res) => {
-    const { studentId, contactNumber, emailAddress, firstName } = req.body;
+    const { studentId, contactNumber, emailAddress, firstName, lastName } = req.body;
 
     if (!studentId) {
         return res.status(400).json({ message: 'Student ID is required' });
@@ -29,6 +28,7 @@ export const updateUserHandler = async (req, res) => {
             ...(contactNumber && { contactNumber }),
             ...(emailAddress && { emailAddress }),
             ...(firstName && { firstName }),
+            ...(lastName && { lastName }),
         };
 
         if (Object.keys(updates).length === 0) {
@@ -47,6 +47,8 @@ export const updateUserHandler = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+
 
 export const getUserHandler = async (req, res) => {
     const { studentId, password } = req.body;

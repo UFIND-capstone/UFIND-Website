@@ -56,7 +56,6 @@ const ItemDescription = () => {
     if (!item || !item.location) return;
     console.log(`item.location: ${item.location}`);
 
-
     const locationParts = item.location.split(",").map(Number);
     const [longitude, latitude] = locationParts;
     const coordinates = fromLonLat([latitude, longitude]);
@@ -126,8 +125,6 @@ const ItemDescription = () => {
     setClaimData((prev) => ({ ...prev, [name]: value }));
   };
 
-  
-
   const handleClaimSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -177,19 +174,18 @@ const ItemDescription = () => {
         ) : (
           <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
             <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
-            <button
-              onClick={() => navigate(-1)}
-              className="self-start text-gray-600 hover:text-gray-900 mb-4"
-            >
-              ← Back
-            </button>
-            <img
-              src={item.imageUrl || "/placeholder-image.png"}
-              alt={item.name || "Lost Item"}
-              className={item.status === "found" ? "blur-md" : ""}
-            />
-          </div>
-
+              <button
+                onClick={() => navigate(-1)}
+                className="self-start text-gray-600 hover:text-gray-900 mb-4"
+              >
+                ← Back
+              </button>
+              <img
+                src={item.imageUrl || "/placeholder-image.png"}
+                alt={item.name || "Lost Item"}
+                className={item.status === "found" ? "blur-md" : ""}
+              />
+            </div>
 
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-1">
@@ -243,114 +239,116 @@ const ItemDescription = () => {
               </div>
 
               {item.studentId === user.id ? (
-  <div>
-    <button
-        className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
-        onClick={handleClaimToggle}
-      >
-        EDIT THIS ITEM
-      </button>
-  </div>
-) : (
-  item.status === "found" ? (
-    <div className="mt-6">
-      <button
-        className="w-full bg-blue-500 font-semibold text-white py-3 rounded-lg hover:bg-blue-600"
-        onClick={handleClaimToggle}
-      >
-        CLAIM THIS ITEM
-      </button>
-      {showClaimForm && (
-        <form className="mt-4 space-y-4" onSubmit={handleClaimSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              value={claimData.name}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Year and Section
-            </label>
-            <input
-              type="text"
-              name="yearSection"
-              placeholder="Enter your year and section"
-              value={claimData.yearSection}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Description
-            </label>
-            <textarea
-              name="description"
-              value={claimData.description}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="If you believe this is yours, provide specific details (e.g., contents, brand, markings) when submitting your claim."
-              rows="3"
-              required
-            ></textarea>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Time Lost
-            </label>
-            <input
-              type="text"
-              name="timeLost"
-              placeholder="Enter a time lost"
-              value={claimData.timeLost}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Location Lost
-            </label>
-            <input
-              type="text"
-              name="locationLost"
-              placeholder="Enter a location lost"
-              value={claimData.locationLost}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-green-500 font-semibold text-white py-3 rounded-lg hover:bg-green-600"
-          >
-            SUBMIT CLAIM
-          </button>
-        </form>
-      )}
-    </div>
-  ) : (
-    <button
-      className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
-      onClick={() => navigate(`/chatApp?recipientId=${item.studentId}`)}
-    >
-      Contact Me
-    </button>
-  )
-)}
-
+                <div>
+                  <button
+                    className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
+                    onClick={() => navigate(`/edit/${item.id}`)}
+                  >
+                    EDIT THIS ITEM
+                  </button>
+                </div>
+              ) : item.status === "found" ? (
+                <div className="mt-6">
+                  <button
+                    className="w-full bg-blue-500 font-semibold text-white py-3 rounded-lg hover:bg-blue-600"
+                    onClick={handleClaimToggle}
+                  >
+                    CLAIM THIS ITEM
+                  </button>
+                  {showClaimForm && (
+                    <form
+                      className="mt-4 space-y-4"
+                      onSubmit={handleClaimSubmit}
+                    >
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Enter your full name"
+                          value={claimData.name}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Year and Section
+                        </label>
+                        <input
+                          type="text"
+                          name="yearSection"
+                          placeholder="Enter your year and section"
+                          value={claimData.yearSection}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Description
+                        </label>
+                        <textarea
+                          name="description"
+                          value={claimData.description}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          placeholder="If you believe this is yours, provide specific details (e.g., contents, brand, markings) when submitting your claim."
+                          rows="3"
+                          required
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Time Lost
+                        </label>
+                        <input
+                          type="text"
+                          name="timeLost"
+                          placeholder="Enter a time lost"
+                          value={claimData.timeLost}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Location Lost
+                        </label>
+                        <input
+                          type="text"
+                          name="locationLost"
+                          placeholder="Enter a location lost"
+                          value={claimData.locationLost}
+                          onChange={handleInputChange}
+                          className="w-full px-3 py-2 border rounded"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-green-500 font-semibold text-white py-3 rounded-lg hover:bg-green-600"
+                      >
+                        SUBMIT CLAIM
+                      </button>
+                    </form>
+                  )}
+                </div>
+              ) : (
+                <button
+                  className="mt-6 w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600"
+                  onClick={() =>
+                    navigate(`/chatApp?recipientId=${item.studentId}`)
+                  }
+                >
+                  Contact Me
+                </button>
+              )}
             </div>
           </div>
         )}

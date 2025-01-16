@@ -15,17 +15,24 @@ export const MyAccount = () => {
     lastName: "",
     emailAddress: "",
     contactNumber: "",
-    username: "",
   });
 
   const [isEditing, setIsEditing] = useState(false); // Track editing state
   const [editedProfile, setEditedProfile] = useState(profile); // Editable profile data
 
+  // Fetch the latest user profile from the server, with caching
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
-      setProfile(response.data); // Update profile with fresh data
-      setEditedProfile(response.data); // Sync editable data
+      const cachedProfile = JSON.parse(localStorage.getItem("user"));
+      if (cachedProfile && cachedProfile.id === user.id) {
+        setProfile(cachedProfile);
+        setEditedProfile(cachedProfile);
+      } else {
+        const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
+        setProfile(response.data); // Update profile with fresh data
+        setEditedProfile(response.data); // Sync editable data
+        localStorage.setItem("user", JSON.stringify(response.data)); // Cache profile data
+      }
     } catch (error) {
       console.error("Error fetching user profile:", error.message);
     }
@@ -46,13 +53,12 @@ export const MyAccount = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/user/${user.id}`, {
-        firstName: editedProfile.firstName,
-        lastName: editedProfile.lastName,
-        emailAddress: editedProfile.emailAddress,
-        contactNumber: editedProfile.contactNumber,
+      await axios.put("http://localhost:3000/api/user/edit", {
+        studentId: user.id,
+        ...editedProfile, // Pass all edited fields
       });
-      setProfile(editedProfile); // Update profile state
+      localStorage.setItem("user", JSON.stringify(editedProfile)); // Update cached profile
+      await fetchUserProfile(); // Re-fetch updated profile
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (error) {
@@ -68,6 +74,7 @@ export const MyAccount = () => {
 
   const handleLogout = () => {
     logout(); // Perform logout from AuthContext
+    localStorage.removeItem("user"); // Clear cached profile
     navigate("/login"); // Navigate to the login page
   };
 
@@ -91,7 +98,7 @@ export const MyAccount = () => {
             <div className="space-y-4">
               <div className="flex justify-between text-gray-800">
                 <strong>Student ID:</strong>
-                <span>{profile.studentId || "N/A"}</span>
+                <span>{profile.id || "N/A"}</span>
               </div>
               <div className="flex justify-between text-gray-800">
                 <strong>First Name:</strong>

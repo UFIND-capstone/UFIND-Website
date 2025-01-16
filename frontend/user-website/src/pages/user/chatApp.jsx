@@ -104,8 +104,11 @@ const ChatApp = () => {
   };
   
   const sendMessage = async () => {
-    if (!newMessage.trim()) return;
-
+    if (!user || !user.id || !activeContact || !activeContact.otherUserId || !newMessage.trim()) {
+      console.log("Missing user, activeContact, or message content");
+      return;
+    }
+  
     const messageData = {
       senderId: user.id,
       recipientId: activeContact.otherUserId,
@@ -113,27 +116,32 @@ const ChatApp = () => {
       timestamp: new Date(),
       isRead: false, // Mark as unread initially
     };
-    
-
+  
     try {
       let chatId = activeContact.chatId;
-
+  
+      // If chatId is not set, create a new chat document
       if (!chatId) {
-        // Use the desired document id format
-        const newChatRef = await setDoc(doc(db, "chats", `${user.id}_${activeContact.otherUserId}`), {
+        const chatRef = doc(db, "chats", `${user.id}_${activeContact.otherUserId}`);
+        await setDoc(chatRef, {
           participants: [user.id, activeContact.otherUserId],
         });
-        chatId = newChatRef.id;
+        chatId = chatRef.id; // Get the new chat document's ID
         setActiveContact((prev) => ({ ...prev, chatId }));
       }
-
+  
       const messagesRef = collection(db, `chats/${chatId}/messages`);
       await addDoc(messagesRef, messageData);
-      setNewMessage("");
+      setNewMessage(""); // Reset message input
+      navigate("/chatApp", { replace: true });
     } catch (error) {
       console.error("Error sending message", error);
     }
-};
+  };
+  
+  
+  
+  
 
 
 const openChat = async (chat) => {

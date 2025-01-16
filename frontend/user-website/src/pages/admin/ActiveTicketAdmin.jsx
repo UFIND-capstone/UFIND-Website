@@ -5,12 +5,21 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const ActiveTicketAdmin = () => {
-  const [items, setItems] = useState([]); // All items from the API
-  const [filteredItems, setFilteredItems] = useState([]); // Items filtered by search
-  const [searchTerm, setSearchTerm] = useState(''); // User's search input
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [view, setView] = useState('all'); // View state for "all" or "turnover"
+  const [view, setView] = useState('all');
+  const [showModal, setShowModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  const [claimerDetails, setClaimerDetails] = useState({
+    studentId: "",
+    name: "",
+    yearSection: "",
+    contactNumber: "",
+  });
+  
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
@@ -44,56 +53,109 @@ const ActiveTicketAdmin = () => {
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-
-    if (value === '') {
-      setFilteredItems(items); // Reset to all items if search is cleared
-    } else {
-      const filtered = items.filter(item =>
-        item.name.toLowerCase().includes(value) ||
-        item.description?.toLowerCase().includes(value)
+  
+    let currentViewItems = items;
+  
+    if (view === 'turnoverTicket') {
+      currentViewItems = items.filter(
+        (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
       );
-      setFilteredItems(filtered);
+    } else if (view === 'itemLost') {
+      currentViewItems = items.filter(
+        (item) => item.status === "lost" && item.ticket === "pending"
+      );
+    } else if (view === 'itemFound') {
+      currentViewItems = items.filter(
+        (item) => item.status === "found" && item.ticket === "pending"
+      );
     }
+  
+    const filtered = value
+      ? currentViewItems.filter(item =>
+          item.name.toLowerCase().includes(value) ||
+          item.description?.toLowerCase().includes(value)
+        )
+      : currentViewItems;
+  
+    setFilteredItems(filtered);
   };
 
   const handleViewChange = (viewType) => {
     setView(viewType);
-    if (viewType === 'turnover') {
+  
+    if (viewType === 'turnoverTicket') {
       const turnoverItems = items.filter(
         (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
       );
       setFilteredItems(turnoverItems);
+    } else if (viewType === 'itemLost') {
+      const lostItems = items.filter(
+        (item) => item.status === "lost" && item.ticket === "pending"
+      );
+      setFilteredItems(lostItems);
+    } else if (viewType === 'itemFound') {
+      const foundItems = items.filter(
+        (item) => item.status === "found" && item.ticket === "pending"
+      );
+      setFilteredItems(foundItems);
     } else {
-      setFilteredItems(items); // Reset to all items
+      setFilteredItems(items);
+    }
+
+    // Also apply current search term to the new view
+    if (searchTerm) {
+      handleSearch({ target: { value: searchTerm } });
     }
   };
 
-    const [showModal, setShowModal] = useState(false);
-    const [claimerDetails, setClaimerDetails] = useState({
-    studentId: '',
-    name: '',
-    yearSection: '',
-    contactNumber: ''
-});
-
   const handleModalInputChange = (e) => {
-  const { name, value } = e.target;
-  setClaimerDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
-};
+    const { name, value } = e.target;
+    setClaimerDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-  const handleSubmitModal = () => {
-  console.log("Submitted details:", claimerDetails);
-  setShowModal(false); // Close modal after submission
-};
-
-
-  const handleSuccess = async (id) => {
+  const handleSubmitModal = async () => {
     try {
-      await axios.put(`${hostUrl}/api/items/${id}`, { ticket: 'success' });
-      await fetchItems(); // Refetch items after marking as success
+      // Prepare the data to be submitted
+      const data = {
+        ...claimerDetails,
+        itemId: currentItem.id,
+      };
+      console.log("Submitting claim with data:", data);
+
+      // Submit the claim
+      await axios.post(`${hostUrl}/api/items/claim`, data);
+
+      // Update the ticket status to 'success'
+      await axios.put(`${hostUrl}/api/items/${currentItem.id}`, {
+        ticket: 'success'
+      });
+
+      // Close modal and reset form
+      setShowModal(false);
+      setClaimerDetails({
+        studentId: "",
+        name: "",
+        yearSection: "",
+        contactNumber: "",
+      });
+      
+      // Refresh the items list
+      await fetchItems();
+      
+      alert("Claim submitted successfully!");
     } catch (err) {
-      setError('Failed to mark item as success');
+      console.error("Failed to submit claim:", err);
+      setError('Failed to submit claim. Please try again.');
+      alert("Failed to submit claim. Please try again.");
     }
+  };
+
+  const openModal = (item) => {
+    setCurrentItem(item);
+    setShowModal(true);
   };
 
   const handleImageClick = (item, e) => {
@@ -101,6 +163,7 @@ const ActiveTicketAdmin = () => {
     navigate(`/admin/items/${item.id}`, { state: { item } });
   };
 
+  // Rest of your component remains the same...
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
       <Sidebar />
@@ -111,6 +174,7 @@ const ActiveTicketAdmin = () => {
         <main className="flex-1 p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">BROWSE ACTIVE TICKETS</h1>
 
+          {/* View buttons */}
           <div className="flex justify-center mb-4">
             <button
               onClick={() => handleViewChange('all')}
@@ -138,6 +202,7 @@ const ActiveTicketAdmin = () => {
             </button>
           </div>
 
+          {/* Search bar */}
           <div className="flex justify-center mb-6">
             <input
               type="text"
@@ -151,6 +216,7 @@ const ActiveTicketAdmin = () => {
             </button>
           </div>
 
+          {/* Items grid */}
           {loading ? (
             <p className="text-center text-gray-500">Loading items...</p>
           ) : error ? (
@@ -177,11 +243,13 @@ const ActiveTicketAdmin = () => {
 
                   <button
                     className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                    onClick={(e) => { e.stopPropagation(); setShowModal(true); }}
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      openModal(item);
+                    }}
                   >
                     MARK AS SUCCESS
                   </button>
-
                 </div>
               ))}
             </div>
@@ -189,71 +257,78 @@ const ActiveTicketAdmin = () => {
         </main>
 
         {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-1/3">
-            <h2 className="text-3xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h2>
-            <div className="mb-4">
-              <label className="block mb-2 font-semibold">Student ID</label>
-              <input
-                type="text"
-                name="studentId"
-                placeholder="Enter a Student ID"
-                value={claimerDetails.studentId}
-                onChange={handleModalInputChange}
-                className="w-full px-3 py-2 border rounded"
-              />
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h3 className="text-2xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h3>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-1">
+                  Claimer's/Finder's Student ID
+                </label>
+                <input
+                  type="text"
+                  name="studentId"
+                  placeholder="Enter a Claimer's/Finder's Student ID"
+                  value={claimerDetails.studentId}
+                  onChange={handleModalInputChange}
+                  className="w-full border border-gray-300 rounded p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-1">
+                  Claimer's/Finder's Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter a Claimer's/Finder's Name"
+                  value={claimerDetails.name}
+                  onChange={handleModalInputChange}
+                  className="w-full border border-gray-300 rounded p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-1">
+                  Year & Section
+                </label>
+                <input
+                  type="text"
+                  name="yearSection"
+                  placeholder="Enter a Year & Section"
+                  value={claimerDetails.yearSection}
+                  onChange={handleModalInputChange}
+                  className="w-full border border-gray-300 rounded p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-1">
+                  Contact Number
+                </label>
+                <input
+                  type="text"
+                  name="contactNumber"
+                  placeholder="Enter a Contact Number"
+                  value={claimerDetails.contactNumber}
+                  onChange={handleModalInputChange}
+                  className="w-full border border-gray-300 rounded p-2"
+                />
+              </div>
+              <div className="flex justify-end justify-center space-x-2">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-gray-400 text-white w-25 px-12 py-2 rounded hover:bg-gray-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmitModal}
+                  className="bg-blue-500 text-white w-25 px-14 py-2 rounded hover:bg-blue-600"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block mb-2 font-semibold">Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter a name"
-                value={claimerDetails.name}
-                onChange={handleModalInputChange}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 font-semibold">Year & Section</label>
-              <input
-                type="text"
-                name="yearSection"
-                placeholder="Enter a Year & Section"
-                value={claimerDetails.yearSection}
-                onChange={handleModalInputChange}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2 font-semibold">Contact Number</label>
-              <input
-                type="text"
-                name="contactNumber"
-                placeholder="Enter a Contact Number"
-                value={claimerDetails.contactNumber}
-                onChange={handleModalInputChange}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-300 rounded mr-2"
-              >
-                CANCEL
-              </button>
-              <button
-                onClick={handleSubmitModal}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-              >
-                SUBMIT
-              </button>
-      </div>
-    </div>
-  </div>
-)}
-
+          </div>
+        )}
       </div>
     </div>
   );

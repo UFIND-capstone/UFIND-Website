@@ -20,7 +20,7 @@ const Completed = () => {
 
         // Filter the tickets where ticket status is "success"
         const completedTickets = data.filter(
-          (item) => item.ticket === "success", item.studentId == user.id
+          (item) => item.ticket === "success" && item.studentId == user.id
         );
 
         setTickets(completedTickets); // Update tickets state with filtered data
@@ -84,7 +84,7 @@ const Completed = () => {
                 key={ticket.id}
                 className="bg-white shadow-md rounded-lg overflow-hidden"
               >
-                <Link to={`/items/${ticket.id}`}>
+                <Link to={`/completedItem/${ticket.id}`}>
                   {/* Image */}
                   <div className="p-4 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex justify-center items-center">
                     <img
