@@ -132,18 +132,15 @@ const ItemDescription = () => {
         senderId: user.id, // The ID of the user claiming the item
         recipientId: item.studentId, // The ID of the poster of the item (receiver)
         content: `
+        PROVIDED ITEM DETAILS
           Item: ${item.name}
-          Name: ${claimData.name}
-          Year and Section: ${claimData.yearSection}
           Description: ${claimData.description}
           Time Lost: ${claimData.timeLost}
-          Location Lost: ${claimData.locationLost}
-          Item ID: ${item.id}
         `,
       };
 
-      // Send the message
-      await axios.post("http://localhost:3000/api/messages", messageData);
+      const response = await axios.post("http://localhost:3000/api/messages", messageData);
+console.log("Claim Submitted:", response.data);
 
       console.log("Claim Submitted:", response.data);
       alert(
@@ -242,7 +239,7 @@ const ItemDescription = () => {
                 <div>
                   <button
                     className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
-                    onClick={() => navigate(`/userItem/${item.id}`)}
+                    onClick={() => navigate(`/edit/${item.id}`)}
                   >
                     EDIT THIS ITEM
                   </button>

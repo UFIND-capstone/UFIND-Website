@@ -91,3 +91,33 @@ export const getItemById = async (itemID) => {
       throw new Error(`Error retrieving item: ${error.message}`);
   }
 };
+
+export const getCompletedItem = async (itemID) => {
+    try {
+        const doc = await db.collection('CompletedClaims').doc(itemID).get();
+        
+        if (!doc.exists) {
+            throw new Error('Item not found');
+        }
+        
+        return { id: doc.id, ...doc.data() };
+    } catch (error) {
+        throw new Error(`Error retrieving item: ${error.message}`);
+    }
+  };
+
+export const editItem = async (itemId, updates) => {
+    const itemRef = db.collection('items').doc(itemId); // Firestore document reference
+  
+    const itemSnap = await itemRef.get(); // Get item details
+    if (!itemSnap.exists) {
+      return null; // Return null if the item doesn't exist
+    }
+  
+    // Update item details in Firestore
+    await itemRef.update(updates);
+  
+    // Return updated item with new values
+    return { id: itemId, ...itemSnap.data(), ...updates };
+  };
+  

@@ -1,40 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Sidebar from "../../components/admin/sideBar";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import Footer from "../../components/admin/footer";
 import Topbar from "../../components/admin/topBar";
 
-const CompleteItem = () => {
+const CompleteItemAdmin = () => {
   const [item, setItem] = useState(null); // Initialize as null
+  const [claimant, setClaimant] = useState(null); // Initialize as null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { itemID } = useParams();
   const mapRef = useRef(null);
 
-  const [claimDetails, setClaimDetails] = useState({
-    studentId: "",
-    name: "",
-    yearSection: "",
-    contactNumber: "",
-  });
-
   useEffect(() => {
-    // Simulating fetching item data
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Simulate API response with the provided JSON object
-        const data = {
-          id: 1,
-          name: "Lost Tumbler",
-          status: "lost",
-          imageUrl: "/src/assets/aquaflask.png",
-          fullName: "Jefferson Sabejon",
-          description: "I lost my tumbler, please return it.",
-          dateTime: "2025-01-16T10:25:00Z",
-          location: "USTP Campus",
-          studentId: 123,
-        };
-        setItem(data);
+        const itemResponse = await axios.get(`http://localhost:3000/api/items/${itemID}`);
+        setItem(itemResponse.data);
+        const claimantResponse = await axios.get(`http://localhost:3000/api/items/completed/${itemID}`);
+        setClaimant(claimantResponse.data);
       } catch (err) {
         setError("Failed to load item details.");
       } finally {
@@ -43,19 +29,7 @@ const CompleteItem = () => {
     };
 
     fetchData();
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setClaimDetails({ ...claimDetails, [name]: value });
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    console.log("Claim/Finder details submitted:", claimDetails);
-    alert("Details submitted successfully!");
-    // Here you could send the data to an API or handle it further.
-  };
+  }, [itemID]);
 
   if (loading) {
     return <p className="text-center text-gray-500">Loading item details...</p>;
@@ -70,12 +44,8 @@ const CompleteItem = () => {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-100">
-      <Sidebar />
-
-      <div className="flex flex-col flex-1 overflow-y-auto">
-        <Topbar />
-
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Topbar />
       <div className="flex-grow p-6">
         <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
           {/* Left Section */}
@@ -142,83 +112,42 @@ const CompleteItem = () => {
               </div>
             </div>
 
-            {/* Claim or Find Details Section */}
-            <div className="mt-8">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">
-                CLAIM OR FIND DETAILS
-              </h3>
-              <form onSubmit={handleFormSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Claimer's/Finder's Student ID
-                  </label>
-                  <input
-                    type="text"
-                    name="studentId"
-                    value={claimDetails.studentId}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your student ID"
-                    required
-                  />
+            {/* Claimant Details Section */}
+            {claimant && (
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  Claimant's Details
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-medium text-gray-700">Student ID:</p>
+                    <p className="text-gray-600">{claimant.studentId || "Unknown"}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-700">Name:</p>
+                    <p className="text-gray-600">{claimant.name || "Unknown"}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-700">Year & Section:</p>
+                    <p className="text-gray-600">{claimant.yearSection || "Unknown"}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-700">Contact Number:</p>
+                    <p className="text-gray-600">{claimant.contactNumber || "Unknown"}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-700">Date Completed:</p>
+                    <p className="text-gray-600">{claimant.dateCompleted || "Unknown"}</p>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Claimer's/Finder's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={claimDetails.name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Year & Section
-                  </label>
-                  <input
-                    type="text"
-                    name="yearSection"
-                    value={claimDetails.yearSection}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your year and section"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Contact Number
-                  </label>
-                  <input
-                    type="text"
-                    name="contactNumber"
-                    value={claimDetails.contactNumber}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your contact number"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-green-500 font-semibold text-white py-3 rounded-lg hover:bg-green-600"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
       <Footer />
     </div>
-    </div>
   );
 };
 
-export default CompleteItem;
+export default CompleteItemAdmin;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { debounce } from 'lodash';
 
@@ -12,8 +12,10 @@ const CompletedTickets = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
+  const navigate = useNavigate();
 
   const fetchTickets = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${hostUrl}/api/items`);
       const unclaimedTickets = response.data.filter(
@@ -21,14 +23,13 @@ const CompletedTickets = () => {
       );
       setTickets(unclaimedTickets);
       setFilteredTickets(unclaimedTickets);
-      setLoading(false);
     } catch (err) {
       setError(err.message || "Failed to fetch tickets");
+    } finally {
       setLoading(false);
     }
   };
 
-  // Fetch tickets from the server
   useEffect(() => {
     fetchTickets();
   }, []);
@@ -40,7 +41,7 @@ const CompletedTickets = () => {
     } else {
       const filtered = tickets.filter(
         (ticket) =>
-          ticket.itemName.toLowerCase().includes(value.toLowerCase()) ||
+          ticket.name.toLowerCase().includes(value.toLowerCase()) ||
           ticket.description?.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredTickets(filtered);
@@ -48,7 +49,7 @@ const CompletedTickets = () => {
   }, 300);
 
   const handleNavigateToDetails = (id) => {
-    navigate(`/admin/items/${id}`);
+    navigate(`/admin/items/complete/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -96,15 +97,14 @@ const CompletedTickets = () => {
                   className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
                   onClick={() => handleNavigateToDetails(ticket.id)}
                 >
-              
-                  <Link to={`/admin/items/completeItemAdmin/${ticket.id}`}>
+                  <Link to={`/admin/items/complete/${ticket.id}`}>
                     <img
                       src={ticket.imageUrl || "/placeholder-image.png"}
-                      alt={ticket.itemName}
+                      alt={ticket.name}
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4 flex-1">
-                      <h2 className="text-xl font-bold mb-2">{ticket.itemName}</h2>
+                      <h2 className="text-xl font-bold mb-2">{ticket.name}</h2>
                       <p className="text-gray-700 mb-1">
                         <strong>Full Name:</strong> {ticket.fullName}
                       </p>
