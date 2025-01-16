@@ -50,7 +50,7 @@ const ContactUs = () => {
               <p className="text-gray-600 mb-6 text-center md:text-left">Have any questions? Let's connect through our social media!</p>
               <div className="flex justify-center space-x-8">
                 {/* Facebook */}
-                <a href="https://www.facebook.com/jaredsimon88" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.facebook.com/profile.php?id=61572131011000&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/src/assets/fb.png" // Replace with your Facebook logo image URL
                     alt="Facebook"
@@ -58,7 +58,7 @@ const ContactUs = () => {
                   />
                 </a>
                 {/* Gmail */}
-                <a href="mailto:Jaredrara11@gmail.com">
+                <a href="mailto:support@ufind.com">
                   <img
                     src="/src/assets/gmail.png" // Replace with your Gmail logo image URL
                     alt="Gmail"
@@ -66,7 +66,7 @@ const ContactUs = () => {
                   />
                 </a>
                 {/* WhatsApp */}
-                <a href="https://x.com/topiiiip?t=nOG2M-0cKCnFStrRKL6Kug&mx=2" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/rara_jared72862" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/src/assets/twitter.png" // Replace with your WhatsApp logo image URL
                     alt="WhatsApp"
