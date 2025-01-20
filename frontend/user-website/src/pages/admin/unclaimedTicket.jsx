@@ -10,6 +10,8 @@ const UnclaimedTicket = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const itemsPerPage = 15; // Define how many items per page
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
@@ -44,13 +46,15 @@ const UnclaimedTicket = () => {
     setSearchTerm(value);
 
     if (value === '') {
-      setFilteredItems(items); // Reset to all items if search is cleared
+      setFilteredTickets(tickets); // Reset to all tickets if search is cleared
     } else {
-      const filtered = items.filter((item) =>
+      const filtered = tickets.filter((item) =>
         item.name.toLowerCase().includes(value)
       );
-      setFilteredItems(filtered);
+      setFilteredTickets(filtered);
     }
+
+    setCurrentPage(1); // Reset to first page on search
   };
 
   // Navigate to imgdesc page when clicking a ticket
@@ -67,6 +71,18 @@ const UnclaimedTicket = () => {
       setError("Failed to delete ticket");
     }
   };
+
+  // Calculate the items to display based on the current page
+  const indexOfLastTicket = currentPage * itemsPerPage;
+  const indexOfFirstTicket = indexOfLastTicket - itemsPerPage;
+  const currentTickets = filteredTickets.slice(indexOfFirstTicket, indexOfLastTicket);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -95,45 +111,62 @@ const UnclaimedTicket = () => {
             <p className="text-center text-gray-500">Loading tickets...</p>
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
-          ) : filteredTickets.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredTickets.map((ticket) => (
-                <div
-                  key={ticket.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-transform transform hover:-translate-y-1"
-                  onClick={() => handleTicketClick(ticket)}
-                >
-                  <img
-                    src={ticket.imageUrl || "/placeholder-image.png"}
-                    alt={ticket.itemName}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4 flex-1">
-                    <h2 className="text-xl font-bold mb-2">
-                      {ticket.itemName}
-                    </h2>
-                    <p className="text-gray-700 mb-1">
-                      <strong>Full Name:</strong> {ticket.fullName}
-                    </p>
-                    <p className="text-gray-700 mb-1">
-                      <strong>Description:</strong> {ticket.description}
-                    </p>
-                    <p className="text-gray-700 mb-4">
-                      <strong>Date & Time:</strong> {ticket.dateTime}
-                    </p>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering container click
-                        reactivateItem(ticket.id);
-                      }}
-                      className="bg-green-500 text-white w-full px-4 py-2 rounded hover:bg-green-600"
-                    >
-                      REACTIVATE
-                    </button>
+          ) : currentTickets.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {currentTickets.map((ticket) => (
+                  <div
+                    key={ticket.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-transform transform hover:-translate-y-1"
+                    onClick={() => handleTicketClick(ticket)}
+                  >
+                    <img
+                      src={ticket.imageUrl || "/placeholder-image.png"}
+                      alt={ticket.itemName}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 flex-1">
+                      <h2 className="text-xl font-bold mb-2">
+                        {ticket.itemName}
+                      </h2>
+                      <p className="text-gray-700 mb-1">
+                        <strong>Full Name:</strong> {ticket.fullName}
+                      </p>
+                      <p className="text-gray-700 mb-1">
+                        <strong>Description:</strong> {ticket.description}
+                      </p>
+                      <p className="text-gray-700 mb-4">
+                        <strong>Date & Time:</strong> {ticket.dateTime}
+                      </p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering container click
+                          reactivateItem(ticket.id);
+                        }}
+                        className="bg-green-500 text-white w-full px-4 py-2 rounded hover:bg-green-600"
+                      >
+                        REACTIVATE
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex justify-center mt-6 space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`px-4 py-2 ${
+                      currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                    } rounded`}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+              </div>
+            </>
           ) : (
             <p className="text-center text-gray-500 col-span-full">
               No tickets found.

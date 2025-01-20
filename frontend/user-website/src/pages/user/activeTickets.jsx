@@ -120,6 +120,8 @@ const handleSubmit = async () => {
     success: "bg-green-500 text-white",
   };
 
+  
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-100 via-white to-gray-100">
       <Topbar />
@@ -153,7 +155,7 @@ const handleSubmit = async () => {
                   <img
                     src={ticket.imageUrl || "/placeholder-image.png"}
                     alt={ticket.name}
-                    className="h-50 w-full object-cover"
+                    className="w-full h-48 object-cover object-cover"
                   />
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -205,78 +207,121 @@ const handleSubmit = async () => {
       <Footer />
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 className="text-2xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h3>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Claimer's/Finder's Student ID
-              </label>
-              <input
-                type="text"
-                name="studentId"
-                placeholder="Enter a Claimer's/Finder's Student ID"
-                value={claimerDetails.studentId}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded p-2"
+      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <h3 className="text-2xl text-center font-bold mb-6 text-blue-600">
+            CLAIM OR FIND DETAILS
+      </h3>
+
+      {/* Upload Image Section */}
+      <div className="mb-6">
+        <label className="block text-gray-700 font-medium mb-2">
+          Upload Image
+        </label>
+        <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
+          <button
+            type="button"
+            className="flex flex-col items-center text-blue-500 hover:text-blue-600 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-12 h-12 mb-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
               />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Claimer's/Finder's Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter a Claimer's/Finder's Name"
-                value={claimerDetails.name}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Year & Section
-              </label>
-              <input
-                type="text"
-                name="yearSection"
-                placeholder="Enter a Year & Section"
-                value={claimerDetails.yearSection}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Contact Number
-              </label>
-              <input
-                type="text"
-                name="contactNumber"
-                placeholder="Enter a Contact Number"
-                value={claimerDetails.contactNumber}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded p-2"
-              />
-            </div>
-            <div className="flex justify-end justify-center space-x-2">
-              <button
-                onClick={closeModal}
-                className="bg-gray-400 text-white w-25 px-12 py-2 rounded hover:bg-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="bg-blue-500 text-white w-25 px-14 py-2 rounded hover:bg-blue-600"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
+            </svg>
+            
+            <span className="text-sm font-medium">Upload Image</span>
+          </button>
         </div>
-      )}
+
+        <p className="mt-5">
+        For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
+        </p>
+
+      </div>
+
+      {/* Input Fields */}
+      <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Claimer's/Finder's Student ID
+        </label>
+        <input
+          type="text"
+          name="studentId"
+          placeholder="Enter a Claimer's/Finder's Student ID"
+          value={claimerDetails.studentId}
+          onChange={handleInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Claimer's/Finder's Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter a Claimer's/Finder's Name"
+          value={claimerDetails.name}
+          onChange={handleInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Year & Section
+        </label>
+        <input
+          type="text"
+          name="yearSection"
+          placeholder="Enter a Year & Section"
+          value={claimerDetails.yearSection}
+          onChange={handleInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Contact Number
+        </label>
+        <input
+          type="text"
+          name="contactNumber"
+          placeholder="Enter a Contact Number"
+          value={claimerDetails.contactNumber}
+          onChange={handleInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end justify-center space-x-2">
+        <button
+          onClick={closeModal}
+          className="bg-gray-400 text-white w-25 px-12 py-2  rounded-lg hover:bg-gray-500 focus:outline-none"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white w-25 px-12 py-2  rounded-lg hover:bg-blue-600 focus:outline-none"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 };

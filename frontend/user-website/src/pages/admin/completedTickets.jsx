@@ -11,6 +11,9 @@ const CompletedTickets = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const itemsPerPage = 15; // Items per page
+
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
@@ -46,6 +49,7 @@ const CompletedTickets = () => {
       );
       setFilteredTickets(filtered);
     }
+    setCurrentPage(1); // Reset to the first page on search
   }, 300);
 
   const handleNavigateToDetails = (id) => {
@@ -60,6 +64,15 @@ const CompletedTickets = () => {
     } catch (err) {
       setError("Failed to delete ticket");
     }
+  };
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedTickets = filteredTickets.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -90,35 +103,52 @@ const CompletedTickets = () => {
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
           ) : filteredTickets.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredTickets.map((ticket) => (
-                <div
-                  key={ticket.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
-                  onClick={() => handleNavigateToDetails(ticket.id)}
-                >
-                  <Link to={`/admin/items/complete/${ticket.id}`}>
-                    <img
-                      src={ticket.imageUrl || "/placeholder-image.png"}
-                      alt={ticket.name}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4 flex-1">
-                      <h2 className="text-xl font-bold mb-2">{ticket.name}</h2>
-                      <p className="text-gray-700 mb-1">
-                        <strong>Full Name:</strong> {ticket.fullName}
-                      </p>
-                      <p className="text-gray-700 mb-1">
-                        <strong>Description:</strong> {ticket.description}
-                      </p>
-                      <p className="text-gray-700 mb-4">
-                        <strong>Date & Time:</strong> {ticket.dateTime}
-                      </p>                  
-                    </div>
-                  </Link> 
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {paginatedTickets.map((ticket) => (
+                  <div
+                    key={ticket.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
+                    onClick={() => handleNavigateToDetails(ticket.id)}
+                  >
+                    <Link to={`/admin/items/complete/${ticket.id}`}>
+                      <img
+                        src={ticket.imageUrl || "/placeholder-image.png"}
+                        alt={ticket.name}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="p-4 flex-1">
+                        <h2 className="text-xl font-bold mb-2">{ticket.name}</h2>
+                        <p className="text-gray-700 mb-1">
+                          <strong>Full Name:</strong> {ticket.fullName}
+                        </p>
+                        <p className="text-gray-700 mb-1">
+                          <strong>Description:</strong> {ticket.description}
+                        </p>
+                        <p className="text-gray-700 mb-4">
+                          <strong>Date & Time:</strong> {ticket.dateTime}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex justify-center mt-6 space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`px-4 py-2 ${
+                      currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                    } rounded`}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+              </div>
+            </>
           ) : (
             <p className="text-center text-gray-500 col-span-full">
               No tickets found.
