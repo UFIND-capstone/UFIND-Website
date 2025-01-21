@@ -6,21 +6,18 @@ import axios from "axios";
 
 const UnclaimedTicket = () => {
   const [tickets, setTickets] = useState([]);
-  const [filteredTickets, setFilteredTickets] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [reminderTickets, setReminderTickets] = useState([]);
+  const [unclaimedTickets, setUnclaimedTickets] = useState([]);
+  const [currentTab, setCurrentTab] = useState("reminders"); // Active tab: "reminders" or "unclaimed"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1); // Track the current page
-  const itemsPerPage = 15; // Define how many items per page
+
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
 
   const sendEmail = async (email, subject, message) => {
     try {
-      const response = await axios.post("http://localhost:3000/send-email", {
+      const response = await axios.post(`${hostUrl}/send-email`, {
         email,
         subject,
         message,
@@ -36,17 +33,28 @@ const UnclaimedTicket = () => {
     const fetchTickets = async () => {
       try {
         const response = await axios.get(`${hostUrl}/api/items`);
+        const now = new Date();
+        const fifteenDaysAgo = new Date();
+        fifteenDaysAgo.setDate(now.getDate() - 15);
         const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const unclaimedTickets = response.data.filter((item) => {
-          if (item.ticket === "pending") {
-            const itemDate = new Date(item.dateTime.replace(" ", "T"));
-            return itemDate < thirtyDaysAgo;
-          }
-          return false;
+        thirtyDaysAgo.setDate(now.getDate() - 30);
+
+        const reminders = response.data.filter((item) => {
+          const itemDate = new Date(item.dateTime.replace(" ", "T"));
+          return (
+            item.ticket === "pending" &&
+            itemDate <= fifteenDaysAgo &&
+            itemDate > thirtyDaysAgo
+          );
         });
-        setTickets(unclaimedTickets);
-        setFilteredTickets(unclaimedTickets);
+
+        const unclaimed = response.data.filter((item) => {
+          const itemDate = new Date(item.dateTime.replace(" ", "T"));
+          return item.ticket === "pending" && itemDate <= thirtyDaysAgo;
+        });
+
+        setReminderTickets(reminders);
+        setUnclaimedTickets(unclaimed);
         setLoading(false);
       } catch (err) {
         setError(err.message || "Failed to fetch tickets");
@@ -56,24 +64,6 @@ const UnclaimedTicket = () => {
     fetchTickets();
   }, []);
 
-  // Handle search input changes
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setSearchTerm(value);
-
-    if (value === "") {
-      setFilteredTickets(tickets); // Reset to all tickets if search is cleared
-    } else {
-      const filtered = tickets.filter((item) =>
-        item.name.toLowerCase().includes(value)
-      );
-      setFilteredTickets(filtered);
-    }
-
-    setCurrentPage(1); // Reset to first page on search
-  };
-
-  // Navigate to imgdesc page when clicking a ticket
   const handleTicketClick = (ticket) => {
     navigate(`/admin/items/${ticket.id}`, { state: { ticket } });
   };
@@ -81,27 +71,13 @@ const UnclaimedTicket = () => {
   const reactivateItem = async (id) => {
     try {
       await axios.put(`${hostUrl}/api/items/${id}/reactivate`);
-      setTickets((prev) => prev.filter((ticket) => ticket.id !== id));
-      setFilteredTickets((prev) => prev.filter((ticket) => ticket.id !== id));
+      setUnclaimedTickets((prev) =>
+        prev.filter((ticket) => ticket.id !== id)
+      );
     } catch (err) {
-      setError("Failed to delete ticket");
+      setError("Failed to reactivate ticket");
     }
   };
-
-  // Calculate the items to display based on the current page
-  const indexOfLastTicket = currentPage * itemsPerPage;
-  const indexOfFirstTicket = indexOfLastTicket - itemsPerPage;
-  const currentTickets = filteredTickets.slice(
-    indexOfFirstTicket,
-    indexOfLastTicket
-  );
-
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -110,19 +86,30 @@ const UnclaimedTicket = () => {
         <Topbar />
         <main className="flex-1 p-6 overflow-y-auto">
           <h1 className="text-4xl font-bold mb-6 text-center">
-            UNCLAIMED TICKETS
+            UNCLAIMED TICKETS MANAGEMENT
           </h1>
 
-          <div className="flex justify-center mb-6">
-            <input
-              type="text"
-              placeholder="Search for an item..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="w-full max-w-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button className="px-6 py-4 bg-blue-300 text-white rounded-r-lg hover:bg-blue-500">
-              🔍
+          {/* Tabs for switching between sections */}
+          <div className="flex justify-center space-x-4 mb-6">
+            <button
+              className={`px-4 py-2 rounded ${
+                currentTab === "reminders"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() => setCurrentTab("reminders")}
+            >
+              Reminders
+            </button>
+            <button
+              className={`px-4 py-2 rounded ${
+                currentTab === "unclaimed"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() => setCurrentTab("unclaimed")}
+            >
+              Unclaimed Tickets
             </button>
           </div>
 
@@ -130,10 +117,11 @@ const UnclaimedTicket = () => {
             <p className="text-center text-gray-500">Loading tickets...</p>
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
-          ) : currentTickets.length > 0 ? (
-            <>
+          ) : currentTab === "reminders" ? (
+            // Reminder Tickets Section
+            reminderTickets.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {currentTickets.map((ticket) => (
+                {reminderTickets.map((ticket) => (
                   <div
                     key={ticket.id}
                     className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-transform transform hover:-translate-y-1"
@@ -151,8 +139,63 @@ const UnclaimedTicket = () => {
                       <p className="text-gray-700 mb-1">
                         <strong>Full Name:</strong> {ticket.fullName}
                       </p>
+                      <p className="text-gray-700 mb-4">
+                        <strong>Date & Time:</strong> {ticket.dateTime}
+                      </p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering container click
+                          const message = `Hey ......
+
+Just a heads-up about your lost item in our system.
+
+Item Details:
+
+Item ID: ${ticket.id}
+Description: ${ticket.description}
+Make sure to update the status of your item in your account. If we don't hear from you in the next 15 days, we'll have to archive it.
+
+Hop onto your account and let us know what's up!
+
+Thanks!
+
+UFIND Team`;
+                          sendEmail(ticket.email, "Quick Reminder: Update Your Lost Item Status", message);
+                        }}
+                        className="bg-blue-500 text-white w-full px-4 py-2 rounded hover:bg-blue-600"
+                      >
+                        SEND REMINDER
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500">
+                No items requiring reminders.
+              </p>
+            )
+          ) : (
+            // Unclaimed Tickets Section
+            unclaimedTickets.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {unclaimedTickets.map((ticket) => (
+                  <div
+                    key={ticket.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-transform transform hover:-translate-y-1"
+                    onClick={() => handleTicketClick(ticket)}
+                  >
+                    <img
+                      src={ticket.imageUrl || "/placeholder-image.png"}
+                      alt={ticket.itemName}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 flex-1">
+                      <h2 className="text-xl font-bold mb-2">
+                        {ticket.itemName}
+                      </h2>
                       <p className="text-gray-700 mb-1">
-                        <strong>Description:</strong> {ticket.description}
+                        <strong>Full Name:</strong> {ticket.fullName}
                       </p>
                       <p className="text-gray-700 mb-4">
                         <strong>Date & Time:</strong> {ticket.dateTime}
@@ -166,45 +209,15 @@ const UnclaimedTicket = () => {
                       >
                         REACTIVATE
                       </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent triggering container click
-                          const message = `is this item still active?\nitem id:\n${ticket.id}`;
-                          sendEmail(ticket.email, "reminder", message);
-                        }}
-            
-                        className="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-green-600"
-                      >
-                        REMIND USER
-                      </button>
                     </div>
                   </div>
                 ))}
               </div>
-
-              {/* Pagination controls */}
-              <div className="flex justify-center mt-6 space-x-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (pageNumber) => (
-                    <button
-                      key={pageNumber}
-                      onClick={() => handlePageChange(pageNumber)}
-                      className={`px-4 py-2 ${
-                        currentPage === pageNumber
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200"
-                      } rounded`}
-                    >
-                      {pageNumber}
-                    </button>
-                  )
-                )}
-              </div>
-            </>
-          ) : (
-            <p className="text-center text-gray-500 col-span-full">
-              No tickets found.
-            </p>
+            ) : (
+              <p className="text-center text-gray-500">
+                No unclaimed tickets found.
+              </p>
+            )
           )}
         </main>
       </div>
