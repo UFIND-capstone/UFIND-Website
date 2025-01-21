@@ -47,23 +47,44 @@ const CompleteItemAdmin = () => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Topbar />
       <div className="flex-grow p-6">
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2">
-          {/* Left Section */}
-          <div className="p-6 bg-gray-50 flex flex-col justify-center items-center">
-            <button
-              onClick={() => navigate(-1)}
-              className="self-start text-gray-600 hover:text-gray-900 mb-4"
-            >
-              ← Back
-            </button>
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+          {/* Navigation Back Button */}
+          <button
+            onClick={() => navigate(-1)}
+            className="text-gray-600 hover:text-gray-900 mb-4"
+          >
+            ← Back
+          </button>
+
+          {/* Item Image Section */}
+          <div className="p-6 border-b border-gray-200 text-center">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Item Image
+            </h2>
             <img
               src={item.imageUrl || "/placeholder-image.png"}
               alt={item.name || "Lost Item"}
-              className={item.status === "found" ? "blur-md" : ""}
+              className={`w-full max-w-md h-72 object-contain mx-auto rounded-lg shadow ${
+                item.status === "found" ? "blur-md" : ""
+              }`}
             />
           </div>
 
-          {/* Right Section */}
+          {/* Claimant Image Section */}
+          {claimant && (
+            <div className="p-6 border-b border-gray-200 text-center">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">
+                Claimant's Image
+              </h2>
+              <img
+                src={claimant.imageUrl || "/placeholder-image.png"}
+                alt={claimant.name || "Claimant"}
+                className="w-full max-w-md h-72 object-contain mx-auto rounded-lg shadow"
+              />
+            </div>
+          )}
+
+          {/* Item Details Section */}
           <div className="p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-1">
               {item.name || "Unnamed Item"}
@@ -101,11 +122,9 @@ const CompleteItemAdmin = () => {
                 </p>
               </div>
               <div>
-                <p className="font-medium text-gray-700">
-                  Last Seen Location:
-                </p>
+                <p className="font-medium text-gray-700">Last Seen Location:</p>
                 {item.location ? (
-                  <p className="text-gray-600">{item.location}</p>
+                  <p className="text-gray-600">{item.lastSeenLocation}</p>
                 ) : (
                   <p className="text-gray-600">No location available</p>
                 )}
