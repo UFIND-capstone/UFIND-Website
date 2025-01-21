@@ -27,7 +27,7 @@ const ActiveTicket = () => {
       const response = await fetch("http://localhost:3000/api/items");
       const data = await response.json();
       const userTickets = data.filter(
-        (item) => item.studentId === user.id && item.ticket !== "success" && item.claimStatus !== "turnover"
+        (item) => item.studentId === user.id && item.ticket !== "success" && item.claimStatus == "keep"
       );
       setTickets(userTickets);
       setFilteredTickets(userTickets);

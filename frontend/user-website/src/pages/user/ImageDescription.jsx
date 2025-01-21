@@ -113,8 +113,8 @@ const ItemDescription = () => {
       return;
     }
 
-    if (item.claimStatus === "turnover") {
-      alert("This Item was turnover to OSA. Go to OSA to claim your item.");
+    if (item.claimStatus === "turnover(guard)") {
+      alert("This Item was turnover to Guard. Go to Guard to claim your item.");
       return;
     }
     setShowClaimForm(!showClaimForm);
@@ -235,7 +235,7 @@ console.log("Claim Submitted:", response.data);
                 </div>
               </div>
 
-              {item.studentId === user.id ? (
+              {item.studentId === user.id && item.claimStatus == "keep" ? (
                 <div>
                   <button
                     className="w-full bg-green-500 font-semibold text-white mt-5 py-3 rounded-lg hover:bg-green-600"
@@ -261,34 +261,6 @@ console.log("Claim Submitted:", response.data);
                     >
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="Enter your full name"
-                          value={claimData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Year and Section
-                        </label>
-                        <input
-                          type="text"
-                          name="yearSection"
-                          placeholder="Enter your year and section"
-                          value={claimData.yearSection}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
                           Description
                         </label>
                         <textarea
@@ -310,20 +282,6 @@ console.log("Claim Submitted:", response.data);
                           name="timeLost"
                           placeholder="Enter a time lost"
                           value={claimData.timeLost}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border rounded"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Location Lost
-                        </label>
-                        <input
-                          type="text"
-                          name="locationLost"
-                          placeholder="Enter a location lost"
-                          value={claimData.locationLost}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border rounded"
                           required

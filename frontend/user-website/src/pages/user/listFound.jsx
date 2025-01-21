@@ -318,7 +318,7 @@ const ListingFound = () => {
                     );
                   } else if (value === "turnover(guard)") {
                     setAlertMessage(
-                      "You’ve handed over the verification to the OSA. Future claims will be managed by them."
+                      "You’ve handed over the verification to the Guard. Future claims will be managed by them."
                     );
                   }
                 }}

@@ -55,7 +55,7 @@ const AboutUs = () => {
             <li> <b> User-Friendly Dashboard: </b> Navigate with ease to manage your lost and found reports.</li>
             <li> <b> Smart Search and Filters: </b> Find items faster with advanced search capabilities and category filters.</li>
             <li> <b> Dedicated Admin Tools: </b> Campus administrators can efficiently oversee and manage all reports to ensure smooth operations.</li>
-            <li> <b> Secure Access: </b> Protect user data and item information with robust security protocols.</li>
+            <li> <b> Secure Access: </b> Protect user data and item information with basic security protocols.</li>
           </ul>
         </div>
       </section>
