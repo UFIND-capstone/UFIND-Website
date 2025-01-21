@@ -3,6 +3,7 @@ import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import supabase from "../../config/supabaseClient";
 
 const ActiveTicketAdmin = () => {
   const [items, setItems] = useState([]);
@@ -16,15 +17,62 @@ const ActiveTicketAdmin = () => {
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const itemsPerPage = 15; // Items per page
 
+  const [uploading, setUploading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [tickets, setTickets] = useState([]);
+  const [filteredTickets, setFilteredTickets] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentTicket, setCurrentTicket] = useState(null);
+
   const [claimerDetails, setClaimerDetails] = useState({
     studentId: "",
     name: "",
     yearSection: "",
     contactNumber: "",
+    imageUrl: "", // Add imageUrl to store the uploaded image URL
   });
 
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        alert("Only JPG and PNG files are allowed.");
+        return;
+      }
+      setImageFile(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) {
+      alert("Please select an image!");
+      return null;
+    }
+
+    setUploading(true);
+    const fileName = `${Date.now()}_${imageFile.name}`;
+    try {
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(fileName, imageFile);
+
+      if (error) throw error;
+
+      const imageUrl = `https://tqvgagdffmjtxswldtgm.supabase.co/storage/v1/object/public/images/${fileName}`;
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+      alert("Error uploading image. Please try again.");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const fetchItems = async () => {
     try {
@@ -123,9 +171,13 @@ const ActiveTicketAdmin = () => {
 
   const handleSubmitModal = async () => {
     try {
+            // Upload image first
+            const imageUrl = await uploadImage();
+            if (!imageUrl) return;
       const data = {
         ...claimerDetails,
         itemId: currentItem.id,
+        imageUrl, // Add the image URL to the submission
       };
 
       await axios.post(`${hostUrl}/api/items/claim`, data);
@@ -139,6 +191,7 @@ const ActiveTicketAdmin = () => {
         name: "",
         yearSection: "",
         contactNumber: "",
+        imageUrl: "", // Reset the image URL
       });
 
       await fetchItems();
@@ -275,61 +328,76 @@ const ActiveTicketAdmin = () => {
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h3 className="text-2xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h3>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Claimer's/Finder's Student ID
-                </label>
-
-                <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
-                  <button
-                    type="button"
-                    className="flex flex-col items-center text-blue-500 hover:text-blue-600 focus:outline-none"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-12 h-12 mb-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
-                      />
-                    </svg>
-                    
-                    <span className="text-sm font-medium">Upload Image</span>
-                  </button>
-                </div>
-
-                <p className="mt-5 mb-5">
-                For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
-                </p>
-
-                <input
-                  type="text"
-                  name="studentId"
-                  placeholder="Enter a Claimer's/Finder's Student ID"
-                  value={claimerDetails.studentId}
-                  onChange={handleModalInputChange}
-                  className="w-full border border-gray-300 rounded p-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Claimer's/Finder's Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Enter a Claimer's/Finder's Name"
-                  value={claimerDetails.name}
-                  onChange={handleModalInputChange}
-                  className="w-full border border-gray-300 rounded p-2"
-                />
-              </div>
+              <div className="mb-6">
+            <label className="block text-gray-700 font-medium mb-2">
+              Upload Image
+            </label>
+            <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
+              <input
+                type="file"
+                onChange={handleImageChange}
+                accept=".jpg,.png"
+                className="hidden"
+                id="imageUpload"
+              />
+              <label
+                htmlFor="imageUpload"
+                className="flex flex-col items-center text-blue-500 hover:text-blue-600 cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-12 h-12 mb-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
+                  />
+                </svg>
+                <span className="text-sm font-medium">
+                  {imageFile ? imageFile.name : "Upload Image"}
+                </span>
+              </label>
+            </div>
+            {imageFile && (
+              <p className="mt-2 text-sm text-green-600">
+                Image selected: {imageFile.name}
+              </p>
+            )}
+            <p className="mt-5 text-sm text-gray-600">
+              For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
+            </p>
+          </div>
+          <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Claimer's/Finder's Student ID
+        </label>
+        <input
+          type="text"
+          name="studentId"
+          placeholder="Enter a Claimer's/Finder's Student ID"
+          value={claimerDetails.studentId}
+          onChange={handleModalInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-medium mb-1">
+          Claimer's/Finder's Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter a Claimer's/Finder's Name"
+          value={claimerDetails.name}
+          onChange={handleModalInputChange}
+          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-1">
                   Year & Section

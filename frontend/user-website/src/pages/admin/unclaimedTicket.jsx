@@ -7,13 +7,29 @@ import axios from "axios";
 const UnclaimedTicket = () => {
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const itemsPerPage = 15; // Define how many items per page
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = async (email, subject, message) => {
+    try {
+      const response = await axios.post("http://localhost:3000/send-email", {
+        email,
+        subject,
+        message,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
 
   // Fetch tickets from the server
   useEffect(() => {
@@ -45,7 +61,7 @@ const UnclaimedTicket = () => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
-    if (value === '') {
+    if (value === "") {
       setFilteredTickets(tickets); // Reset to all tickets if search is cleared
     } else {
       const filtered = tickets.filter((item) =>
@@ -75,7 +91,10 @@ const UnclaimedTicket = () => {
   // Calculate the items to display based on the current page
   const indexOfLastTicket = currentPage * itemsPerPage;
   const indexOfFirstTicket = indexOfLastTicket - itemsPerPage;
-  const currentTickets = filteredTickets.slice(indexOfFirstTicket, indexOfLastTicket);
+  const currentTickets = filteredTickets.slice(
+    indexOfFirstTicket,
+    indexOfLastTicket
+  );
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
@@ -147,6 +166,17 @@ const UnclaimedTicket = () => {
                       >
                         REACTIVATE
                       </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering container click
+                          const message = `is this item still active?\nitem id:\n${ticket.id}`;
+                          sendEmail(ticket.email, "reminder", message);
+                        }}
+            
+                        className="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-green-600"
+                      >
+                        REMIND USER
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -154,17 +184,21 @@ const UnclaimedTicket = () => {
 
               {/* Pagination controls */}
               <div className="flex justify-center mt-6 space-x-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    onClick={() => handlePageChange(pageNumber)}
-                    className={`px-4 py-2 ${
-                      currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                    } rounded`}
-                  >
-                    {pageNumber}
-                  </button>
-                ))}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (pageNumber) => (
+                    <button
+                      key={pageNumber}
+                      onClick={() => handlePageChange(pageNumber)}
+                      className={`px-4 py-2 ${
+                        currentPage === pageNumber
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200"
+                      } rounded`}
+                    >
+                      {pageNumber}
+                    </button>
+                  )
+                )}
               </div>
             </>
           ) : (

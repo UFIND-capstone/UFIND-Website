@@ -17,6 +17,7 @@ export const claimItemHandler = async (req, res) => {
         yearSection,
         contactNumber,
         itemId,
+        imageUrl
     } = req.body;
 
     // Validate required fields
@@ -44,7 +45,8 @@ export const claimItemHandler = async (req, res) => {
             yearSection,
             contactNumber,
             itemId,
-            dateCompleted, // Add the formatted dateCompleted
+            dateCompleted, // Add the formatted dateCompleted,
+            imageUrl
         }, itemId); // Pass itemId as the document ID
 
         res.status(201).json({ message: 'Item added successfully', addedItemId });
@@ -120,12 +122,13 @@ export const addItemHandler = async (req, res) => {
         status,
         ticket,
         location,
+        lastSeenLocation,
         imageUrl,
         claimStatus, // Optional field
     } = req.body;
 
     // Validate required fields (exclude claimStatus as it's optional)
-    if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location) {
+    if (!studentId || !name || !description || !dateTime || !fullName || !contactNumber || !email || !status || !ticket || !location || !lastSeenLocation) {
         return res.status(400).json({
             message: 'All fields are required: name, description, dateTime, fullName, contactNumber, email, status, ticket, and location.',
         });
@@ -148,6 +151,7 @@ export const addItemHandler = async (req, res) => {
             status,
             ticket,
             location,
+            lastSeenLocation,
             ...(imageUrl && { imageUrl }), // Include imageUrl only if it exists
             ...(claimStatus && { claimStatus }), // Include claimStatus only if it exists
         });

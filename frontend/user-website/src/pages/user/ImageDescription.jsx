@@ -221,6 +221,10 @@ console.log("Claim Submitted:", response.data);
                   </p>
                 </div>
                 <div>
+                  <p className="font-medium text-gray-700">Initial Location:</p>
+                  <p className="text-gray-600">{item.lastSeenLocation || "Unknown"}</p>
+                </div>
+                <div>
                   <p className="font-medium text-gray-700">
                     Last Seen Location:
                   </p>

@@ -4,22 +4,64 @@ import { Link, useNavigate } from "react-router-dom";
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 import axios from "axios";
+import supabase from "../../config/supabaseClient";
 
 const ActiveTicket = () => {
   const { user } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [modalOpen, setModalOpen] = useState(false); // Modal state
-  const [currentTicket, setCurrentTicket] = useState(null); // Current ticket for modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentTicket, setCurrentTicket] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [claimerDetails, setClaimerDetails] = useState({
     studentId: "",
     name: "",
     yearSection: "",
     contactNumber: "",
+    imageUrl: "", // Add imageUrl to store the uploaded image URL
   });
 
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        alert("Only JPG and PNG files are allowed.");
+        return;
+      }
+      setImageFile(file);
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) {
+      alert("Please select an image!");
+      return null;
+    }
+
+    setUploading(true);
+    const fileName = `${Date.now()}_${imageFile.name}`;
+    try {
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(fileName, imageFile);
+
+      if (error) throw error;
+
+      const imageUrl = `https://tqvgagdffmjtxswldtgm.supabase.co/storage/v1/object/public/images/${fileName}`;
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+      alert("Error uploading image. Please try again.");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // Function to fetch tickets
   const fetchTickets = async () => {
@@ -79,38 +121,40 @@ const ActiveTicket = () => {
     }));
   };
 
-const handleSubmit = async () => {
-  try {
-    // Prepare the data to be submitted
-    const data = {
-      ...claimerDetails,
-      itemId: currentTicket.id,
-      studentId: user.id,
-    };
-    console.log("Submitting claim with data:", data);
+  // Modified handleSubmit to include image upload
+  const handleSubmit = async () => {
+    try {
+      // Upload image first
+      const imageUrl = await uploadImage();
+      if (!imageUrl) return;
 
-    // Submit the claim
-    const response = await axios.post(
-      "http://localhost:3000/api/items/claim",
-      data
-    );
+      // Prepare the data to be submitted
+      const data = {
+        ...claimerDetails,
+        imageUrl, // Add the image URL to the submission
+        itemId: currentTicket.id,
+        studentId: user.id,
+      };
 
-    // Update the ticket status to 'success' after successful claim submission
-    await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
-      ticket: "success",
-    });
+      // Submit the claim
+      const response = await axios.post(
+        "http://localhost:3000/api/items/claim",
+        data
+      );
 
-    // Close the modal and refresh the ticket list
-    closeModal();
-    fetchTickets();
-    
-    // Optionally handle the response (e.g., show a success message)
-    alert("Claim submitted successfully!");
-  } catch (err) {
-    console.error("Failed to submit claim:", err);
-    alert("Failed to submit claim. Please try again.");
-  }
-};
+      // Update the ticket status
+      await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
+        ticket: "success",
+      });
+
+      closeModal();
+      fetchTickets();
+      alert("Claim submitted successfully!");
+    } catch (err) {
+      console.error("Failed to submit claim:", err);
+      alert("Failed to submit claim. Please try again.");
+    }
+  };
 
   // Dynamic Styling for Status and Category
   const statusColors = {
@@ -215,38 +259,49 @@ const handleSubmit = async () => {
 
       {/* Upload Image Section */}
       <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">
-          Upload Image
-        </label>
-        <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
-          <button
-            type="button"
-            className="flex flex-col items-center text-blue-500 hover:text-blue-600 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-12 h-12 mb-2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
+            <label className="block text-gray-700 font-medium mb-2">
+              Upload Image
+            </label>
+            <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
+              <input
+                type="file"
+                onChange={handleImageChange}
+                accept=".jpg,.png"
+                className="hidden"
+                id="imageUpload"
               />
-            </svg>
-            
-            <span className="text-sm font-medium">Upload Image</span>
-          </button>
-        </div>
-
-        <p className="mt-5">
-        For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
-        </p>
-
-      </div>
+              <label
+                htmlFor="imageUpload"
+                className="flex flex-col items-center text-blue-500 hover:text-blue-600 cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-12 h-12 mb-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
+                  />
+                </svg>
+                <span className="text-sm font-medium">
+                  {imageFile ? imageFile.name : "Upload Image"}
+                </span>
+              </label>
+            </div>
+            {imageFile && (
+              <p className="mt-2 text-sm text-green-600">
+                Image selected: {imageFile.name}
+              </p>
+            )}
+            <p className="mt-5 text-sm text-gray-600">
+              For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
+            </p>
+          </div>
 
       {/* Input Fields */}
       <div className="mb-4">
