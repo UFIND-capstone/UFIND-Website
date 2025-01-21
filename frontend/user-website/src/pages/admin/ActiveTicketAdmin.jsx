@@ -13,13 +13,16 @@ const ActiveTicketAdmin = () => {
   const [view, setView] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const itemsPerPage = 15; // Items per page
+
   const [claimerDetails, setClaimerDetails] = useState({
     studentId: "",
     name: "",
     yearSection: "",
     contactNumber: "",
   });
-  
+
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();
 
@@ -53,9 +56,9 @@ const ActiveTicketAdmin = () => {
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
-  
+
     let currentViewItems = items;
-  
+
     if (view === 'turnoverTicket') {
       currentViewItems = items.filter(
         (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
@@ -69,20 +72,21 @@ const ActiveTicketAdmin = () => {
         (item) => item.status === "found" && item.ticket === "pending"
       );
     }
-  
+
     const filtered = value
       ? currentViewItems.filter(item =>
           item.name.toLowerCase().includes(value) ||
           item.description?.toLowerCase().includes(value)
         )
       : currentViewItems;
-  
+
     setFilteredItems(filtered);
+    setCurrentPage(1); // Reset to the first page
   };
 
   const handleViewChange = (viewType) => {
     setView(viewType);
-  
+
     if (viewType === 'turnoverTicket') {
       const turnoverItems = items.filter(
         (item) => item.claimStatus === "turnover(osa)" && item.ticket === "pending"
@@ -102,10 +106,11 @@ const ActiveTicketAdmin = () => {
       setFilteredItems(items);
     }
 
-    // Also apply current search term to the new view
     if (searchTerm) {
       handleSearch({ target: { value: searchTerm } });
     }
+
+    setCurrentPage(1); // Reset to the first page
   };
 
   const handleModalInputChange = (e) => {
@@ -118,22 +123,16 @@ const ActiveTicketAdmin = () => {
 
   const handleSubmitModal = async () => {
     try {
-      // Prepare the data to be submitted
       const data = {
         ...claimerDetails,
         itemId: currentItem.id,
       };
-      console.log("Submitting claim with data:", data);
 
-      // Submit the claim
       await axios.post(`${hostUrl}/api/items/claim`, data);
-
-      // Update the ticket status to 'success'
       await axios.put(`${hostUrl}/api/items/${currentItem.id}`, {
         ticket: 'success'
       });
 
-      // Close modal and reset form
       setShowModal(false);
       setClaimerDetails({
         studentId: "",
@@ -141,10 +140,9 @@ const ActiveTicketAdmin = () => {
         yearSection: "",
         contactNumber: "",
       });
-      
-      // Refresh the items list
+
       await fetchItems();
-      
+
       alert("Claim submitted successfully!");
     } catch (err) {
       console.error("Failed to submit claim:", err);
@@ -163,7 +161,15 @@ const ActiveTicketAdmin = () => {
     navigate(`/admin/items/${item.id}`, { state: { item } });
   };
 
-  // Rest of your component remains the same...
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
       <Sidebar />
@@ -174,7 +180,6 @@ const ActiveTicketAdmin = () => {
         <main className="flex-1 p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">BROWSE ACTIVE TICKETS</h1>
 
-          {/* View buttons */}
           <div className="flex justify-center mb-4">
             <button
               onClick={() => handleViewChange('all')}
@@ -202,7 +207,6 @@ const ActiveTicketAdmin = () => {
             </button>
           </div>
 
-          {/* Search bar */}
           <div className="flex justify-center mb-6">
             <input
               type="text"
@@ -211,12 +215,8 @@ const ActiveTicketAdmin = () => {
               onChange={handleSearch}
               className="w-full max-w-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button className="px-6 py-4 bg-blue-300 text-white rounded-r-lg hover:bg-blue-500">
-              🔍
-            </button>
           </div>
 
-          {/* Items grid */}
           {loading ? (
             <p className="text-center text-gray-500">Loading items...</p>
           ) : error ? (
@@ -224,46 +224,90 @@ const ActiveTicketAdmin = () => {
           ) : filteredItems.length === 0 ? (
             <p className="text-center text-gray-500">No tickets found.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {filteredItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1 cursor-pointer"
-                  onClick={(e) => handleImageClick(item, e)}
-                >
-                  <img
-                    src={item.imageUrl || '/placeholder-image.png'}
-                    alt={item.name}
-                    className="w-full h-48 object-cover rounded-lg mb-4"
-                  />
-                  <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <strong>Date:</strong> {item.dateTime}
-                  </p>
-
-                  <button
-                    className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      openModal(item);
-                    }}
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {paginatedItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-transform transform hover:-translate-y-1 cursor-pointer"
+                    onClick={(e) => handleImageClick(item, e)}
                   >
-                    MARK AS SUCCESS
+                    <img
+                      src={item.imageUrl || '/placeholder-image.png'}
+                      alt={item.name}
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                    <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
+                    <p className="text-sm text-gray-600 mb-1">
+                      <strong>Date:</strong> {item.dateTime}
+                    </p>
+
+                    <button
+                      className="w-full px-8 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        openModal(item);
+                      }}
+                    >
+                      MARK AS SUCCESS
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex justify-center mt-6 space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`px-4 py-2 ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
+                  >
+                    {pageNumber}
                   </button>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
           )}
         </main>
 
         {showModal && (
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h3 className="text-2xl text-center font-bold mb-4">CLAIM OR FIND DETAILS</h3>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-1">
                   Claimer's/Finder's Student ID
                 </label>
+
+                <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500">
+                  <button
+                    type="button"
+                    className="flex flex-col items-center text-blue-500 hover:text-blue-600 focus:outline-none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-12 h-12 mb-2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-9-12v12m0 0l3.75-3.75M12 16.5L8.25 12.75"
+                      />
+                    </svg>
+                    
+                    <span className="text-sm font-medium">Upload Image</span>
+                  </button>
+                </div>
+
+                <p className="mt-5 mb-5">
+                For security reasons, please upload a photo of the found item. You may hold the item or include your student ID in the picture. Thank you!
+                </p>
+
                 <input
                   type="text"
                   name="studentId"

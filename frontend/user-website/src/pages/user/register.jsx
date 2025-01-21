@@ -8,14 +8,24 @@ export const Register = () => {
   const [emailAddress, setEmail] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [studentId, setStudentId] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
   const { register } = useAuth();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
       await register({
         firstName,
@@ -35,8 +45,8 @@ export const Register = () => {
   };
 
   return (
-  <div className="h-auto flex flex-row items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-400 p-2 md:p-4">
-{/* Left side with image */}
+    <div className="h-auto flex flex-row items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-400 p-2 md:p-4">
+      {/* Left side with image */}
       <div className="hidden md:flex flex-1 justify-center">
         <img
           src="/src/assets/LOGO.png" // Replace this with the correct path to your image
@@ -128,8 +138,17 @@ export const Register = () => {
               onChange={(event) => setEmail(event.target.value)}
               placeholder="Enter your email address"
               required
-              className="w-full pl-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full pl-4 py-2 border ${
+                /@(gmail\.com|yahoo\.com)$/.test(emailAddress)
+                  ? "border-gray-300"
+                  : "border-red-500"
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
+            {!/@(gmail\.com|yahoo\.com)$/.test(emailAddress) && emailAddress && (
+              <p className="text-red-500 text-sm mt-1">
+                Please enter a valid email address.
+              </p>
+            )}
           </div>
 
           {/* Contact Number */}
@@ -159,15 +178,50 @@ export const Register = () => {
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter your password"
-              required
-              className="w-full pl-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter your password"
+                required
+                className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </span>
+            </div>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="text-left">
+            <label
+              htmlFor="confirmPassword"
+              className="block mb-2 text-sm font-bold text-gray-700"
+            >
+              Confirm Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                placeholder="Confirm your password"
+                required
+                className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500"
+              >
+                {showConfirmPassword ? "🙈" : "👁️"}
+              </span>
+            </div>
           </div>
 
           {/* Register Button */}

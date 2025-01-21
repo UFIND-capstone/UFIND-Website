@@ -7,8 +7,9 @@ import { useAuth } from "../../AuthContext"; // Import the custom hook
 export const LoginAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const [error, setError] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { login, user } = useAuth(); // Get the login function and user state from context
   const hostUrl = import.meta.env.VITE_HOST_URL;
 
@@ -28,7 +29,7 @@ export const LoginAdmin = () => {
       });
 
       console.log("User logged in successfully:", response.data);
-      login({ username, role: "admin", }); // Call login function with user data
+      login({ username, role: "admin" }); // Call login function with user data
       navigate('/admin/dashboard'); // Redirect to admin dashboard after login
     } catch (error) {
       setError("Invalid username or password");
@@ -55,16 +56,23 @@ export const LoginAdmin = () => {
             />
           </div>
 
-          <div className="mb-4 text-left">
+          <div className="mb-4 text-left relative">
             <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-700">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle input type based on state
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Enter your password"
               required
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+              className="absolute right-2 top-9 text-xl focus:outline-none"
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
           </div>
 
           <div className="mb-4 text-right">

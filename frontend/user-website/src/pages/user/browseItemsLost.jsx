@@ -10,35 +10,36 @@ const BrowseItemsLost = () => {
     const [searchQuery, setSearchQuery] = useState(''); // User's search input
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
+    const itemsPerPage = 15; // Number of items per page
 
     // Fetch lost items from the backend
     useEffect(() => {
         const fetchItems = async () => {
-          try {
-            const response = await axios.get('http://localhost:3000/api/items');
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
-            const lostItems = response.data.filter((item) => {
-              if (item.status === 'lost' && item.ticket === 'pending') {
-                const itemDate = new Date(item.dateTime.replace(' ', 'T'));
-                return itemDate > thirtyDaysAgo;
-              }
-              return false;
-            });
-      
-            setItems(lostItems);
-            setFilteredItems(lostItems); // Initially display all items
-            setLoading(false);
-          } catch (err) {
-            setError(err.message || 'Failed to fetch items');
-            setLoading(false);
-          }
+            try {
+                const response = await axios.get('http://localhost:3000/api/items');
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                const lostItems = response.data.filter((item) => {
+                    if (item.status === 'lost' && item.ticket === 'pending') {
+                        const itemDate = new Date(item.dateTime.replace(' ', 'T'));
+                        return itemDate > thirtyDaysAgo;
+                    }
+                    return false;
+                });
+
+                setItems(lostItems);
+                setFilteredItems(lostItems); // Initially display all items
+                setLoading(false);
+            } catch (err) {
+                setError(err.message || 'Failed to fetch items');
+                setLoading(false);
+            }
         };
-      
+
         fetchItems();
-      }, []);
-      
+    }, []);
 
     // Handle search input changes
     const handleSearch = (event) => {
@@ -56,6 +57,18 @@ const BrowseItemsLost = () => {
         });
 
         setFilteredItems(filtered);
+        setCurrentPage(1); // Reset to the first page after filtering
+    };
+
+    // Get current items for the page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
+
+    // Handle pagination
+    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
     };
 
     return (
@@ -99,26 +112,45 @@ const BrowseItemsLost = () => {
                 ) : filteredItems.length === 0 ? (
                     <p className="text-center text-gray-500">No items found.</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        {filteredItems.map((item) => (
-                            <Link
-                                key={item.id}
-                                to={`/items/${item.id}`} // Dynamic link for each item's ID
-                                className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
-                            >
-                                <img
-                                    src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
-                                    alt={item.name}
-                                    className="w-full h-50 object-cover"
-                                />
-                                <div className="p-4 text-center">
-                                    <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>
-                                    <p className="text-sm text-gray-600">{item.dateTime}</p>
-                                    <p className="text-sm text-gray-600">{item.lastSeen}</p>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                            {currentItems.map((item) => (
+                                <Link
+                                    key={item.id}
+                                    to={`/items/${item.id}`} // Dynamic link for each item's ID
+                                    className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+                                >
+                                    <img
+                                        src={item.imageUrl || '/placeholder-image.png'} // Fallback image if no URL
+                                        alt={item.name}
+                                        className="w-full h-48 object-cover object-cover"
+                                    />
+                                    <div className="p-4 text-center">
+                                        <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>
+                                        <p className="text-sm text-gray-600">{item.dateTime}</p>
+                                        <p className="text-sm text-gray-600">{item.lastSeen}</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+
+                        {/* Pagination Controls */}
+                        <div className="flex justify-center items-center space-x-2 mt-8">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <button
+                                    key={index}
+                                    className={`px-4 py-2 rounded-lg ${
+                                        currentPage === index + 1
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
 

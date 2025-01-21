@@ -54,8 +54,6 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
-  
-
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -264,18 +262,35 @@ const formatDate = (dateString) => {
 
             <p className="text-sm text-gray-600 text-justify"> <b> Note: </b> Attach an image if available. </p>
 
-
             <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                LOCATION <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="location"
-                value={formData.location} // Use formData.location instead of coordinates directly
-                readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                {/* Location Label and Input */}
+                <label className="block text-sm font-semibold text-gray-700">
+                  EXACT LOCATION (CHOSEN ON MAP)
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  placeholder="Select a location"
+                  value={formData.location} // Use formData.location for the primary location
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {/* Last Seen Location Section */}
+              <div className="mt-4">
+                <label className="block text-sm font-semibold text-gray-700">
+                  LAST KNOWN LOCATION (MANUAL ENTRY)
+                </label>
+                <input
+                  type="text"
+                  name="lastSeenLocation"
+                  placeholder="Enter the last known location"
+                  value={formData.lastSeenLocation || ""}
+                  onChange={(e) => setFormData({ ...formData, lastSeenLocation: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
               {/* Show Map Button */}
               <button
                 type="button"
@@ -287,7 +302,9 @@ const formatDate = (dateString) => {
               {isMapVisible && (
                 <MapWithRestrictedArea onConfirm={handleCoordinates} />
               )}
+
             </div>
+
 
             {/* Contact Details */}
             <h2 className="text-xl font-bold text-gray-900 mt-6">
