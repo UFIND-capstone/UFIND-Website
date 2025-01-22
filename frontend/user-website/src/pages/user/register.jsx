@@ -20,13 +20,26 @@ export const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
+    // Reset error and success messages
+    setError("");
+    setSuccess("");
+  
+    // Validate contact number
+    const contactNumberRegex = /^09\d{9}$/;
+    if (!contactNumberRegex.test(contactNumber)) {
+      setError("Contact number must start with '09' and be exactly 11 digits.");
+      return;
+    }
+  
+    // Validate password and confirm password match
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
+  
     try {
+      // Call the register function
       await register({
         firstName,
         lastName,
@@ -35,14 +48,21 @@ export const Register = () => {
         password,
         studentId,
       });
+  
+      // Success message and redirect
       setSuccess("Registration successful! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      setError(
-        error.response?.data?.message || "Registration failed. Please try again."
-      );
+      // Handle duplicate student ID error
+      if (error.response?.data?.message?.includes("Student ID already exists")) {
+        setError("The Student ID has already been used. Please use a different one.");
+      } else {
+        // General error handling
+        setError(error.response?.data?.message || "Registration failed. Please try again.");
+      }
     }
   };
+  
 
   return (
     <div className="h-auto flex flex-row items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-400 p-2 md:p-4">
