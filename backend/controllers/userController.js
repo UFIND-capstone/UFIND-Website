@@ -1,6 +1,7 @@
 import { getUser, addUser, updateUser, getUserById, getAllUsers, updateUserStatus } from '../models/userModel.js';
 import crypto from 'crypto';
 import { auth } from '../firebase.js';
+import { db } from '../firebase.js';
 
 
 // Update to use the generateSalt method as required
@@ -93,6 +94,13 @@ export const addUserHandler = async (req, res) => {
     }
 
     try {
+        // Check if student ID already exists
+        const studentRef = db.collection('users').doc(studentId);
+        const doc = await studentRef.get();
+        if (doc.exists) {
+            return res.status(400).json({ message: "Student ID already exists" });
+        }
+
         // Create user with Firebase Admin SDK
         const userRecord = await auth.createUser({
             email: emailAddress,
@@ -141,6 +149,7 @@ export const addUserHandler = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 export const getUserByIdHandler = async (req, res) => {
     const { studentId } = req.params; // Get the item ID from URL parameters

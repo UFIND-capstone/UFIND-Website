@@ -62,6 +62,14 @@ export const Register = () => {
       }
     }
   };
+
+  const handleStudentIdChange = (event) => {
+    const value = event.target.value;
+    // Check if the input value is numeric and within the allowed length
+    if (/^\d{0,10}$/.test(value)) {
+        setStudentId(value);
+    }
+};
   
 
   return (
@@ -97,7 +105,7 @@ export const Register = () => {
               type="text"
               id="studentId"
               value={studentId}
-              onChange={(event) => setStudentId(event.target.value)}
+              onChange={handleStudentIdChange}
               placeholder="Enter your student ID"
               maxLength={10}
               required
