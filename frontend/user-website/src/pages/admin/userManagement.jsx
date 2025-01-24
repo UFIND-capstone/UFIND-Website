@@ -7,6 +7,7 @@ const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const hostUrl = import.meta.env.VITE_HOST_URL;
 
   const fetchUsers = async () => {
@@ -33,21 +34,27 @@ const ManageUsers = () => {
     setFilteredUsers(filtered);
   };
 
-  const updateUserStatus = async (id, status) => {
+  const updateUserStatus = async (ids, status) => {
     try {
-      await axios.put(`${hostUrl}/api/user/status/update-status`, { id, status });
+      await axios.put(`${hostUrl}/api/user/status/update-status`, { ids, status });
       await fetchUsers(); // Fetch users again after updating status
     } catch (error) {
-      console.error(`Error ${status === "blocked" ? "blocking" : "unblocking"} user:`, error);
+      console.error(`Error ${status === "blocked" ? "blocking" : "unblocking"} users:`, error);
     }
   };
 
-  const blockUser = (id) => {
-    updateUserStatus(id, "blocked");
+  const handleBulkBlock = () => {
+    if (selectedUsers.length === 0) return;
+    updateUserStatus(selectedUsers, "blocked");
+    setSelectedUsers([]); // Clear selected users after bulk block
   };
 
-  const unblockUser = (id) => {
-    updateUserStatus(id, "active");
+  const toggleUserSelection = (id) => {
+    setSelectedUsers((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((userId) => userId !== id)
+        : [...prevSelected, id]
+    );
   };
 
   return (
@@ -74,11 +81,35 @@ const ManageUsers = () => {
             </button>
           </div>
 
+          <button
+            onClick={handleBulkBlock}
+            className="mb-4 w-50 px-20 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+            disabled={selectedUsers.length === 0}
+          >
+            Block Selected Users
+          </button>
+
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <table className="min-w-full table-auto">
               <thead>
                 <tr className="bg-gray-200 text-gray-600 text-left text-sm uppercase font-bold">
-                  <th className="py-3 px-6">Student Id</th>
+                  <th className="py-3 px-6">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedUsers(filteredUsers.map((user) => user.id));
+                        } else {
+                          setSelectedUsers([]);
+                        }
+                      }}
+                      checked={
+                        selectedUsers.length > 0 &&
+                        selectedUsers.length === filteredUsers.length
+                      }
+                    />
+                  </th>
+                  <th className="py-3 px-6">Student ID</th>
                   <th className="py-3 px-6">Email Address</th>
                   <th className="py-3 px-6">First Name</th>
                   <th className="py-3 px-6">Last Name</th>
@@ -93,6 +124,13 @@ const ManageUsers = () => {
                       key={user.id}
                       className="border-b hover:bg-gray-100 transition duration-300"
                     >
+                      <td className="py-3 px-6">
+                        <input
+                          type="checkbox"
+                          checked={selectedUsers.includes(user.id)}
+                          onChange={() => toggleUserSelection(user.id)}
+                        />
+                      </td>
                       <td className="py-3 px-6">{user.id}</td>
                       <td className="py-3 px-6">{user.emailAddress}</td>
                       <td className="py-3 px-6">{user.firstName}</td>
@@ -109,14 +147,14 @@ const ManageUsers = () => {
                       <td className="py-3 px-6 text-center">
                         {user.status === "active" ? (
                           <button
-                            onClick={() => blockUser(user.id)}
+                            onClick={() => updateUserStatus([user.id], "blocked")}
                             className="w-24 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
                           >
                             Block
                           </button>
                         ) : (
                           <button
-                            onClick={() => unblockUser(user.id)}
+                            onClick={() => updateUserStatus([user.id], "active")}
                             className="w-24 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
                           >
                             Unblock
@@ -128,7 +166,7 @@ const ManageUsers = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="6"
+                      colSpan="7"
                       className="py-6 text-center text-gray-500 font-medium"
                     >
                       No users found.
