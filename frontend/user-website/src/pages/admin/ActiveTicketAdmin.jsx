@@ -15,7 +15,7 @@ const ActiveTicketAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const itemsPerPage = 15; // Items per page
+  const itemsPerPage = 9; // Items per page
 
   const [uploading, setUploading] = useState(false);
   const [imageFile, setImageFile] = useState(null);

@@ -12,7 +12,7 @@ const CompletedTickets = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const itemsPerPage = 15; // Items per page
+  const itemsPerPage = 9; // Items per page
 
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const navigate = useNavigate();

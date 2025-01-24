@@ -11,7 +11,7 @@ const BrowseItemsFound = () => {
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15; // Number of items per page
+    const itemsPerPage = 9; // Number of items per page
 
     useEffect(() => {
         const fetchItems = async () => {

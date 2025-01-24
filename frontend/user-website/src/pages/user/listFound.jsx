@@ -278,6 +278,21 @@ const ListingFound = () => {
               <b> Note: </b> Attach an image if available.{" "}
             </p>
 
+            <div className="mt-4">
+                <label className="block text-sm font-semibold text-gray-700">
+                  LAST KNOWN LOCATION (MANUAL ENTRY)
+                </label>
+                <input
+                  type="text"
+                  name="lastSeenLocation"
+                  placeholder="Enter the last known location"
+                  value={formData.lastSeenLocation || ""}
+                  onChange={(e) => setFormData({ ...formData, lastSeenLocation: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
             <div>
               <label className="block text-sm font-semibold text-gray-700">
                 LOCATION <span className="text-red-500">*</span>
