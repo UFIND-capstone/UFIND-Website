@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { db, collection, getDocs, query, where, updateDoc, doc } from "../../config/firebase";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
 
@@ -8,47 +8,84 @@ const ManageUsers = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const hostUrl = import.meta.env.VITE_HOST_URL;
 
+  // Fetch users from Firebase
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${hostUrl}/api/user/get/all`);
-      setUsers(response.data);
-      setFilteredUsers(response.data);
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+      const usersData = querySnapshot.docs
+        .filter((doc) => doc.id !== "admin") // Exclude admin by document ID
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+      setUsers(usersData);
+      setFilteredUsers(usersData);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  // Search functionality
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
 
-    const filtered = users.filter((user) =>
-      user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query)
+    const filtered = users.filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query)
     );
     setFilteredUsers(filtered);
   };
 
-  const updateUserStatus = async (ids, status) => {
+  // Update individual user status
+  const updateUserStatus = async (id, newStatus) => {
     try {
-      await axios.put(`${hostUrl}/api/user/status/update-status`, { ids, status });
-      await fetchUsers(); // Fetch users again after updating status
+      const userRef = doc(db, "users", id);
+      await updateDoc(userRef, { status: newStatus });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id === id ? { ...user, status: newStatus } : user))
+      );
+      setFilteredUsers((prevFiltered) =>
+        prevFiltered.map((user) => (user.id === id ? { ...user, status: newStatus } : user))
+      );
     } catch (error) {
-      console.error(`Error ${status === "blocked" ? "blocking" : "unblocking"} users:`, error);
+      console.error(`Error updating user status to ${newStatus}:`, error);
     }
   };
 
+  // Block selected users
   const handleBulkBlock = () => {
     if (selectedUsers.length === 0) return;
-    updateUserStatus(selectedUsers, "blocked");
-    setSelectedUsers([]); // Clear selected users after bulk block
+
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user && user.status !== "blocked") {
+        updateUserStatus(userId, "blocked");
+      }
+    });
+    setSelectedUsers([]);
   };
 
+  // Unblock selected users
+  const handleBulkUnblock = () => {
+    if (selectedUsers.length === 0) return;
+
+    selectedUsers.forEach((userId) => {
+      const user = users.find((u) => u.id === userId);
+      if (user && user.status !== "active") {
+        updateUserStatus(userId, "active");
+      }
+    });
+    setSelectedUsers([]);
+  };
+
+  // Toggle user selection
   const toggleUserSelection = (id) => {
     setSelectedUsers((prevSelected) =>
       prevSelected.includes(id)
@@ -81,13 +118,22 @@ const ManageUsers = () => {
             </button>
           </div>
 
-          <button
-            onClick={handleBulkBlock}
-            className="mb-4 w-50 px-20 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
-            disabled={selectedUsers.length === 0}
-          >
-            Block Selected Users
-          </button>
+          <div className="flex mb-4 space-x-4">
+            <button
+              onClick={handleBulkBlock}
+              className="px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+              disabled={selectedUsers.length === 0}
+            >
+              Block Selected Users
+            </button>
+            <button
+              onClick={handleBulkUnblock}
+              className="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+              disabled={selectedUsers.length === 0}
+            >
+              Unblock Selected Users
+            </button>
+          </div>
 
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <table className="min-w-full table-auto">
@@ -147,14 +193,14 @@ const ManageUsers = () => {
                       <td className="py-3 px-6 text-center">
                         {user.status === "active" ? (
                           <button
-                            onClick={() => updateUserStatus([user.id], "blocked")}
+                            onClick={() => updateUserStatus(user.id, "blocked")}
                             className="w-24 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
                           >
                             Block
                           </button>
                         ) : (
                           <button
-                            onClick={() => updateUserStatus([user.id], "active")}
+                            onClick={() => updateUserStatus(user.id, "active")}
                             className="w-24 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
                           >
                             Unblock
