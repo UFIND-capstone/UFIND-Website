@@ -21,6 +21,9 @@ app.post("/send-email", (req, res) => {
   sendMail(email, subject, message);
   res.send("Email sent!");
 });
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Test route working' });
+});
 
 app.listen(config.port, () => {
   console.log(`Server is live @ ${config.hostUrl}`);
