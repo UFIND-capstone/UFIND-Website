@@ -4,37 +4,46 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const privateKey = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');  // Ensure newlines are properly formatted
-const privateKeyId = process.env.PRIVATE_KEY_ID;
-const clientEmail = process.env.CLIENT_EMAIL;
-const clientId = process.env.CLIENT_ID;
-const clientCertUrl = process.env.CLIENT_CERT_URL
+// Load the service account from an environment variable
+const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
 
-const privateKey2 = process.env.PRIVATE_KEY2?.replace(/\\n/g, '\n');  // Ensure newlines are properly formatted
-const privateKeyId2 = process.env.PRIVATE_KEY_ID2;
-const clientEmail2 = process.env.CLIENT_EMAIL2;
-const clientId2 = process.env.CLIENT_ID2;
-const clientCertUrl2 = process.env.CLIENT_CERT_URL2
+if (!serviceAccountJson) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT environment variable is not set');
+}
 
-// Initialize Firebase Admin with your service account
-const serviceAccount = {
-    "type": "service_account",
-    "project_id": "ufind-cb187",
-    "private_key_id": privateKeyId2,
-    "private_key": privateKey2,
-    "client_email": clientEmail2,
-    "client_id": clientId2,
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": clientCertUrl2,
-    "universe_domain": "googleapis.com"
+// Parse the service account JSON
+const serviceAccount = JSON.parse(serviceAccountJson);
+
+// Validate required fields
+const requiredFields = [
+  'type',
+  'project_id',
+  'private_key_id',
+  'private_key',
+  'client_email',
+  'client_id',
+  'auth_uri',
+  'token_uri',
+  'auth_provider_x509_cert_url',
+  'client_x509_cert_url',
+  'universe_domain'
+];
+
+for (const field of requiredFields) {
+  if (!serviceAccount[field]) {
+    throw new Error(`Service account is missing required field: ${field}`);
   }
-  
+}
 
-  const adminApp = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
+// Ensure the private key has proper newlines (in case the environment variable escaped them)
+if (serviceAccount.private_key) {
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+}
+
+// Initialize Firebase Admin SDK
+const adminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
   
   export const auth = admin.auth();
   export const db = admin.firestore();
