@@ -3,7 +3,7 @@
   import { Link } from "react-router-dom";
   import Footer from "../../components/user/footer"; // FOOTER COMPONENTS
   import Topbar from "../../components/user/topBar"; // TOPBAR COMPONENTS
-  import qrImage from "../../assets/QRCODE.png"; // Path to the QR Code image
+  import qrImage from "../../assets/qrcode.png"; // Path to the QR Code image
   
   // Main Dashboard Component
   const Dashboard = () => {
