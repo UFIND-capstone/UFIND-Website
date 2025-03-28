@@ -11,7 +11,7 @@ const UnclaimedTickets = () => {
   useEffect(() => {
     // Fetch tickets from the backend where status is "Pending"
     axios
-      .get("http://localhost:3000/api/items/status/pending") // Adjust based on your backend API
+      .get("https://mel-backend.jwisnetwork.com/api/items/status/pending") // Adjust based on your backend API
       .then((response) => {
         console.log(response.data);
         setTickets(response.data);

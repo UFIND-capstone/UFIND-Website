@@ -14,7 +14,7 @@ function NotificationUI() {
 
       try {
         // Make the GET request with userId in the body
-        const response = await axios.get('http://localhost:3000/api/getNotifications', {
+        const response = await axios.get('https://mel-backend.jwisnetwork.com/api/getNotifications', {
           params: { userId: user.id }
         });
 

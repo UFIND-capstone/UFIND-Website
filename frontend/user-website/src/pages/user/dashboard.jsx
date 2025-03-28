@@ -13,7 +13,7 @@
     useEffect(() => {
       const fetchItems = async () => {
         try {
-          const response = await axios.get("http://localhost:3000/api/items?limit=5");
+          const response = await axios.get("https://mel-backend.jwisnetwork.com/api/items?limit=5");
           
           // Filter items within the last 30 days with a "pending" status
           const thirtyDaysAgo = new Date();

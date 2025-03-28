@@ -15,7 +15,7 @@ const Completed = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/items");
+        const response = await axios.get("https://mel-backend.jwisnetwork.com/api/items");
         const data = response.data;
 
         // Filter the tickets where ticket status is "success"

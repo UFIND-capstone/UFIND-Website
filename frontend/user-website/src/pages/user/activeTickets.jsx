@@ -66,7 +66,7 @@ const ActiveTicket = () => {
   // Function to fetch tickets
   const fetchTickets = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/items");
+      const response = await fetch("https://mel-backend.jwisnetwork.com/api/items");
       const data = await response.json();
       const userTickets = data.filter(
         (item) => item.studentId === user.id && item.ticket !== "success" && item.claimStatus == "keep"
@@ -138,12 +138,12 @@ const ActiveTicket = () => {
 
       // Submit the claim
       const response = await axios.post(
-        "http://localhost:3000/api/items/claim",
+        "https://mel-backend.jwisnetwork.com/api/items/claim",
         data
       );
 
       // Update the ticket status
-      await axios.put(`http://localhost:3000/api/items/${currentTicket.id}`, {
+      await axios.put(`https://mel-backend.jwisnetwork.com/api/items/${currentTicket.id}`, {
         ticket: "success",
       });
 

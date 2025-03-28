@@ -16,7 +16,7 @@ const BrowseItemsFound = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/items');
+                const response = await axios.get('https://mel-backend.jwisnetwork.com/api/items');
                 const thirtyDaysAgo = new Date();
                 thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 

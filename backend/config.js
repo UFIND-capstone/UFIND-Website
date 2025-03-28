@@ -9,5 +9,5 @@ export default {
     measurementId: "G-PMZTL76CED"
   },
   port: 3000,
-  hostUrl: "http://localhost:3000",
+  hostUrl: "https://mel-backend.jwisnetwork.com",
 };

@@ -20,7 +20,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/user", {
+      const response = await axios.post("https://mel-backend.jwisnetwork.com/api/user", {
         studentId,
         password,
       });

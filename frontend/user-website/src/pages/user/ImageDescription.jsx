@@ -39,7 +39,7 @@ const ItemDescription = () => {
     const fetchItem = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/items/${itemID}`
+          `https://mel-backend.jwisnetwork.com/api/items/${itemID}`
         );
         setItem(response.data);
         setLoading(false);
@@ -139,7 +139,7 @@ const ItemDescription = () => {
         `,
       };
 
-      const response = await axios.post("http://localhost:3000/api/messages", messageData);
+      const response = await axios.post("https://mel-backend.jwisnetwork.com/api/messages", messageData);
 console.log("Claim Submitted:", response.data);
 
       console.log("Claim Submitted:", response.data);

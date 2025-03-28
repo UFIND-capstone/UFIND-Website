@@ -24,7 +24,7 @@ const editItemAdmin = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/items/${itemId}`);
+        const response = await axios.get(`https://mel-backend.jwisnetwork.com/api/items/${itemId}`);
         // Format the datetime string to be compatible with datetime-local input
         const formattedDateTime = response.data.dateTime 
           ? new Date(response.data.dateTime).toISOString().slice(0, 16)
@@ -54,7 +54,7 @@ const editItemAdmin = () => {
     setIsSubmitting(true);
   
     try {
-      await axios.put(`http://localhost:3000/api/items/edit/${itemId}`, {
+      await axios.put(`https://mel-backend.jwisnetwork.com/api/items/edit/${itemId}`, {
         ...itemData,
         dateTime: new Date(itemData.dateTime).toISOString(), // Format date for backend
       });

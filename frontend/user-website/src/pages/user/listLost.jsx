@@ -150,7 +150,7 @@ const formatDate = (dateString) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/items",
+        "https://mel-backend.jwisnetwork.com/api/items",
         data
       );
       console.log("Item added successfully:", response.data);

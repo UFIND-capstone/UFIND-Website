@@ -17,9 +17,9 @@ const CompleteItem = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const itemResponse = await axios.get(`http://localhost:3000/api/items/${itemID}`);
+        const itemResponse = await axios.get(`https://mel-backend.jwisnetwork.com/api/items/${itemID}`);
         setItem(itemResponse.data);
-        const claimantResponse = await axios.get(`http://localhost:3000/api/items/completed/${itemID}`);
+        const claimantResponse = await axios.get(`https://mel-backend.jwisnetwork.com/api/items/completed/${itemID}`);
         setClaimant(claimantResponse.data);
       } catch (err) {
         setError("Failed to load item details.");

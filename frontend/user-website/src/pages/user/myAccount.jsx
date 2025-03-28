@@ -28,7 +28,7 @@ export const MyAccount = () => {
         setProfile(cachedProfile);
         setEditedProfile(cachedProfile);
       } else {
-        const response = await axios.get(`http://localhost:3000/api/user/${user.id}`);
+        const response = await axios.get(`https://mel-backend.jwisnetwork.com/api/user/${user.id}`);
         setProfile(response.data); // Update profile with fresh data
         setEditedProfile(response.data); // Sync editable data
         localStorage.setItem("user", JSON.stringify(response.data)); // Cache profile data
@@ -53,7 +53,7 @@ export const MyAccount = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put("http://localhost:3000/api/user/edit", {
+      await axios.put("https://mel-backend.jwisnetwork.com/api/user/edit", {
         studentId: user.id,
         ...editedProfile, // Pass all edited fields
       });

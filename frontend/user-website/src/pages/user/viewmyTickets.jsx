@@ -19,7 +19,7 @@ const ViewMyTickets = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/items/user/${user.id}`
+          `https://mel-backend.jwisnetwork.com/api/items/user/${user.id}`
         );
         if (response.status === 200) {
           setItems(response.data);

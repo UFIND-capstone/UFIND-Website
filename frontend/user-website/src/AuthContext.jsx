@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/register', userData);
+            const response = await axios.post('https://mel-backend.jwisnetwork.com/api/register', userData);
             return response.data;
         } catch (error) {
             console.error("Error registering:", error.message);
