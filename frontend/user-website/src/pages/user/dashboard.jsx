@@ -3,9 +3,13 @@
   import { Link } from "react-router-dom";
   import Footer from "../../components/user/footer"; // FOOTER COMPONENTS
   import Topbar from "../../components/user/topBar"; // TOPBAR COMPONENTS
-  import qrImage from "../../assets/qrcode.png"; // Path to the QR Code image
-  import DBheading from "../../assets/dbheading.jpg"
-  import ABOUTUS from "../../assets/ABOUTUSS.png"
+  import qrImage from "/assets/qrcode.png"; // Path to the QR Code image
+  import DBheading from "/assets/dbheading.jpg";
+  import ABOUTUS from "/assets/ABOUTUSS.png";
+
+console.log("qrImage:", qrImage);
+console.log("DBheading:", DBheading);
+console.log("ABOUTUS:", ABOUTUS);
   
   // Main Dashboard Component
   const Dashboard = () => {
@@ -96,7 +100,7 @@
                   >
                     <Link to={`/items/${item.id}`}>
                         <img
-                          src={item.imageUrl || "../../assets/default.png"} // Fallback for missing images
+                          src={item.imageUrl || "/assets/default.png"} // Fallback for missing images
                           alt={item.name}
                           className={`w-full h-[200px] object-cover mb-4 rounded-md ${
                             item.status === "found" ? "filter blur-sm" : ""

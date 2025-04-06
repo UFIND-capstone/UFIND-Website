@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/user/footer";
 import Topbar from "../../components/user/topBar";
 import { useAuth } from "../../AuthContext";
-import DefaultProfile from "../../assets/defaultProfile.png"
+import DefaultProfile from "/assets/defaultProfile.png"
 import { db, collection, query, where, doc, getDoc, addDoc, getDocs, orderBy, onSnapshot, setDoc} from "../../config/firebase";
 
 const ChatApp = () => {

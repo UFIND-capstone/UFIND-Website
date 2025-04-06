@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-import SecureImage from "../../assets/Secure your Belongings (1).png"
+import SecureImage from "/assets/Secure your Belongings (1).png"
 const SecureBelongings = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">

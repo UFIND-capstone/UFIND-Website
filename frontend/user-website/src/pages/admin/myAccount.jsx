@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
-import ProfileImage from "../../assets/PROFILE.png"
+import ProfileImage from "/assets/PROFILE.png"
 
 export const MyAccountAdmin = () => {
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
-import LOGO from '../../assets/LOGO.png'
-import FB from '../../assets/fb.png'
-import Gmail from '../../assets/gmail.png'
-import Twitter from '../../assets/twitter.png'
+import LOGO from '/assets/LOGO.png'
+import FB from '/assets/fb.png'
+import Gmail from '/assets/gmail.png'
+import Twitter from '/assets/twitter.png'
 
 const Footer = () => {
   return (

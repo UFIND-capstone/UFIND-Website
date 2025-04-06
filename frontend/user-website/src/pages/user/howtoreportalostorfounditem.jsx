@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-import ReportImage from "../../assets/Report a Lost or Found Item.png"
+import ReportImage from "/assets/Report a Lost or Found Item.png"
 const ReportLostFoundItem = () => {
   return (
     <div className="bg-gray-100 min-h-screen">

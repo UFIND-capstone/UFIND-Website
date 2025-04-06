@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-import LOGO from "../../assets/LOGO.png"
+import LOGO from "/assets/LOGO.png"
 export const Login = () => {
   const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");

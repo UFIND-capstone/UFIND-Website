@@ -1,12 +1,12 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-import AboutImage from "../../assets/ABOUTIMAGE.png"
-import MaxineImage from "../../assets/MAXINE.png"
-import JepoyImage from "../../assets/JEPOY.png" 
-import MelImage from "../../assets/MEL.png" 
-import AngeloImage from "../../assets/ANGELO.png" 
-import JaredImage from "../../assets/JARED.png" 
+import AboutImage from "/assets/ABOUTIMAGE.png"
+import MaxineImage from "/assets/MAXINE.png"
+import JepoyImage from "/assets/JEPOY.png" 
+import MelImage from "/assets/MEL.png" 
+import AngeloImage from "/assets/ANGELO.png" 
+import JaredImage from "/assets/JARED.png" 
 
 const AboutUs = () => {
   return (

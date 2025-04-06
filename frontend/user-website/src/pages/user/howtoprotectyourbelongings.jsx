@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-import BelongingsImage from "../../assets/Protect Your Belongings.png"
+import BelongingsImage from "/assets/Protect Your Belongings.png"
 const ProtectYourBelongings = () => {
   return (
     <div className="bg-gray-50 min-h-screen">

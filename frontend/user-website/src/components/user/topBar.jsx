@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LOGO from '../../assets/LOGO.png';
-import Mail from "../../assets/Mail.png";
-import UserImage from "../../assets/user.png";
+import LOGO from '/assets/LOGO.png';
+import Mail from "/assets/Mail.png";
+import UserImage from "/assets/user.png";
 
 export default function Topbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

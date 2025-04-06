@@ -4,7 +4,7 @@ import { useAuth } from "../../AuthContext"; // Import AuthContext hook
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 import axios from "axios";
-import UserImage from "../../assets/user.png"
+import UserImage from "/assets/user.png"
 export const MyAccount = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth(); // Get user and logout function from AuthContext

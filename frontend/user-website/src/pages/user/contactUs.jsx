@@ -1,10 +1,10 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-import ContactImage from "../../assets/CONTACTIMAGE.png" 
-import FB from "../../assets/fb.png"
-import Twitter from "../../assets/twitter.png"
-import Gmail from "../../assets/gmail.png"
+import ContactImage from "/assets/CONTACTIMAGE.png" 
+import FB from "/assets/fb.png"
+import Twitter from "/assets/twitter.png"
+import Gmail from "/assets/gmail.png"
 
 const ContactUs = () => {
   return (
@@ -65,7 +65,7 @@ const ContactUs = () => {
                 <a href="mailto:support@ufind.com">
                   <img
                     src={Gmail} // Replace with your Gmail logo image URL
-                    alt="Gmail"
+                    alt="Gmail Image"
                     className="w-20 h-20"
                   />
                 </a>

@@ -11,7 +11,7 @@ import {
 } from "react-icons/md";
 import { RiTicketLine, RiUserSettingsLine, RiCheckboxCircleLine } from "react-icons/ri";
 import { AiOutlineFileSearch } from "react-icons/ai"; // New icons
-import OSAimage from '../../assets/OSA.png'
+import OSAimage from '/assets/OSA.png'
 
 const Sidebar = () => {
   const { logout } = useAuth(); // Get user and logout function from AuthContext
