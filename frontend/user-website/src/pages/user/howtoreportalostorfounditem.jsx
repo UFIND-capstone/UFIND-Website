@@ -19,7 +19,7 @@ const ReportLostFoundItem = () => {
           {/* Centered Image */}
           <div className="flex justify-center mb-10">
             <img
-              src="src/assets/Report a Lost or Found Item.png"
+              src="../../assets/Report a Lost or Found Item.png"
               alt="Report Lost or Found Item"
               className="rounded-lg shadow-lg max-w-full"
             />

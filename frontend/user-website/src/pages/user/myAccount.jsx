@@ -89,7 +89,7 @@ export const MyAccount = () => {
           <div className="max-w-lg mx-auto bg-white p-10 rounded-lg shadow-lg">
             <div className="flex justify-center mb-6">
               <img
-                src="/src/assets/user.png" // Update path if needed
+                src="../../assets/user.png" // Update path if needed
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-md"
               />

@@ -28,7 +28,7 @@ const Sidebar = () => {
       <div className="p-6 text-center border-b border-blue-400">
         <div className="flex justify-center mb-4">
           <img
-            src="/src/assets/OSA.png" // Replace with actual profile image path
+            src="../../assets/OSA.png" // Replace with actual profile image path
             alt="Profile"
             className="w-24 h-24 rounded-full"
           />

@@ -24,7 +24,7 @@ export const MyAccountAdmin = () => {
             {/* Profile Image */}
             <div className="flex flex-col items-center mb-6">
               <img
-                src="/src/assets/PROFILE.png" // Replace with actual profile image path
+                src="../../assets/PROFILE.png" // Replace with actual profile image path
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-blue-400 shadow-md"
               />

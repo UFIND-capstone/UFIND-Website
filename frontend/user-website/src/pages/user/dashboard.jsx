@@ -51,7 +51,7 @@
               
               {/* Logo/Image */}
               <img
-                src="/src/assets/dbheading.jpg"
+                src="../../assets/dbheading.jpg"
                 alt="U-FIND Logo"
                 className="w-90 h-80 object-cover"
               />
@@ -94,7 +94,7 @@
                   >
                     <Link to={`/items/${item.id}`}>
                         <img
-                          src={item.imageUrl || "/src/assets/default.png"} // Fallback for missing images
+                          src={item.imageUrl || "../../assets/default.png"} // Fallback for missing images
                           alt={item.name}
                           className={`w-full h-[200px] object-cover mb-4 rounded-md ${
                             item.status === "found" ? "filter blur-sm" : ""
@@ -157,7 +157,7 @@
           <section className="flex flex-col md:flex-row justify-between items-center bg-white p-6 md:p-10 mx-4 md:mx-12 mb-8 rounded-lg shadow-lg">
             <div className="flex-shrink-0 mb-4 md:mb-0">
               <img
-                src="/src/assets/ABOUTUSS.png"
+                src="../../assets/ABOUTUSS.png"
                 alt="Illustration"
                 className="w-full max-w-xs"
               />

@@ -206,7 +206,7 @@ const openChat = async (chat) => {
                 onClick={() => openChat(contact)}
               >
                 <img
-                  src="/src/assets/defaultProfile.png"
+                  src="../../assets/defaultProfile.png"
                   alt={contact.otherUserData.firstName}
                   className="w-12 h-12 rounded-full object-cover mr-3"
                 />

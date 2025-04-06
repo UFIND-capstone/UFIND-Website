@@ -7,7 +7,7 @@ const Footer = () => {
         {/* Logo Section */}
         <div className="flex justify-center md:justify-start items-center">
           <img
-            src="/src/assets/LOGO.png" // Replace with your logo path
+            src="../../assets/LOGO.png" // Replace with your logo path
             alt="U-Find Logo"
             className="object-scale-down h-32 w-auto"
           />
@@ -48,13 +48,13 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-3">SOCIAL LINKS</h3>
           <div className="flex justify-center md:justify-start space-x-4">
             <a href="https://www.facebook.com/profile.php?id=61572131011000&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
-              <img src="/src/assets/fb.png" alt="Facebook" className="h-6" />
+              <img src="../../assets/fb.png" alt="Facebook" className="h-6" />
             </a>
             <a href="mailto:Jaredrara11@gmail.com" target="_blank" rel="noopener noreferrer">
-              <img src="/src/assets/gmail.png" alt="Gmail" className="h-6" />
+              <img src="../../assets/gmail.png" alt="Gmail" className="h-6" />
             </a>
             <a href="https://x.com/rara_jared72862" target="_blank" rel="noopener noreferrer">
-              <img src="/src/assets/twitter.png" alt="X" className="h-6" />
+              <img src="../../assets/twitter.png" alt="X" className="h-6" />
             </a>
           </div>
         </div>

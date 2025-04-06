@@ -10,7 +10,7 @@ const AboutUs = () => {
       {/* Banner Image */}
       <div className="w-full">
         <img
-          src="/src/assets/ABOUT IMAGE.png"
+          src="../../assets/ABOUT IMAGE.png"
           alt="About Us Banner"
           className="w-full h-65 object-cover"
         />
@@ -74,7 +74,7 @@ const AboutUs = () => {
           {/* Card 1 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="/src/assets/MAXINE.png" 
+              src="../../assets/MAXINE.png" 
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -87,7 +87,7 @@ const AboutUs = () => {
           {/* Card 2 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="/src/assets/JEPOY.png" 
+              src="../../assets/JEPOY.png" 
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -99,7 +99,7 @@ const AboutUs = () => {
           {/* Card 3 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="/src/assets/MEL.png" 
+              src="../../assets/MEL.png" 
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -111,7 +111,7 @@ const AboutUs = () => {
           {/* Card 4 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="/src/assets/ANGELO.png" 
+              src="../../assets/ANGELO.png" 
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -123,7 +123,7 @@ const AboutUs = () => {
           {/* Card 5 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="/src/assets/JARED.png" 
+              src="../../assets/JARED.png" 
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />

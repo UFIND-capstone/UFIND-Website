@@ -28,7 +28,7 @@ const SecureBelongings = () => {
         {/* Image Section */}
         <section className="mb-8">
           <img
-            src="src/assets/Secure your Belongings (1).png"
+            src="../../assets/Secure your Belongings (1).png"
             alt="Secure Your Belongings"
             className="w-full h-auto rounded-lg shadow-lg"
           />

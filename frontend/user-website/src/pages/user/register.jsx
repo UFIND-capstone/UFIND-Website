@@ -77,7 +77,7 @@ export const Register = () => {
       {/* Left side with image */}
       <div className="hidden md:flex flex-1 justify-center">
         <img
-          src="/src/assets/LOGO.png" // Replace this with the correct path to your image
+          src="../../assets/LOGO.png" // Replace this with the correct path to your image
           alt="Registration Illustration"
           className="max-w-md"
         />

@@ -18,7 +18,7 @@ const ProtectYourBelongings = () => {
         {/* Centered Image */}
         <div className="flex justify-center mb-10">
           <img
-            src="src/assets/Protect Your Belongings.png"
+            src="../../assets/Protect Your Belongings.png"
             alt="Protect Belongings"
             className="rounded-lg shadow-lg max-w-full"
           />

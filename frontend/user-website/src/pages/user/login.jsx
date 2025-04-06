@@ -61,7 +61,7 @@ export const Login = () => {
       {/* Left side with image */}
       <div className="hidden md:flex flex-1 justify-center">
         <img
-          src="/src/assets/LOGO.png" // Replace with the correct image path
+          src="../../assets/LOGO.png"
           alt="Login Illustration"
           className="max-w-md"
         />

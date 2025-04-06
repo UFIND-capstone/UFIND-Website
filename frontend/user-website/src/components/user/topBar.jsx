@@ -10,7 +10,7 @@ export default function Topbar() {
     <div className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
       <div className="flex items-center space-x-2">
         <Link to="/dashboard" aria-label="Dashboard">
-          <img src="/src/assets/LOGO.png" alt="U-Find Logo" className="h-8 w-8" />
+          <img src="../../assets/LOGO.png" alt="U-Find Logo" className="h-8 w-8" />
         </Link>
         <span className="text-2xl font-bold text-blue-600">U-FIND</span>
       </div>
@@ -54,7 +54,7 @@ export default function Topbar() {
         <div>
           <Link to="/chatApp" aria-label="Messages">
             <img
-              src="/src/assets/Mail.png"
+              src="../../assets/Mail.png"
               alt="Messages"
               className="h-10 w-10"
             />
@@ -64,7 +64,7 @@ export default function Topbar() {
         <div>
           <Link to="/myAccount" aria-label="My Account">
             <img
-              src="/src/assets/user.png"
+              src="../../assets/user.png"
               alt="Profile"
               className="h-8 w-8 rounded-full"
             />

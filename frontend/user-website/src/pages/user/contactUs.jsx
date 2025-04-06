@@ -10,7 +10,7 @@ const ContactUs = () => {
       {/* Full-width image below the top bar */}
       <div className="w-full">
         <img 
-          src="/src/assets/CONTACT IMAGE.png" 
+          src="../../assets/CONTACT IMAGE.png" 
           alt="About Us Banner" 
           className="w-full h-65 object-cover"
         />
@@ -52,7 +52,7 @@ const ContactUs = () => {
                 {/* Facebook */}
                 <a href="https://www.facebook.com/profile.php?id=61572131011000&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
                   <img
-                    src="/src/assets/fb.png" // Replace with your Facebook logo image URL
+                    src="../../assets/fb.png" // Replace with your Facebook logo image URL
                     alt="Facebook"
                     className="w-20 h-20"
                   />
@@ -60,7 +60,7 @@ const ContactUs = () => {
                 {/* Gmail */}
                 <a href="mailto:support@ufind.com">
                   <img
-                    src="/src/assets/gmail.png" // Replace with your Gmail logo image URL
+                    src="../../assets/gmail.png" // Replace with your Gmail logo image URL
                     alt="Gmail"
                     className="w-20 h-20"
                   />
@@ -68,7 +68,7 @@ const ContactUs = () => {
                 {/* WhatsApp */}
                 <a href="https://x.com/rara_jared72862" target="_blank" rel="noopener noreferrer">
                   <img
-                    src="/src/assets/twitter.png" // Replace with your WhatsApp logo image URL
+                    src="../../assets/twitter.png" // Replace with your WhatsApp logo image URL
                     alt="WhatsApp"
                     className="w-20 h-20"
                   />
