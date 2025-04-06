@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/admin/sideBar";
 import Topbar from "../../components/admin/topBar";
+import ProfileImage from "../../assets/PROFILE.png"
 
 export const MyAccountAdmin = () => {
   return (
@@ -24,7 +25,7 @@ export const MyAccountAdmin = () => {
             {/* Profile Image */}
             <div className="flex flex-col items-center mb-6">
               <img
-                src="../../assets/PROFILE.png" // Replace with actual profile image path
+                src={ProfileImage} // Replace with actual profile image path
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-blue-400 shadow-md"
               />

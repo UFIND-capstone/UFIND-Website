@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-
+import BelongingsImage from "../../assets/Protect Your Belongings.png"
 const ProtectYourBelongings = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -18,7 +18,7 @@ const ProtectYourBelongings = () => {
         {/* Centered Image */}
         <div className="flex justify-center mb-10">
           <img
-            src="../../assets/Protect Your Belongings.png"
+            src={BelongingsImage}
             alt="Protect Belongings"
             className="rounded-lg shadow-lg max-w-full"
           />

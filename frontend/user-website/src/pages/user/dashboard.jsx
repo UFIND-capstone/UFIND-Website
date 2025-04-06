@@ -4,6 +4,8 @@
   import Footer from "../../components/user/footer"; // FOOTER COMPONENTS
   import Topbar from "../../components/user/topBar"; // TOPBAR COMPONENTS
   import qrImage from "../../assets/qrcode.png"; // Path to the QR Code image
+  import DBheading from "../../assets/dbheading.jpg"
+  import ABOUTUS from "../../assets/ABOUTUSS.png"
   
   // Main Dashboard Component
   const Dashboard = () => {
@@ -51,7 +53,7 @@
               
               {/* Logo/Image */}
               <img
-                src="../../assets/dbheading.jpg"
+                src={DBheading}
                 alt="U-FIND Logo"
                 className="w-90 h-80 object-cover"
               />
@@ -157,7 +159,7 @@
           <section className="flex flex-col md:flex-row justify-between items-center bg-white p-6 md:p-10 mx-4 md:mx-12 mb-8 rounded-lg shadow-lg">
             <div className="flex-shrink-0 mb-4 md:mb-0">
               <img
-                src="../../assets/ABOUTUSS.png"
+                src={ABOUTUS}
                 alt="Illustration"
                 className="w-full max-w-xs"
               />

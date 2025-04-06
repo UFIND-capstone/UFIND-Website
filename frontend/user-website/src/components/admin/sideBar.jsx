@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import { RiTicketLine, RiUserSettingsLine, RiCheckboxCircleLine } from "react-icons/ri";
 import { AiOutlineFileSearch } from "react-icons/ai"; // New icons
+import OSAimage from '../../assets/OSA.png'
 
 const Sidebar = () => {
   const { logout } = useAuth(); // Get user and logout function from AuthContext
@@ -28,7 +29,7 @@ const Sidebar = () => {
       <div className="p-6 text-center border-b border-blue-400">
         <div className="flex justify-center mb-4">
           <img
-            src="../../assets/OSA.png" // Replace with actual profile image path
+            src={OSAimage} // Replace with actual profile image path
             alt="Profile"
             className="w-24 h-24 rounded-full"
           />

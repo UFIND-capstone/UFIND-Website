@@ -1,6 +1,10 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
+import ContactImage from "../../assets/CONTACTIMAGE.png" 
+import FB from "../../assets/fb.png"
+import Twitter from "../../assets/twitter.png"
+import Gmail from "../../assets/gmail.png"
 
 const ContactUs = () => {
   return (
@@ -10,7 +14,7 @@ const ContactUs = () => {
       {/* Full-width image below the top bar */}
       <div className="w-full">
         <img 
-          src="../../assets/CONTACT IMAGE.png" 
+          src={ContactImage}
           alt="About Us Banner" 
           className="w-full h-65 object-cover"
         />
@@ -52,7 +56,7 @@ const ContactUs = () => {
                 {/* Facebook */}
                 <a href="https://www.facebook.com/profile.php?id=61572131011000&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer">
                   <img
-                    src="../../assets/fb.png" // Replace with your Facebook logo image URL
+                    src={FB} // Replace with your Facebook logo image URL
                     alt="Facebook"
                     className="w-20 h-20"
                   />
@@ -60,7 +64,7 @@ const ContactUs = () => {
                 {/* Gmail */}
                 <a href="mailto:support@ufind.com">
                   <img
-                    src="../../assets/gmail.png" // Replace with your Gmail logo image URL
+                    src={Gmail} // Replace with your Gmail logo image URL
                     alt="Gmail"
                     className="w-20 h-20"
                   />
@@ -68,7 +72,7 @@ const ContactUs = () => {
                 {/* WhatsApp */}
                 <a href="https://x.com/rara_jared72862" target="_blank" rel="noopener noreferrer">
                   <img
-                    src="../../assets/twitter.png" // Replace with your WhatsApp logo image URL
+                    src={Twitter} // Replace with your WhatsApp logo image URL
                     alt="WhatsApp"
                     className="w-20 h-20"
                   />

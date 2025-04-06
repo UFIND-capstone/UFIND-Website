@@ -4,7 +4,7 @@ import { useAuth } from "../../AuthContext"; // Import AuthContext hook
 import Topbar from "../../components/user/topBar";
 import Footer from "../../components/user/footer";
 import axios from "axios";
-
+import UserImage from "../../assets/user.png"
 export const MyAccount = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth(); // Get user and logout function from AuthContext
@@ -89,7 +89,7 @@ export const MyAccount = () => {
           <div className="max-w-lg mx-auto bg-white p-10 rounded-lg shadow-lg">
             <div className="flex justify-center mb-6">
               <img
-                src="../../assets/user.png" // Update path if needed
+                src={UserImage} // Update path if needed
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-md"
               />

@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-
+import SecureImage from "../../assets/Secure your Belongings (1).png"
 const SecureBelongings = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -28,7 +28,7 @@ const SecureBelongings = () => {
         {/* Image Section */}
         <section className="mb-8">
           <img
-            src="../../assets/Secure your Belongings (1).png"
+            src={SecureImage}
             alt="Secure Your Belongings"
             className="w-full h-auto rounded-lg shadow-lg"
           />

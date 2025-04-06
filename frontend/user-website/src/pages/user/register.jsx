@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-
+import LOGO from "../../assets/LOGO.png"
 export const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -77,7 +77,7 @@ export const Register = () => {
       {/* Left side with image */}
       <div className="hidden md:flex flex-1 justify-center">
         <img
-          src="../../assets/LOGO.png" // Replace this with the correct path to your image
+          src={LOGO} // Replace this with the correct path to your image
           alt="Registration Illustration"
           className="max-w-md"
         />

@@ -1,6 +1,12 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
+import AboutImage from "../../assets/ABOUTIMAGE.png"
+import MaxineImage from "../../assets/MAXINE.png"
+import JepoyImage from "../../assets/JEPOY.png" 
+import MelImage from "../../assets/MEL.png" 
+import AngeloImage from "../../assets/ANGELO.png" 
+import JaredImage from "../../assets/JARED.png" 
 
 const AboutUs = () => {
   return (
@@ -10,7 +16,7 @@ const AboutUs = () => {
       {/* Banner Image */}
       <div className="w-full">
         <img
-          src="../../assets/ABOUT IMAGE.png"
+          src={AboutImage}
           alt="About Us Banner"
           className="w-full h-65 object-cover"
         />
@@ -74,7 +80,7 @@ const AboutUs = () => {
           {/* Card 1 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="../../assets/MAXINE.png" 
+              src={MaxineImage}
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -87,7 +93,7 @@ const AboutUs = () => {
           {/* Card 2 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="../../assets/JEPOY.png" 
+              src={JepoyImage}
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -99,7 +105,7 @@ const AboutUs = () => {
           {/* Card 3 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="../../assets/MEL.png" 
+              src={MelImage}
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -111,7 +117,7 @@ const AboutUs = () => {
           {/* Card 4 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="../../assets/ANGELO.png" 
+              src={AngeloImage}
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />
@@ -123,7 +129,7 @@ const AboutUs = () => {
           {/* Card 5 */}
           <div className="bg-white shadow-xl border-solid border-2 border-white-600 rounded-lg p-3 text-center">
             <img 
-              src="../../assets/JARED.png" 
+              src={JaredImage}
               alt="Team Member" 
               className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
             />

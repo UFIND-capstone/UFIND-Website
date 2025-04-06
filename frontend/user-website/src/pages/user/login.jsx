@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-
+import LOGO from "../../assets/LOGO.png"
 export const Login = () => {
   const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
@@ -61,7 +61,7 @@ export const Login = () => {
       {/* Left side with image */}
       <div className="hidden md:flex flex-1 justify-center">
         <img
-          src="../../assets/LOGO.png"
+          src={LOGO}
           alt="Login Illustration"
           className="max-w-md"
         />

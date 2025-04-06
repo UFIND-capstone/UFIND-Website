@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../../components/user/footer';
 import Topbar from '../../components/user/topBar';
-
+import ReportImage from "../../assets/Report a Lost or Found Item.png"
 const ReportLostFoundItem = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -19,7 +19,7 @@ const ReportLostFoundItem = () => {
           {/* Centered Image */}
           <div className="flex justify-center mb-10">
             <img
-              src="../../assets/Report a Lost or Found Item.png"
+              src={ReportImage}
               alt="Report Lost or Found Item"
               className="rounded-lg shadow-lg max-w-full"
             />
